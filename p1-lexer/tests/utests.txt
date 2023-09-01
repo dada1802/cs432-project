@@ -1,0 +1,12 @@
+Running suite(s): Default
+52%: Checks: 21, Failures: 9, Errors: 1
+public.c:21:F:Public:C_string:0: Assertion 'valid_1token("\"hi\"", STRLIT, "\"hi\"")' failed
+public.c:22:F:Public:C_symbol:0: Assertion 'valid_1token("-", SYM, "-")' failed
+public.c:24:F:Public:C_hex:0: Assertion 'valid_1token("0xabcd", HEXLIT, "0xabcd")' failed
+public.c:27:F:Public:B_keyword:0: Assertion 'valid_1token("def", KEY, "def")' failed
+public.c:28:F:Public:B_invalid_for:0: Assertion 'invalid_tokens("for")' failed
+public.c:29:F:Public:B_symbol_equal:0: Assertion 'valid_1token("==", SYM, "==")' failed
+public.c:31:F:Public:B_multi_tokens1:0: Assertion 'valid_2tokens("def  ab", KEY, "def", ID, "ab")' failed
+public.c:36:F:Public:B_multi_tokens2:0: Assertion 'valid_tokens("def foo;", 3, multi_tokens2)' failed
+public.c:38:F:Public:A_comments:0: Assertion 'valid_0tokens("// test")' failed
+private.c:5:E:Private:A_null_string:0: (after this point) Received signal 11 (Segmentation fault)
