@@ -14,7 +14,7 @@ TokenQueue* lex(const char* text)
     Regex* whitespace = Regex_new("^[ \n]");
     Regex* identifiers = Regex_new("^[A-Za-z][A-Za-z0-9_]*");
     // Regex* letter = Regex_new("^[a-z]");
-    Regex* symbol = Regex_new("^[()+*]");
+    Regex* symbol = Regex_new("^[()+*-]");
     Regex* constant = Regex_new("^[1-9][0-9]*|0");
     int line_count = 1;
  

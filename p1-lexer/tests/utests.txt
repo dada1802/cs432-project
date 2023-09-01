@@ -1,7 +1,6 @@
 Running suite(s): Default
-52%: Checks: 21, Failures: 9, Errors: 1
+57%: Checks: 21, Failures: 8, Errors: 1
 public.c:21:F:Public:C_string:0: Assertion 'valid_1token("\"hi\"", STRLIT, "\"hi\"")' failed
-public.c:22:F:Public:C_symbol:0: Assertion 'valid_1token("-", SYM, "-")' failed
 public.c:24:F:Public:C_hex:0: Assertion 'valid_1token("0xabcd", HEXLIT, "0xabcd")' failed
 public.c:27:F:Public:B_keyword:0: Assertion 'valid_1token("def", KEY, "def")' failed
 public.c:28:F:Public:B_invalid_for:0: Assertion 'invalid_tokens("for")' failed
