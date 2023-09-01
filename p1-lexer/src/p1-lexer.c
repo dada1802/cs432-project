@@ -2,7 +2,7 @@
  * @file p1-lexer.c
  * @brief Compiler phase 1: lexer
  * 
- * 
+ * Group members: David Nguyen, Chris Simmons.
  */
 #include "p1-lexer.h"
 
