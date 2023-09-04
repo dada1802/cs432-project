@@ -1,8 +1,8 @@
-==1448361== Memcheck, a memory error detector
-==1448361== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==1448361== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==1448361== Command: ../decaf inputs/clevel.decaf
-==1448361== 
+==359986== Memcheck, a memory error detector
+==359986== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==359986== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==359986== Command: ../decaf inputs/clevel.decaf
+==359986== 
 SYMBOL   [line 001]  (
 SYMBOL   [line 001]  )
 SYMBOL   [line 002]  +
@@ -19,12 +19,18 @@ DECLIT   [line 010]  0
 ID       [line 010]  x123
 DECLIT   [line 011]  0
 ID       [line 011]  xabc
-==1448361== 
-==1448361== HEAP SUMMARY:
-==1448361==     in use at exit: 0 bytes in 0 blocks
-==1448361==   total heap usage: 259 allocs, 259 frees, 55,804 bytes allocated
-==1448361== 
-==1448361== All heap blocks were freed -- no leaks are possible
-==1448361== 
-==1448361== For lists of detected and suppressed errors, rerun with: -s
-==1448361== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==359986== 
+==359986== HEAP SUMMARY:
+==359986==     in use at exit: 4,312 bytes in 84 blocks
+==359986==   total heap usage: 357 allocs, 273 frees, 62,356 bytes allocated
+==359986== 
+==359986== LEAK SUMMARY:
+==359986==    definitely lost: 128 bytes in 2 blocks
+==359986==    indirectly lost: 4,184 bytes in 82 blocks
+==359986==      possibly lost: 0 bytes in 0 blocks
+==359986==    still reachable: 0 bytes in 0 blocks
+==359986==         suppressed: 0 bytes in 0 blocks
+==359986== Rerun with --leak-check=full to see details of leaked memory
+==359986== 
+==359986== For lists of detected and suppressed errors, rerun with: -s
+==359986== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
