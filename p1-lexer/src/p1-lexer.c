@@ -18,7 +18,9 @@ TokenQueue* lex(const char* text)
     Regex* constant = Regex_new("^[1-9][0-9]*|0");
     Regex* string = Regex_new("^\"[a-zA-Z]*\"");
     Regex* hex = Regex_new("^0x[0-9a-f]*");
-    char *str[] = {"def"};
+    char *incorrect[] = {"if", "else", "while", "return", "break", "continue", "int", "bool", "void",
+                         "true", "false", "for", "callout", "class", "interface", "extends", "implements", "new", "this",
+                         "string", "float", "double", "null"};
     int line_count = 1;
  
     /* read and handle input */
@@ -28,29 +30,23 @@ TokenQueue* lex(const char* text)
         /* match regular expressions */
         if (Regex_match(whitespace, text, match)) {
             /* ignore whitespace */
-            if (strcmp(text, "\n")) {
+            if (strcmp(match, "\n")) {
                 line_count++;
             }
             
         } else if (Regex_match(identifiers, text, match)) {
             /* TODO: implement line count and replace placeholder (-1) */
 
-            bool check = true;
-            int len = sizeof(str) / sizeof(str[0]);
-
-            // for (int i = 0; i < len; i++) {
-            //     if (strcmp(str[i], text)) {
-            //         check = false;
-            //         break;
-            //     }
-            // }
-
-            if (check) {
-                TokenQueue_add(tokens, Token_new(ID, match, line_count));
+            if (strcmp(match, "def") == 0) {
+                TokenQueue_add(tokens, Token_new(KEY, match, line_count));
             }
 
+            else if (findIncorrect(incorrect, match) == 1) {
+                Error_throw_printf("Invalid token!\n");
+            }
+            
             else {
-                TokenQueue_add(tokens, Token_new(KEY, match, line_count));
+                TokenQueue_add(tokens, Token_new(ID, match, line_count));
             }
 
         } else if (Regex_match(symbol, text, match)) {
@@ -78,6 +74,19 @@ TokenQueue* lex(const char* text)
     Regex_free(identifiers);
     Regex_free(symbol);
     Regex_free(constant);
+    Regex_free(string);
+    Regex_free(hex);
 
     return tokens;
+}
+
+int findIncorrect(char *incorrect[], char match[]) {
+    int len = sizeof(incorrect) / sizeof(incorrect[0]);
+
+    for (int i = 0; i < len; i++) {
+        if (strcmp(match, incorrect[i]) == 0) {
+            return 1;
+        }
+    }
+    return 0;
 }

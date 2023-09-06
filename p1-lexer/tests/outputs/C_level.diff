@@ -1,4 +1,4 @@
---- outputs/C_level.txt	2023-09-06 14:18:02.030831750 -0400
+--- outputs/C_level.txt	2023-09-06 15:29:29.549535659 -0400
 +++ expected/C_level.txt	2023-09-01 17:23:12.852423367 -0400
 @@ -1,16 +1,18 @@
  SYMBOL   [line 001]  (
@@ -10,13 +10,13 @@
 -DECLIT   [line 006]  0
 -ID       [line 007]  name
 -ID       [line 008]  num1
--DECLIT   [line 009]  "hello world" % [ ] { }
+-DECLIT   [line 008]  "hello world" % [ ] { }
 -0
--ID       [line 009]  x0
+-ID       [line 008]  x0
+-DECLIT   [line 009]  0
+-ID       [line 009]  x123
 -DECLIT   [line 010]  0
--ID       [line 010]  x123
--DECLIT   [line 011]  0
--ID       [line 011]  xabc
+-ID       [line 010]  xabc
 +SYMBOL   [line 001]  +
 +SYMBOL   [line 001]  *
 +DECLIT   [line 001]  123

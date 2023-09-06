@@ -7,10 +7,10 @@ ID       [line 005]  id
 DECLIT   [line 006]  0
 ID       [line 007]  name
 ID       [line 008]  num1
-DECLIT   [line 009]  "hello world" % [ ] { }
+DECLIT   [line 008]  "hello world" % [ ] { }
 0
-ID       [line 009]  x0
+ID       [line 008]  x0
+DECLIT   [line 009]  0
+ID       [line 009]  x123
 DECLIT   [line 010]  0
-ID       [line 010]  x123
-DECLIT   [line 011]  0
-ID       [line 011]  xabc
+ID       [line 010]  xabc
