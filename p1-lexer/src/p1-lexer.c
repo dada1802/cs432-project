@@ -18,6 +18,7 @@ TokenQueue* lex(const char* text)
     Regex* constant = Regex_new("^[1-9][0-9]*|0");
     Regex* string = Regex_new("^\"[a-zA-Z]*\"");
     Regex* hex = Regex_new("^0x[0-9a-f]*");
+    char *str[] = {"def"};
     int line_count = 1;
  
     /* read and handle input */
@@ -33,7 +34,24 @@ TokenQueue* lex(const char* text)
             
         } else if (Regex_match(identifiers, text, match)) {
             /* TODO: implement line count and replace placeholder (-1) */
-            TokenQueue_add(tokens, Token_new(ID, match, line_count));
+
+            bool check = true;
+            int len = sizeof(str) / sizeof(str[0]);
+
+            // for (int i = 0; i < len; i++) {
+            //     if (strcmp(str[i], text)) {
+            //         check = false;
+            //         break;
+            //     }
+            // }
+
+            if (check) {
+                TokenQueue_add(tokens, Token_new(ID, match, line_count));
+            }
+
+            else {
+                TokenQueue_add(tokens, Token_new(KEY, match, line_count));
+            }
 
         } else if (Regex_match(symbol, text, match)) {
             TokenQueue_add(tokens, Token_new(SYM, match, line_count));
