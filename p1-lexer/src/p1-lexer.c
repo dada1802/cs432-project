@@ -41,7 +41,7 @@ TokenQueue* lex(const char* text)
                 TokenQueue_add(tokens, Token_new(KEY, match, line_count));
             }
 
-            else if (findIncorrect(incorrect, match) == 1) {
+            else if (findIncorrect(&incorrect, match) == 1) {
                 Error_throw_printf("Invalid token!\n");
             }
             
@@ -80,8 +80,8 @@ TokenQueue* lex(const char* text)
     return tokens;
 }
 
-int findIncorrect(char *incorrect[], char match[]) {
-    int len = sizeof(incorrect) / sizeof(incorrect[0]);
+int findIncorrect(char *incorrect, char match[]) {
+    int len = sizeof(*incorrect) / sizeof(incorrect[0]);
 
     for (int i = 0; i < len; i++) {
         if (strcmp(match, incorrect[i]) == 0) {

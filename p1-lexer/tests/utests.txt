@@ -1,8 +1,14 @@
 Running suite(s): Default
-71%: Checks: 21, Failures: 5, Errors: 1
-public.c:24:F:Public:C_hex:0: Assertion 'valid_1token("0xabcd", HEXLIT, "0xabcd")' failed
-public.c:28:F:Public:B_invalid_for:0: Assertion 'invalid_tokens("for")' failed
+42%: Checks: 21, Failures: 2, Errors: 10
+public.c:15:E:Public:D_single_letter_id:0: (after this point) Received signal 11 (Segmentation fault)
+public.c:16:E:Public:D_multi_letter_id:0: (after this point) Received signal 11 (Segmentation fault)
+public.c:19:E:Public:D_multi_tokens:0: (after this point) Received signal 11 (Segmentation fault)
+public.c:24:E:Public:C_hex:0: (after this point) Received signal 11 (Segmentation fault)
+public.c:25:E:Public:C_multi_tokens:0: (after this point) Received signal 11 (Segmentation fault)
+public.c:28:E:Public:B_invalid_for:0: (after this point) Received signal 11 (Segmentation fault)
 public.c:29:F:Public:B_symbol_equal:0: Assertion 'valid_1token("==", SYM, "==")' failed
-public.c:36:F:Public:B_multi_tokens2:0: Assertion 'valid_tokens("def foo;", 3, multi_tokens2)' failed
+public.c:31:E:Public:B_multi_tokens1:0: (after this point) Received signal 11 (Segmentation fault)
+public.c:36:E:Public:B_multi_tokens2:0: (after this point) Received signal 11 (Segmentation fault)
 public.c:38:F:Public:A_comments:0: Assertion 'valid_0tokens("// test")' failed
+public.c:39:E:Public:A_keyword_id:0: (after this point) Received signal 11 (Segmentation fault)
 private.c:5:E:Private:A_null_string:0: (after this point) Received signal 11 (Segmentation fault)
