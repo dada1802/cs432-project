@@ -14,13 +14,10 @@ TokenQueue* lex(const char* text)
     /* compile regular expressions */
     Regex* whitespace = Regex_new("^[ \n]");
     Regex* identifiers = Regex_new("^[A-Za-z][A-Za-z0-9_]*");
-    Regex* symbol = Regex_new("^[()+*-]");
-    Regex* constant = Regex_new("^[1-9][0-9]*|0");
+    Regex* symbol = Regex_new("^[()+*-]|=+");
+    Regex* constant = Regex_new("[1-9][0-9]*|0");
     Regex* string = Regex_new("^\"[a-zA-Z]*\"");
     Regex* hex = Regex_new("^0x[0-9a-f]*");
-    char *incorrect[] = {"if", "else", "while", "return", "break", "continue", "int", "bool", "void",
-                         "true", "false", "for", "callout", "class", "interface", "extends", "implements", "new", "this",
-                         "string", "float", "double", "null"};
     int line_count = 1;
  
     /* read and handle input */
@@ -30,7 +27,7 @@ TokenQueue* lex(const char* text)
         /* match regular expressions */
         if (Regex_match(whitespace, text, match)) {
             /* ignore whitespace */
-            if (strcmp(match, "\n")) {
+            if (strcmp(match, "\n") == 0) {
                 line_count++;
             }
             
@@ -41,7 +38,7 @@ TokenQueue* lex(const char* text)
                 TokenQueue_add(tokens, Token_new(KEY, match, line_count));
             }
 
-            else if (findIncorrect(&incorrect, match) == 1) {
+            else if (findIncorrect(&match) == 1) {
                 Error_throw_printf("Invalid token!\n");
             }
             
@@ -52,14 +49,14 @@ TokenQueue* lex(const char* text)
         } else if (Regex_match(symbol, text, match)) {
             TokenQueue_add(tokens, Token_new(SYM, match, line_count));
 
+        } else if (Regex_match(hex, text, match)) {
+            TokenQueue_add(tokens, Token_new(HEXLIT, match, line_count));
+
         } else if (Regex_match(constant, text, match)) {
             TokenQueue_add(tokens, Token_new(DECLIT, match, line_count));
 
         } else if (Regex_match(string, text, match)) {
             TokenQueue_add(tokens, Token_new(STRLIT, match, line_count));
-
-        } else if (Regex_match(hex, text, match)) {
-            TokenQueue_add(tokens, Token_new(HEXLIT, match, line_count));
 
         } else {
             Error_throw_printf("Invalid token!\n");
@@ -80,9 +77,12 @@ TokenQueue* lex(const char* text)
     return tokens;
 }
 
-int findIncorrect(char *incorrect, char match[]) {
-    int len = sizeof(*incorrect) / sizeof(incorrect[0]);
+int findIncorrect(char *match) {
+    char *incorrect[] = {"if", "else", "while", "return", "break", "continue", "int", "bool", "void",
+                         "true", "false", "for", "callout", "class", "interface", "extends", "implements", "new", "this",
+                         "string", "float", "double", "null"};
 
+    int len = sizeof(incorrect) / sizeof(incorrect[0]);
     for (int i = 0; i < len; i++) {
         if (strcmp(match, incorrect[i]) == 0) {
             return 1;

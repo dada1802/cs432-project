@@ -1,7 +1,8 @@
-D_level                        FAIL (timeout)
-C_level                        FAIL (timeout)
-B_add                          FAIL (timeout)
-No memory leak found.
+D_level                        pass
+C_level                        FAIL (see outputs/C_level.diff for details)
+B_add                          FAIL (see outputs/B_add.diff for details)
+Memory leak(s) found. See files listed below for details.
+  - valgrind/B_add.txt
 ========================================
  NOTICE: THIS TESTSUITE IS INCOMPLETE.
 YOU WILL BE GRADED ON OTHER TEST CASES.

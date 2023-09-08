@@ -1,0 +1,14 @@
+SYMBOL   [line 001]  (
+SYMBOL   [line 001]  )
+SYMBOL   [line 001]  +
+SYMBOL   [line 001]  *
+DECLIT   [line 001]  123
+ID       [line 001]  id
+DECLIT   [line 001]  0
+ID       [line 001]  name
+ID       [line 001]  num1
+DECLIT   [line 002]  "hello world" % [ ] { }
+0
+ID       [line 002]  x0
+HEXLIT   [line 002]  0x123
+HEXLIT   [line 002]  0xabc
