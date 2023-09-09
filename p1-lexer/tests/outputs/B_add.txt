@@ -1,0 +1,16 @@
+KEYWORD  [line 001]  def
+KEYWORD  [line 001]  int
+ID       [line 001]  main
+SYMBOL   [line 001]  (
+SYMBOL   [line 001]  )
+SYMBOL   [line 002]  {
+KEYWORD  [line 003]  int
+ID       [line 003]  a
+SYMBOL   [line 003]  ;
+ID       [line 004]  a
+SYMBOL   [line 004]  =
+SYMBOL   [line 004]  4 + 5;
+KEYWORD  [line 005]  return
+ID       [line 005]  a
+SYMBOL   [line 005]  ;
+SYMBOL   [line 006]  }

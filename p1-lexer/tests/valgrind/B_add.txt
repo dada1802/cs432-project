@@ -1,21 +1,30 @@
-==4007683== Memcheck, a memory error detector
-==4007683== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==4007683== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==4007683== Command: ../decaf inputs/add.decaf
-==4007683== 
-Invalid token!
-==4007683== 
-==4007683== HEAP SUMMARY:
-==4007683==     in use at exit: 21,656 bytes in 243 blocks
-==4007683==   total heap usage: 297 allocs, 54 frees, 37,328 bytes allocated
-==4007683== 
-==4007683== LEAK SUMMARY:
-==4007683==    definitely lost: 400 bytes in 7 blocks
-==4007683==    indirectly lost: 21,256 bytes in 236 blocks
-==4007683==      possibly lost: 0 bytes in 0 blocks
-==4007683==    still reachable: 0 bytes in 0 blocks
-==4007683==         suppressed: 0 bytes in 0 blocks
-==4007683== Rerun with --leak-check=full to see details of leaked memory
-==4007683== 
-==4007683== For lists of detected and suppressed errors, rerun with: -s
-==4007683== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==162689== Memcheck, a memory error detector
+==162689== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==162689== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==162689== Command: ../decaf inputs/add.decaf
+==162689== 
+KEYWORD  [line 001]  def
+KEYWORD  [line 001]  int
+ID       [line 001]  main
+SYMBOL   [line 001]  (
+SYMBOL   [line 001]  )
+SYMBOL   [line 002]  {
+KEYWORD  [line 003]  int
+ID       [line 003]  a
+SYMBOL   [line 003]  ;
+ID       [line 004]  a
+SYMBOL   [line 004]  =
+SYMBOL   [line 004]  4 + 5;
+KEYWORD  [line 005]  return
+ID       [line 005]  a
+SYMBOL   [line 005]  ;
+SYMBOL   [line 006]  }
+==162689== 
+==162689== HEAP SUMMARY:
+==162689==     in use at exit: 0 bytes in 0 blocks
+==162689==   total heap usage: 389 allocs, 389 frees, 63,032 bytes allocated
+==162689== 
+==162689== All heap blocks were freed -- no leaks are possible
+==162689== 
+==162689== For lists of detected and suppressed errors, rerun with: -s
+==162689== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
