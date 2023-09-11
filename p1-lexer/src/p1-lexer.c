@@ -14,8 +14,8 @@ TokenQueue* lex(const char* text)
     /* compile regular expressions */
     Regex* whitespace = Regex_new("^[\n \t]");
     Regex* identifiers = Regex_new("^[A-Za-z][A-Za-z0-9_]*");
-    Regex* symbol = Regex_new("^[][\\%()+*{}-]|=+|;");
-    Regex* constant = Regex_new("[1-9][0-9]*|0");
+    Regex* symbol = Regex_new("^[][\\%()*+{}-]|=+|;");
+    Regex* constant = Regex_new("^[1-9][0-9]*|0");
     Regex* string = Regex_new("^\"[a-zA-Z ]*\"");
     Regex* hex = Regex_new("^0x[0-9a-f]*");
     Regex* comment = Regex_new("^//[a-zA-Z \n\t\\\"]*");
@@ -54,11 +54,11 @@ TokenQueue* lex(const char* text)
         } else if (Regex_match(string, text, match)) {
             TokenQueue_add(tokens, Token_new(STRLIT, match, line_count));
 
-        } else if (Regex_match(hex, text, match)) {
-            TokenQueue_add(tokens, Token_new(HEXLIT, match, line_count));
-
         } else if (Regex_match(symbol, text, match)) {
             TokenQueue_add(tokens, Token_new(SYM, match, line_count));
+
+        } else if (Regex_match(hex, text, match)) {
+            TokenQueue_add(tokens, Token_new(HEXLIT, match, line_count));
 
         } else if (Regex_match(constant, text, match)) {
             TokenQueue_add(tokens, Token_new(DECLIT, match, line_count));
