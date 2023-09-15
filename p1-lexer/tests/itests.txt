@@ -1,6 +1,6 @@
-D_level                        pass
-C_level                        pass
-B_add                          pass
+D_level                        FAIL (see outputs/D_level.diff for details)
+C_level                        FAIL (see outputs/C_level.diff for details)
+B_add                          FAIL (see outputs/B_add.diff for details)
 No memory leak found.
 ========================================
  NOTICE: THIS TESTSUITE IS INCOMPLETE.

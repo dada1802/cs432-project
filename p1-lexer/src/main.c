@@ -90,7 +90,7 @@ int main(int argc, char** argv)
     if (setjmp(decaf_error) == 0) {
 
         /* PROJECT 1: lexer */
-        tokens = lex(text);
+        tokens = lex("!=");
 
     } else {
 

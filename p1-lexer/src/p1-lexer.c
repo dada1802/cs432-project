@@ -14,7 +14,7 @@ TokenQueue* lex(const char* text)
     /* compile regular expressions */
     Regex* whitespace = Regex_new("^[\n \t]");
     Regex* identifiers = Regex_new("^[A-Za-z][A-Za-z0-9_]*");
-    Regex* symbol = Regex_new("^([][\\%()*+{}-]|=+|;)");
+    Regex* symbol = Regex_new("^([][%()*,;+{}-])|[><=!]{0,1}=|&&|(\\|\\|)");
     Regex* constant = Regex_new("^[1-9][0-9]*|0");
     Regex* string = Regex_new("^\"[a-zA-Z ]*\"");
     Regex* hex = Regex_new("^0x([1-9a-f]*|0)");

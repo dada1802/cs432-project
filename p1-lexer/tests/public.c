@@ -38,7 +38,15 @@ TEST_TOKENS (B_multi_tokens2, "def foo;", 3, multi_tokens2)
 TEST_0TOKENS(A_comments,         "// test")
 TEST_1TOKEN (A_keyword_id,       "int3",    ID,     "int3")
 TEST_2TOKENS(A_multi_dec_dec,    "0123",    DECLIT, "0", DECLIT, "123")
+
+// Added Tests
 TEST_2TOKENS(test_hex, "0x0123", HEXLIT, "0x0", DECLIT, "123")
+Token multi_tokens1[] = { { .type = SYM, .text = ">=", .line = 1 },
+                          { .type = SYM,  .text = "==", .line = 1 },
+                          { .type = SYM, .text = "<=",   .line = 1 } };
+TEST_TOKENS(test_symbols, ">===<=", 3, multi_tokens1)
+TEST_1TOKEN(test_and, "&&", SYM, "&&")
+TEST_1TOKEN(test_or, "||", SYM, "||")
 
 #endif
 
@@ -69,7 +77,12 @@ void public_tests (Suite *s)
     TEST(A_comments);
     TEST(A_keyword_id);
     TEST(A_multi_dec_dec);
+
+    // Added Tests
     TEST(test_hex);
+    TEST(test_symbols);
+    TEST(test_and);
+    TEST(test_or);
     suite_add_tcase (s, tc);
 }
 

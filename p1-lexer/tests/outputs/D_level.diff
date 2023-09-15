@@ -1,0 +1,10 @@
+--- outputs/D_level.txt	2023-09-15 16:26:01.079287790 -0400
++++ expected/D_level.txt	2023-09-01 17:23:12.852423367 -0400
+@@ -1 +1,6 @@
+-SYMBOL   [line 001]  !=
++SYMBOL   [line 001]  (
++SYMBOL   [line 001]  )
++SYMBOL   [line 001]  +
++SYMBOL   [line 001]  *
++DECLIT   [line 001]  123
++ID       [line 001]  id
