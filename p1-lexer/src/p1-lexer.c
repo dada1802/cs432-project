@@ -8,29 +8,29 @@
 #include "p1-lexer.h"
 
 // Helper method
-    int findIncorrect(char *match) {
-        char *correct[] = {"def", "if", "else", "while", "return", "break", "continue", "int", "bool", "void",
-                            "true", "false"};
-        
-        char *incorrect[] = {"for", "callout", "class", "interface", "extends", "implements", "new", "this",
-                            "string", "float", "double", "null"};
+int findIncorrect(char *match) {
+    char *correct[] = {"def", "if", "else", "while", "return", "break", "continue", "int", "bool", "void",
+                        "true", "false"};
+    
+    char *incorrect[] = {"for", "callout", "class", "interface", "extends", "implements", "new", "this",
+                        "string", "float", "double", "null"};
 
-        int len = sizeof(correct) / sizeof(correct[0]);
-        for (int i = 0; i < len; i++) {
-            if (strcmp(match, correct[i]) == 0) {
-                return 2;
-            }
+    int len = sizeof(correct) / sizeof(correct[0]);
+    for (int i = 0; i < len; i++) {
+        if (strcmp(match, correct[i]) == 0) {
+            return 2;
         }
-        
-        len = sizeof(incorrect) / sizeof(incorrect[0]);
-        for (int i = 0; i < len; i++) {
-            if (strcmp(match, incorrect[i]) == 0) {
-                return 1;
-            }
-        }
-        
-        return 0;
     }
+    
+    len = sizeof(incorrect) / sizeof(incorrect[0]);
+    for (int i = 0; i < len; i++) {
+        if (strcmp(match, incorrect[i]) == 0) {
+            return 1;
+        }
+    }
+    
+    return 0;
+}
 
 TokenQueue* lex(const char* text)
 {
