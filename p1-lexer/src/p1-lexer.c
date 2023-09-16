@@ -7,6 +7,31 @@
  */
 #include "p1-lexer.h"
 
+// Helper method
+    int findIncorrect(char *match) {
+        char *correct[] = {"def", "if", "else", "while", "return", "break", "continue", "int", "bool", "void",
+                            "true", "false"};
+        
+        char *incorrect[] = {"for", "callout", "class", "interface", "extends", "implements", "new", "this",
+                            "string", "float", "double", "null"};
+
+        int len = sizeof(correct) / sizeof(correct[0]);
+        for (int i = 0; i < len; i++) {
+            if (strcmp(match, correct[i]) == 0) {
+                return 2;
+            }
+        }
+        
+        len = sizeof(incorrect) / sizeof(incorrect[0]);
+        for (int i = 0; i < len; i++) {
+            if (strcmp(match, incorrect[i]) == 0) {
+                return 1;
+            }
+        }
+        
+        return 0;
+    }
+
 TokenQueue* lex(const char* text)
 {
     TokenQueue* tokens = TokenQueue_new();
@@ -16,7 +41,7 @@ TokenQueue* lex(const char* text)
     Regex* identifiers = Regex_new("^[A-Za-z][A-Za-z0-9_]*");
     Regex* symbol = Regex_new("^([][%()*,;+{}-])|[><=!]{0,1}=|&&|(\\|\\|)");
     Regex* constant = Regex_new("^[1-9][0-9]*|0");
-    Regex* string = Regex_new("^\"[a-zA-Z ]*\"");
+    Regex* string = Regex_new("^(\"[a-zA-Z \\\n\\\t\\\"\\\\]*\")");
     Regex* hex = Regex_new("^0x([1-9a-f]*|0)");
     Regex* comment = Regex_new("^//[a-zA-Z \n\t\\\"]*");
     int line_count = 1;
@@ -39,11 +64,11 @@ TokenQueue* lex(const char* text)
         } else if (Regex_match(identifiers, text, match)) {
             /* TODO: implement line count and replace placeholder (-1) */
 
-            if (findIncorrect(&match) == 2) {
+            if (findIncorrect(match) == 2) {
                 TokenQueue_add(tokens, Token_new(KEY, match, line_count));
             }
 
-            else if (findIncorrect(&match) == 1) {
+            else if (findIncorrect(match) == 1) {
                 Error_throw_printf("Invalid token!\n");
             }
             
@@ -81,28 +106,4 @@ TokenQueue* lex(const char* text)
     Regex_free(comment);
 
     return tokens;
-}
-
-int findIncorrect(char *match) {
-    char *correct[] = {"def", "if", "else", "while", "return", "break", "continue", "int", "bool", "void",
-                         "true", "false"};
-    
-    char *incorrect[] = {"for", "callout", "class", "interface", "extends", "implements", "new", "this",
-                         "string", "float", "double", "null"};
-
-    int len = sizeof(correct) / sizeof(correct[0]);
-    for (int i = 0; i < len; i++) {
-        if (strcmp(match, correct[i]) == 0) {
-            return 2;
-        }
-    }
-    
-    len = sizeof(incorrect) / sizeof(incorrect[0]);
-    for (int i = 0; i < len; i++) {
-        if (strcmp(match, incorrect[i]) == 0) {
-            return 1;
-        }
-    }
-    
-    return 0;
 }
