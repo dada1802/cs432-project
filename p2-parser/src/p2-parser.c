@@ -152,6 +152,12 @@ ASTNode* parse_program (TokenQueue* input)
     NodeList* vars = NodeList_new();
     NodeList* funcs = NodeList_new();
 
+    while (!TokenQueue_is_empty(input)) {
+        Token *t = TokenQueue_remove(input);
+        NodeList_add(vars, VarDeclNode_new(t->text, INT, false, 0, -1));
+        Token_free(t);
+    }
+
     return ProgramNode_new(vars, funcs);
 }
 
