@@ -1,6 +1,9 @@
 /**
  * @file p2-parser.c
  * @brief Compiler phase 2: parser
+ * 
+ * Group members: David Nguyen, Chris Simmons.
+ * We did not use any AI-assist tools while creating this solution.
  */
 
 #include "p2-parser.h"
