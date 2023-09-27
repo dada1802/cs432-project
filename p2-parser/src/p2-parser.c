@@ -146,7 +146,7 @@ void parse_id (TokenQueue* input, char* buffer)
     Token_free(token);
 }
 
-ASTNode* parse_vardecl(TokenQueue* token) 
+ASTNode* parse_vardecl (TokenQueue* token) 
 {
     char buffer[MAX_TOKEN_LEN];
     DecafType type = parse_type(token);
@@ -154,8 +154,18 @@ ASTNode* parse_vardecl(TokenQueue* token)
     int line = get_next_token_line(token);
     match_and_discard_next_token(token, SYM, ";");
 
-    ASTNode* var = VarDeclNode_new(buffer, type, false, 0, line);
-    return var;
+    return VarDeclNode_new(buffer, type, false, 0, line);
+}
+
+ASTNode* parse_fundecl (TokenQueue* token)
+{
+    char buffer[MAX_TOKEN_LEN];
+    DecafType return_type = parse_vardecl(token);
+    ParameterList* list = ;
+    ASTNode* body = ;
+    int line = get_next_token_line(token);
+
+    return FuncDeclNode_new(buffer, return_type, list, body, line);
 }
 
 /*
@@ -168,7 +178,7 @@ ASTNode* parse_program (TokenQueue* input)
     NodeList* funcs = NodeList_new();
 
     while (!TokenQueue_is_empty(input)) {
-        ASTNode* var = parse_vardecl(input);
+        ASTNode* var = parse_fundecl(input);
         NodeList_add(vars, var);
     }
 

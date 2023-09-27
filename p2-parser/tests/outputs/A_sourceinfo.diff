@@ -1,4 +1,4 @@
---- outputs/A_sourceinfo.txt	2023-09-22 15:55:46.927498144 -0400
+--- outputs/A_sourceinfo.txt	2023-09-27 14:09:26.362051252 -0400
 +++ expected/A_sourceinfo.txt	2023-09-22 13:47:32.898227623 -0400
 @@ -0,0 +1,11 @@
 +Program [line 1]
