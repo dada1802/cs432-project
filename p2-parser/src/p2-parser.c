@@ -157,13 +157,131 @@ ASTNode* parse_vardecl (TokenQueue* token)
     return VarDeclNode_new(buffer, type, false, 0, line);
 }
 
+// Expr -> Expr BINOP Expr
+//      |  UNOP BaseExpr
+//      |  BaseExpr
+ASTNode* parse_expression (TokenQueue* token) 
+{
+    int line = get_next_token_line(token);
+}
+
+// STMT -> Loc '=' Expr ';'
+//      |  FUNCCALL ';'
+//      |  if '(' Expr ')' BLOCK
+//      |  while '(' Expr ')' BLOCK
+//      |  return Expr? ';'
+//      |  break ';'
+//      |  continue ';'
+ASTNode* parse_statement (TokenQueue* token)
+{
+    int line = get_next_token_line(token);
+    ASTNode* res;
+
+    // WIP
+    if (check_next_token(token, KEY, "Loc")) {
+        res = ReturnNode_new(parse_expression(token), line);
+        match_and_discard_next_token(token, SYM, ";");
+    }
+
+    // WIP
+    else if (check_next_token(token, KEY, "FuncCall")) {
+        res = ReturnNode_new(parse_expression(token), line);
+        match_and_discard_next_token(token, SYM, ";");
+    }
+
+    else if (check_next_token(token, KEY, "if")) {
+        match_and_discard_next_token(token, SYM, "(");
+
+        // Expr
+
+        match_and_discard_next_token(token, SYM, ")");
+        res = ReturnNode_new(parse_expression(token), line);
+        match_and_discard_next_token(token, SYM, ";");
+    }
+
+    else if (check_next_token(token, KEY, "while")) {
+        // while '(' Expr ')' BLOCK
+        // match_and_discard_next_token(token, SYM, "(");
+
+        // ASTNode* expr = parse_expression(token);
+
+        // match_and_discard_next_token(token, SYM, ")");
+        
+        // ASTNode* block = parse_block(token);
+        
+        // return WhileLoopNode_new(expr, block, line);
+    }
+
+    else if (check_next_token(token, KEY, "return")) {
+        match_and_discard_next_token(token, KEY, "return");
+
+        ASTNode* expr = NULL;
+
+        if (!check_next_token(token, SYM, ";")) {
+            expr = parse_expression(token);
+        }
+
+        res = ReturnNode_new(expr, line);
+        match_and_discard_next_token(token, SYM, ";");
+    }
+
+    // Done
+    else if (check_next_token(token, KEY, "break") ) {
+        res = BreakNode_new(line);
+        match_and_discard_next_token(token, KEY, "break");
+        match_and_discard_next_token(token, SYM, ";");
+    }
+    
+    // Done
+    else if (check_next_token(token, KEY, "continue")) {
+        res = ContinueNode_new(line);
+        match_and_discard_next_token(token, KEY, "continue");
+        match_and_discard_next_token(token, SYM, ";");
+    }
+
+    return res;
+}
+
+ASTNode* parse_block (TokenQueue* token)
+{
+    // Initialize the lists for the variables & statements
+    // as well as discovering the next token line
+    NodeList* vars = NodeList_new();
+    NodeList* stmt = NodeList_new(); 
+    int line = get_next_token_line(token);
+
+    match_and_discard_next_token(token, SYM, "{");
+    
+    // Parse all preceding variable declarations
+    while (check_next_token(token, KEY, "int") || check_next_token(token, KEY, "bool")) {
+        NodeList_add(vars, parse_vardecl(token));
+    }
+
+    // Parse all following statements
+    while (!check_next_token(token, SYM, "}")) {
+        NodeList_add(stmt, parse_statement(token));
+    }
+
+    match_and_discard_next_token(token, SYM, "}");
+    
+    // Build & return the block node
+    return BlockNode_new(vars, stmt, line);
+}
+
 ASTNode* parse_fundecl (TokenQueue* token)
 {
     char buffer[MAX_TOKEN_LEN];
-    DecafType return_type = parse_vardecl(token);
-    ParameterList* list = ;
-    ASTNode* body = ;
     int line = get_next_token_line(token);
+    ParameterList* list = ParameterList_new();
+    
+    match_and_discard_next_token(token, KEY, "def");
+    DecafType return_type = parse_type(token);
+    parse_id(token, buffer);
+    match_and_discard_next_token(token, SYM, "(");
+    // Add parameters
+    match_and_discard_next_token(token, SYM, ")");
+
+    ASTNode* body = parse_block(token);
 
     return FuncDeclNode_new(buffer, return_type, list, body, line);
 }
@@ -178,8 +296,13 @@ ASTNode* parse_program (TokenQueue* input)
     NodeList* funcs = NodeList_new();
 
     while (!TokenQueue_is_empty(input)) {
-        ASTNode* var = parse_fundecl(input);
-        NodeList_add(vars, var);
+        if (check_next_token(input, KEY, "def")) {
+            NodeList_add(funcs, parse_fundecl(input));
+        }
+
+        else {
+            NodeList_add(vars, parse_vardecl(input));
+        }
     }
 
     return ProgramNode_new(vars, funcs);

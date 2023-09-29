@@ -1,3 +1,4 @@
-def void foo() {
-    
+def void foo()
+{
+    return 2;
 }
