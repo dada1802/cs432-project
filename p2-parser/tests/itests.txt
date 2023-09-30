@@ -1,5 +1,14 @@
-A_sourceinfo                   FAIL (timeout)
-No memory leak found.
+A_sourceinfo                   FAIL (see outputs/A_sourceinfo.diff for details)
+Memory leak(s) found. See files listed below for details.
+  - ==2571950== 24 bytes in 1 blocks are definitely lost in loss record 1 of 14
+  - ==2571950== 24 bytes in 1 blocks are definitely lost in loss record 2 of 14
+  - ==2571950== 24 bytes in 1 blocks are definitely lost in loss record 3 of 14
+  - ==2571950== 272 bytes in 1 blocks are definitely lost in loss record 4 of 14
+  - ==2571950== 304 bytes in 1 blocks are definitely lost in loss record 11 of 14
+  - ==2571950== 328 (24 direct, 304 indirect) bytes in 1 blocks are definitely lost in loss record 12 of 14
+  - ==2571950== 544 bytes in 2 blocks are definitely lost in loss record 13 of 14
+  - ==2571950== 1,544 (24 direct, 1,520 indirect) bytes in 1 blocks are definitely lost in loss record 14 of 14
+  - ==2571950==    definitely lost
 No uninitialized value found.
 ========================================
  NOTICE: THIS TESTSUITE IS INCOMPLETE.

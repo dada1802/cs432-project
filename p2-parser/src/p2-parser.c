@@ -3,10 +3,12 @@
  * @brief Compiler phase 2: parser
  * 
  * Group members: David Nguyen, Chris Simmons.
- * We did not use any AI-assist tools while creating this solution.
+ * We used an AI to help us extracting the string literal from the token.
  */
 
 #include "p2-parser.h"
+ASTNode* parse_block();
+ASTNode* parse_expression();
 
 /*
  * helper functions
@@ -157,12 +159,184 @@ ASTNode* parse_vardecl (TokenQueue* token)
     return VarDeclNode_new(buffer, type, false, 0, line);
 }
 
+// Args -> Expr (',' Expr)*
+NodeList* parse_args (TokenQueue* token)
+{
+
+}
+
+void parse_string(char* input, char* output, size_t size) {
+    size_t len = strlen(input);
+    size_t outputIndex = 0;
+    int insideQuotes = 0;
+
+    for (size_t i = 0; i < len; i++) {
+        if (input[i] == '\"') {
+            insideQuotes = 1;
+            continue; // Skip the quotation mark
+        }
+
+        if (insideQuotes) {
+            if (outputIndex < size - 1) {
+                output[outputIndex++] = input[i];
+            }
+        }
+    }
+
+    output[outputIndex] = '\0';
+}
+
+ASTNode* parse_baseExpr (TokenQueue* token) {
+    int line = get_next_token_line(token);
+    ASTNode* res;
+
+    // Decimal
+    if (check_next_token_type(token, DECLIT)) {
+        Token* tok = TokenQueue_remove(token);
+        int value = strtol(tok->text, NULL, 0);
+        res = LiteralNode_new_int(value, line);
+    }
+
+    // Hexdecimal
+    else if (check_next_token_type(token, HEXLIT)) {
+        Token* tok = TokenQueue_remove(token);
+        int value = strtol(tok->text, NULL, 16);
+        res = LiteralNode_new_int(value, line);
+    }
+
+    // true and false
+    else if (check_next_token(token, KEY, "false")) {
+        res = LiteralNode_new_bool(false, line);
+        match_and_discard_next_token(token, KEY, "false");
+    }
+
+    else if (check_next_token(token, KEY, "true")) {
+        res = LiteralNode_new_bool(true, line);
+        match_and_discard_next_token(token, KEY, "true");
+    }
+
+    // String
+    else if (check_next_token_type(token, STRLIT)) {
+        Token* tok = TokenQueue_remove(token);
+        char text[MAX_TOKEN_LEN];
+        parse_string(tok->text, text, sizeof(text));
+        res = LiteralNode_new_string(text, line);
+    }
+
+    // '(' Expr ')'
+    // WIP
+    // else if (check_next_token(token, SYM, "(")) {
+    //     match_and_discard_next_token(token, SYM, "(");
+    //     ASTNode* expr = parse_expression(token);
+    //     match_and_discard_next_token(token, SYM, ")");
+    // }
+
+    // else {
+    //     char buffer[MAX_TOKEN_LEN];
+    //     parse_id(token, buffer);
+
+    //     // FuncCall or Loc
+    //     if (check_next_token(token, SYM, "(")) {
+    //         match_and_discard_next_token(token, SYM, "(");
+
+    //         // Loc
+    //         if (check_next_token(token, SYM, "[")) {
+    //             match_and_discard_next_token(token, SYM, "[");
+    //             ASTNode* expr = parse_expression(token);
+    //             match_and_discard_next_token(token, SYM, "]");
+    //             match_and_discard_next_token(token, SYM, ")");
+
+    //             res = LocationNode_new(buffer, expr, line);
+    //         }
+
+    //         // FuncCall
+    //         else {
+    //             NodeList* args = parse_args(token);
+    //             match_and_discard_next_token(token, SYM, ")");
+    //             res = FuncCallNode_new(buffer, args, line);
+    //         }
+
+    //     }
+
+    //     // Loc
+    //     else {
+    //         ASTNode* loc = LocationNode_new(buffer, NULL, line);
+    //         match_and_discard_next_token(token, SYM, "=");
+    //         ASTNode* expr = parse_expression(token);
+    //         match_and_discard_next_token(token, SYM, ";");
+
+    //         res = AssignmentNode_new(loc, expr, line);
+    //     }
+    // }
+
+    return res;
+}
+
 // Expr -> Expr BINOP Expr
 //      |  UNOP BaseExpr
 //      |  BaseExpr
 ASTNode* parse_expression (TokenQueue* token) 
 {
     int line = get_next_token_line(token);
+
+    ASTNode* left = parse_baseExpr(token);
+    ASTNode* right = NULL;
+    ASTNode* op = NULL;
+
+    // Addition
+    if (check_next_token(token, SYM, "+")) {
+        match_and_discard_next_token(token, SYM, "+");
+        right = parse_baseExpr(token);
+        op = BinaryOpNode_new(ADDOP, left, right, line);
+    }
+
+    // Subtraction
+    else if (check_next_token(token, SYM, "-")) {
+        match_and_discard_next_token(token, SYM, "-");
+        right = parse_baseExpr(token);
+        op = BinaryOpNode_new(SUBOP, left, right, line);
+    }
+
+    // Division
+    else if (check_next_token(token, SYM, "/")) {
+        match_and_discard_next_token(token, SYM, "/");
+        right = parse_baseExpr(token);
+        op = BinaryOpNode_new(DIVOP, left, right, line);
+    }
+
+    // Multiplication
+    else if (check_next_token(token, SYM, "*")) {
+        match_and_discard_next_token(token, SYM, "*");
+        right = parse_baseExpr(token);
+        op = BinaryOpNode_new(MULOP, left, right, line);
+    }
+
+    // Modulo
+    else if (check_next_token(token, SYM, "%")) {
+        match_and_discard_next_token(token, SYM, "%");
+        right = parse_baseExpr(token);
+        op = BinaryOpNode_new(MODOP, left, right, line);
+    }
+
+    // And operator
+    else if (check_next_token(token, SYM, "&&")) {
+        match_and_discard_next_token(token, SYM, "&&");
+        right = parse_baseExpr(token);
+        op = BinaryOpNode_new(ANDOP, left, right, line); 
+    }
+
+    // Or operator
+    else if (check_next_token(token, SYM, "||")) {
+        match_and_discard_next_token(token, SYM, "||");
+        right = parse_baseExpr(token);
+        op = BinaryOpNode_new(OROP, left, right, line);
+    }
+
+    else {
+        return left;
+    }
+
+    return op;
 }
 
 // STMT -> Loc '=' Expr ';'
@@ -177,39 +351,34 @@ ASTNode* parse_statement (TokenQueue* token)
     int line = get_next_token_line(token);
     ASTNode* res;
 
-    // WIP
-    if (check_next_token(token, KEY, "Loc")) {
-        res = ReturnNode_new(parse_expression(token), line);
-        match_and_discard_next_token(token, SYM, ";");
-    }
-
-    // WIP
-    else if (check_next_token(token, KEY, "FuncCall")) {
-        res = ReturnNode_new(parse_expression(token), line);
-        match_and_discard_next_token(token, SYM, ";");
-    }
-
-    else if (check_next_token(token, KEY, "if")) {
+    if (check_next_token(token, KEY, "if")) {
+        // if '(' Expr ')' Block (else Block)?
+        match_and_discard_next_token(token, KEY, "if");
         match_and_discard_next_token(token, SYM, "(");
-
-        // Expr
-
+        ASTNode* expr = parse_expression(token);
         match_and_discard_next_token(token, SYM, ")");
-        res = ReturnNode_new(parse_expression(token), line);
-        match_and_discard_next_token(token, SYM, ";");
+        ASTNode* if_block = parse_block(token);
+        ASTNode* else_block = NULL;
+
+        if (check_next_token(token, KEY, "else")) {
+            match_and_discard_next_token(token, KEY, "else");
+            else_block = parse_block(token);
+        }
+
+        res = ConditionalNode_new(expr, if_block, else_block, line);
     }
 
     else if (check_next_token(token, KEY, "while")) {
         // while '(' Expr ')' BLOCK
-        // match_and_discard_next_token(token, SYM, "(");
-
-        // ASTNode* expr = parse_expression(token);
-
-        // match_and_discard_next_token(token, SYM, ")");
+        int line = get_next_token_line(token);
+        match_and_discard_next_token(token, KEY, "while");
+        match_and_discard_next_token(token, SYM, "(");
+        ASTNode* expr = parse_expression(token);
+        match_and_discard_next_token(token, SYM, ")");
         
-        // ASTNode* block = parse_block(token);
+        ASTNode* block = parse_block(token);
         
-        // return WhileLoopNode_new(expr, block, line);
+        return WhileLoopNode_new(expr, block, line);
     }
 
     else if (check_next_token(token, KEY, "return")) {
@@ -237,6 +406,44 @@ ASTNode* parse_statement (TokenQueue* token)
         res = ContinueNode_new(line);
         match_and_discard_next_token(token, KEY, "continue");
         match_and_discard_next_token(token, SYM, ";");
+    }
+
+    else {
+        char buffer[MAX_TOKEN_LEN];
+        parse_id(token, buffer);
+
+        // FuncCall or Loc
+        if (check_next_token(token, SYM, "(")) {
+            match_and_discard_next_token(token, SYM, "(");
+
+            // Loc
+            if (check_next_token(token, SYM, "[")) {
+                match_and_discard_next_token(token, SYM, "[");
+                ASTNode* expr = parse_expression(token);
+                match_and_discard_next_token(token, SYM, "]");
+                match_and_discard_next_token(token, SYM, ")");
+
+                res = LocationNode_new(buffer, expr, line);
+            }
+
+            // FuncCall
+            else {
+                NodeList* args = parse_args(token);
+                match_and_discard_next_token(token, SYM, ")");
+                res = FuncCallNode_new(buffer, args, line);
+            }
+
+        }
+
+        // Loc
+        else {
+            ASTNode* loc = LocationNode_new(buffer, NULL, line);
+            match_and_discard_next_token(token, SYM, "=");
+            ASTNode* expr = parse_expression(token);
+            match_and_discard_next_token(token, SYM, ";");
+
+            res = AssignmentNode_new(loc, expr, line);
+        }
     }
 
     return res;
@@ -278,7 +485,20 @@ ASTNode* parse_fundecl (TokenQueue* token)
     DecafType return_type = parse_type(token);
     parse_id(token, buffer);
     match_and_discard_next_token(token, SYM, "(");
+
     // Add parameters
+    while (!check_next_token(token, SYM, ")")) {
+        DecafType param_type = parse_type(token);
+        char param_name[MAX_TOKEN_LEN];
+        parse_id(token, param_name);
+
+        ParameterList_add_new(list, param_name, param_type);
+
+        if (check_next_token(token, SYM, ",")) {
+            match_and_discard_next_token(token, SYM, ",");
+        }
+    }
+    
     match_and_discard_next_token(token, SYM, ")");
 
     ASTNode* body = parse_block(token);
