@@ -1,5 +1,5 @@
 Running suite(s): Default
-93%: Checks: 30, Failures: 1, Errors: 1
+93%: Checks: 30, Failures: 2, Errors: 0
 public.c:81:F:Public:A_newline:0: Assertion 'value == "ab\nc"' failed: value == "ab\nc", "ab\nc" == "ab
 c"
-private.c:5:E:Private:A_null_token_queue:0: (after this point) Received signal 11 (Segmentation fault)
+private.c:10:F:Private:A_null_token_queue:0: Assertion '0' failed

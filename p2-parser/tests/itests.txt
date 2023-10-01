@@ -1,7 +1,7 @@
 A_sourceinfo                   FAIL (see outputs/A_sourceinfo.diff for details)
 Memory leak(s) found. See files listed below for details.
-  - ==45190== 544 bytes in 2 blocks are definitely lost in loss record 1 of 1
-  - ==45190==    definitely lost
+  - ==52366== 544 bytes in 2 blocks are definitely lost in loss record 1 of 1
+  - ==52366==    definitely lost
 No uninitialized value found.
 ========================================
  NOTICE: THIS TESTSUITE IS INCOMPLETE.
