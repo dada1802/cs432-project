@@ -1,7 +1,7 @@
 Program [line 1]
   FuncDecl name="main" return_type=int parameters={} [line 1]
     Block [line 2]
-      VarDecl name="a" type=int is_array=no array_length=0 [line 3]
+      VarDecl name="a" type=int is_array=no array_length=1 [line 3]
       Assignment [line 4]
         Location name="a" [line 4]
         Binaryop op="+" [line 4]
