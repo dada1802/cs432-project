@@ -1,11 +1,5 @@
-def int add(int x, int y)
+def void main()
 {
-    return x + y;
-}
-
-def int main()
-{
-    int a;
-    a = 3;
-    return add(a, 2);
+    bool a;
+    a = !false;
 }

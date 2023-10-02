@@ -1,4 +1,5 @@
 Running suite(s): Default
-96%: Checks: 30, Failures: 1, Errors: 0
+93%: Checks: 30, Failures: 2, Errors: 0
+public.c:58:F:Public:A_arrays:0: Assertion 'valid_program("int a[5]; def int main() { a[1] = 7; return a[1]; }")' failed
 public.c:81:F:Public:A_newline:0: Assertion 'value == "ab\nc"' failed: value == "ab\nc", "ab\nc" == "ab
 c"

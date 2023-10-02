@@ -218,26 +218,27 @@ void parse_string(char* input, char* output, size_t size) {
 
 ASTNode* parse_baseExpr (TokenQueue* token) {
     int line = get_next_token_line(token);
-    ASTNode* res;
+    ASTNode* res = NULL;
     bool negative = false;
 
-    if (check_next_token(token, SYM, "-")) {
-        match_and_discard_next_token(token, SYM, "-");
-        negative = true;
-    }
+    // if (check_next_token(token, SYM, "-")) {
+    //     match_and_discard_next_token(token, SYM, "-");
+    //     negative = true;
+    // }
 
     // Decimal
     if (check_next_token_type(token, DECLIT)) {
         Token* tok = TokenQueue_remove(token);
         int value = strtol(tok->text, NULL, 0);
 
-        if (negative) {
-            res = LiteralNode_new_int(-value, line);
-        }
+        // if (negative) {
+        //     res = LiteralNode_new_int(-value, line);
+        // }
 
-        else {
-            res = LiteralNode_new_int(value, line);
-        }
+        // else {
+        //     res = LiteralNode_new_int(value, line);
+        // }
+        res = LiteralNode_new_int(value, line);
     }
 
     // Hexdecimal
@@ -274,31 +275,31 @@ ASTNode* parse_baseExpr (TokenQueue* token) {
     //     match_and_discard_next_token(token, SYM, ")");
     // }
 
-    else {
-        char buffer[MAX_TOKEN_LEN];
-        parse_id(token, buffer);
+    // else {
+    //     char buffer[MAX_TOKEN_LEN];
+    //     parse_id(token, buffer);
 
-        // FuncCall
-        if (check_next_token(token, SYM, "(")) {
-            match_and_discard_next_token(token, SYM, "(");
+    //     // FuncCall
+    //     if (check_next_token(token, SYM, "(")) {
+    //         match_and_discard_next_token(token, SYM, "(");
 
-            NodeList* args = parse_args(token);
-            match_and_discard_next_token(token, SYM, ")");
-            res = FuncCallNode_new(buffer, args, line);
-        }
+    //         NodeList* args = parse_args(token);
+    //         match_and_discard_next_token(token, SYM, ")");
+    //         res = FuncCallNode_new(buffer, args, line);
+    //     }
 
-        // Loc
-        else {
-            ASTNode* index = NULL;
-            if (check_next_token(token, SYM, "[")) {
-                match_and_discard_next_token(token, SYM, "[");
-                index = parse_expression(token);
-                match_and_discard_next_token(token, SYM, "]");
-            }
+    //     // Loc
+    //     else {
+    //         ASTNode* index = NULL;
+    //         if (check_next_token(token, SYM, "[")) {
+    //             match_and_discard_next_token(token, SYM, "[");
+    //             index = parse_expression(token);
+    //             match_and_discard_next_token(token, SYM, "]");
+    //         }
 
-            res = LocationNode_new(buffer, index, line);
-        }
-    }
+    //         res = LocationNode_new(buffer, index, line);
+    //     }
+    // }
 
     return res;
 }
@@ -310,6 +311,7 @@ ASTNode* parse_expression (TokenQueue* token)
 {
     int line = get_next_token_line(token);
     
+
     ASTNode* left = parse_baseExpr(token);
     ASTNode* right = NULL;
     ASTNode* op = NULL;
@@ -410,7 +412,7 @@ ASTNode* parse_expression (TokenQueue* token)
     else if (check_next_token(token, SYM, "!")) {
         match_and_discard_next_token(token, SYM, "!");
         right = parse_baseExpr(token);
-        op = BinaryOpNode_new(NEGOP, left, right, line); 
+        op = UnaryOpNode_new(NEGOP, right, line); 
     }
 
     else {
