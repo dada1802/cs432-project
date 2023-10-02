@@ -544,7 +544,7 @@ ASTNode* parse_program (TokenQueue* input)
 ASTNode* parse (TokenQueue* input)
 {   
     if (input == NULL) {
-        return 0;
+        Error_throw_printf("Input is NULL!");
     }
 
     return parse_program(input);
