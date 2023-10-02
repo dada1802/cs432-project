@@ -1,5 +1,4 @@
 def void main()
 {
-    bool a;
-    a = !false;
+    return "ab\nc";
 }
