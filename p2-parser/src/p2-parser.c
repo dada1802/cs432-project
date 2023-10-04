@@ -240,26 +240,12 @@ void parse_string(char* input, char* output, size_t size) {
 ASTNode* parse_baseExpr (TokenQueue* token) {
     int line = get_next_token_line(token);
     ASTNode* res = NULL;
-    bool negative = false;
-
-    if (check_next_token(token, SYM, "-")) {
-        match_and_discard_next_token(token, SYM, "-");
-        negative = true;
-    }
 
     // Decimal
     if (check_next_token_type(token, DECLIT)) {
         Token* tok = TokenQueue_remove(token);
         int value = strtol(tok->text, NULL, 0);
-
-        if (negative) {
-            res = LiteralNode_new_int(-value, line);
-        }
-
-        else {
-            res = LiteralNode_new_int(value, line);
-        }
-        // res = LiteralNode_new_int(value, line);
+        res = LiteralNode_new_int(value, line);
     }
 
     // Hexdecimal
@@ -289,12 +275,11 @@ ASTNode* parse_baseExpr (TokenQueue* token) {
     }
 
     // '(' Expr ')'
-    // WIP
-    // else if (check_next_token(token, SYM, "(")) {
-    //     match_and_discard_next_token(token, SYM, "(");
-    //     ASTNode* expr = parse_expression(token);
-    //     match_and_discard_next_token(token, SYM, ")");
-    // }
+    else if (check_next_token(token, SYM, "(")) {
+        match_and_discard_next_token(token, SYM, "(");
+        res = parse_expression(token);
+        match_and_discard_next_token(token, SYM, ")");
+    }
 
     else {
         char buffer[MAX_TOKEN_LEN];
@@ -331,12 +316,24 @@ ASTNode* parse_baseExpr (TokenQueue* token) {
 ASTNode* parse_expression (TokenQueue* token) 
 {
     int line = get_next_token_line(token);
-
-    ASTNode* left = parse_baseExpr(token);
     ASTNode* right = NULL;
     ASTNode* op = NULL;
 
-    // while (!check_next_token(token, SYM, ";")) {
+    if (check_next_token(token, SYM, "-")) {
+        match_and_discard_next_token(token, SYM, "-");
+        right = parse_expression(token);
+        op = UnaryOpNode_new(NEGOP, right, line);
+    }
+
+    else if (check_next_token(token, SYM, "!")) {
+        match_and_discard_next_token(token, SYM, "!");
+        right = parse_expression(token);
+        op = UnaryOpNode_new(NOTOP, right, line);
+    }
+
+    else {
+        ASTNode* left = parse_baseExpr(token);
+
         // Or operator
         if (check_next_token(token, SYM, "||")) {
             match_and_discard_next_token(token, SYM, "||");
@@ -404,7 +401,14 @@ ASTNode* parse_expression (TokenQueue* token)
         else if (check_next_token(token, SYM, "-")) {
             match_and_discard_next_token(token, SYM, "-");
             right = parse_baseExpr(token);
-            op = BinaryOpNode_new(SUBOP, left, right, line);
+
+            if (left == NULL) {
+                op = UnaryOpNode_new(NEGOP, right, line);
+            }
+            
+            else {
+                op = BinaryOpNode_new(SUBOP, left, right, line);
+            }
         }
 
         // Division
@@ -439,7 +443,7 @@ ASTNode* parse_expression (TokenQueue* token)
         else {
             return left;
         }
-    // }
+    }
 
     return op;
 }

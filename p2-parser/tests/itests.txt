@@ -1,7 +1,7 @@
 A_sourceinfo                   pass
 Memory leak(s) found. See files listed below for details.
-  - ==2420697== 544 bytes in 2 blocks are definitely lost in loss record 1 of 1
-  - ==2420697==    definitely lost
+  - ==1955295== 544 bytes in 2 blocks are definitely lost in loss record 1 of 1
+  - ==1955295==    definitely lost
 No uninitialized value found.
 ========================================
  NOTICE: THIS TESTSUITE IS INCOMPLETE.

@@ -1,9 +1,21 @@
 digraph AST {
-4 [shape=box, label="Literal value='ab\\nnc'"];
-3 [shape=box, label="Return"];
-3 -> 4;
+3 [shape=box, label="VarDecl name='a'"];
+5 [shape=box, label="Location name='a'"];
+8 [shape=box, label="Literal value=5"];
+9 [shape=box, label="Literal value=2"];
+7 [shape=box, label="BinaryOp op='+'"];
+7 -> 8;
+7 -> 9;
+10 [shape=box, label="Literal value=3"];
+6 [shape=box, label="BinaryOp op='-'"];
+6 -> 7;
+6 -> 10;
+4 [shape=box, label="Assignment"];
+4 -> 5;
+4 -> 6;
 2 [shape=box, label="Block"];
 2 -> 3;
+2 -> 4;
 1 [shape=box, label="FuncDecl name='main'"];
 1 -> 2;
 0 [shape=box, label="Program"];
