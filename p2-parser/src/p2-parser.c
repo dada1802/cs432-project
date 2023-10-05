@@ -164,6 +164,8 @@ ASTNode* parse_vardecl (TokenQueue* token)
             array = true;
             Token* tok = TokenQueue_remove(token);
             length = strtol(tok->text, NULL, 0);
+
+            Token_free(tok);
         }
 
         else {
@@ -246,6 +248,7 @@ ASTNode* parse_baseExpr (TokenQueue* token) {
         Token* tok = TokenQueue_remove(token);
         int value = strtol(tok->text, NULL, 0);
         res = LiteralNode_new_int(value, line);
+        Token_free(tok);
     }
 
     // Hexdecimal
@@ -253,6 +256,7 @@ ASTNode* parse_baseExpr (TokenQueue* token) {
         Token* tok = TokenQueue_remove(token);
         int value = strtol(tok->text, NULL, 16);
         res = LiteralNode_new_int(value, line);
+        Token_free(tok);
     }
 
     // true and false
