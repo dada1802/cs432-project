@@ -8,7 +8,7 @@
 
 #include "p2-parser.h"
 ASTNode* parse_block();
-ASTNode* parse_expression();
+ASTNode* parse_and_or_expression();
 
 /*
  * helper functions
@@ -186,7 +186,7 @@ NodeList* parse_args (TokenQueue* token)
     NodeList* args = NodeList_new();
 
     while (!check_next_token(token, SYM, ")")) {
-        ASTNode* expr = parse_expression(token);
+        ASTNode* expr = parse_and_or_expression(token);
         NodeList_add(args, expr);
 
         if (check_next_token(token, SYM, ",")) {
@@ -281,7 +281,7 @@ ASTNode* parse_baseExpr (TokenQueue* token) {
     // '(' Expr ')'
     else if (check_next_token(token, SYM, "(")) {
         match_and_discard_next_token(token, SYM, "(");
-        res = parse_expression(token);
+        res = parse_and_or_expression(token);
         match_and_discard_next_token(token, SYM, ")");
     }
 
@@ -303,7 +303,7 @@ ASTNode* parse_baseExpr (TokenQueue* token) {
             ASTNode* index = NULL;
             if (check_next_token(token, SYM, "[")) {
                 match_and_discard_next_token(token, SYM, "[");
-                index = parse_expression(token);
+                index = parse_and_or_expression(token);
                 match_and_discard_next_token(token, SYM, "]");
             }
 
@@ -314,142 +314,181 @@ ASTNode* parse_baseExpr (TokenQueue* token) {
     return res;
 }
 
-// Expr -> Expr BINOP Expr
-//      |  UNOP BaseExpr
-//      |  BaseExpr
-ASTNode* parse_expression (TokenQueue* token) 
-{
+// - and ! operators
+ASTNode* parse_unary_expression(TokenQueue* token) {
     int line = get_next_token_line(token);
-    ASTNode* right = NULL;
-    ASTNode* op = NULL;
+    ASTNode* child;
+    ASTNode* op;
 
     if (check_next_token(token, SYM, "-")) {
         match_and_discard_next_token(token, SYM, "-");
-        right = parse_expression(token);
-        op = UnaryOpNode_new(NEGOP, right, line);
+        child = parse_baseExpr(token);
+        op = UnaryOpNode_new(NEGOP, child, line); 
     }
 
     else if (check_next_token(token, SYM, "!")) {
         match_and_discard_next_token(token, SYM, "!");
-        right = parse_expression(token);
-        op = UnaryOpNode_new(NOTOP, right, line);
+        child = parse_baseExpr(token);
+        op = UnaryOpNode_new(NOTOP, child, line);
     }
 
     else {
-        ASTNode* left = parse_baseExpr(token);
+        return parse_baseExpr(token);
+    }
 
-        // Or operator
-        if (check_next_token(token, SYM, "||")) {
-            match_and_discard_next_token(token, SYM, "||");
-            right = parse_baseExpr(token);
-            op = BinaryOpNode_new(OROP, left, right, line);
+    return op;
+}
+
+bool div_mul_mod_helper(TokenQueue* token)
+{
+    return check_next_token(token, SYM, "/")
+        || check_next_token(token, SYM, "*")
+        || check_next_token(token, SYM, "%");
+}
+
+// /, *, % operators
+ASTNode* parse_div_mul_mod_expression(TokenQueue* token) {
+    int line = get_next_token_line(token);
+    ASTNode* left = parse_unary_expression(token);
+    ASTNode* right;
+
+    while (div_mul_mod_helper(token)) {
+        if (check_next_token(token, SYM, "/")) {
+            match_and_discard_next_token(token, SYM, "/");
+            right = parse_unary_expression(token);
+            left = BinaryOpNode_new(DIVOP, left, right, line); 
         }
 
-        // And operator
-        else if (check_next_token(token, SYM, "&&")) {
-            match_and_discard_next_token(token, SYM, "&&");
-            right = parse_baseExpr(token);
-            op = BinaryOpNode_new(ANDOP, left, right, line); 
+        else if (check_next_token(token, SYM, "*")) {
+            match_and_discard_next_token(token, SYM, "*");
+            right = parse_unary_expression(token);
+            left = BinaryOpNode_new(MULOP, left, right, line);
         }
 
-        // == operator
-        // WIP
-        else if (check_next_token(token, SYM, "==")) {
-            match_and_discard_next_token(token, SYM, "==");
-            right = parse_baseExpr(token);
-            op = BinaryOpNode_new(EQOP, left, right, line); 
+        else if (check_next_token(token, SYM, "%")) {
+            match_and_discard_next_token(token, SYM, "%");
+            right = parse_unary_expression(token);
+            left = BinaryOpNode_new(MODOP, left, right, line);
+        }
+    }
+
+    return left;
+}
+
+bool add_sub_helper(TokenQueue* token)
+{
+    return check_next_token(token, SYM, "+")
+        || check_next_token(token, SYM, "-");
+}
+
+// + and - operators
+ASTNode* parse_add_sub_expression(TokenQueue* token) {
+    int line = get_next_token_line(token);
+    ASTNode* left = parse_div_mul_mod_expression(token);
+    ASTNode* right;
+
+    while (add_sub_helper(token)) {
+        if (check_next_token(token, SYM, "+")) {
+            match_and_discard_next_token(token, SYM, "+");
+            right = parse_div_mul_mod_expression(token);
+            left = BinaryOpNode_new(ADDOP, left, right, line); 
         }
 
-        // != operator
-        // WIP
-        else if (check_next_token(token, SYM, "!=")) {
-            match_and_discard_next_token(token, SYM, "!=");
-            right = parse_baseExpr(token);
-            op = BinaryOpNode_new(NEQOP, left, right, line); 
+        else if (check_next_token(token, SYM, "-")) {
+            match_and_discard_next_token(token, SYM, "-");
+            right = parse_div_mul_mod_expression(token);
+            left = BinaryOpNode_new(SUBOP, left, right, line);
         }
+    }
 
-        // Boolean relations <, <=, >, >=
-        // WIP
-        else if (check_next_token(token, SYM, "<")) {
+    return left;
+}
+
+bool booleans_helper(TokenQueue* token)
+{
+    return check_next_token(token, SYM, "<")
+        || check_next_token(token, SYM, "<=")
+        || check_next_token(token, SYM, ">")
+        || check_next_token(token, SYM, ">=")
+        || check_next_token(token, SYM, "==")
+        || check_next_token(token, SYM, "!=");
+}
+
+// <, <=, >, >=, ==, != operators
+ASTNode* parse_boolean_expression(TokenQueue* token) {
+    int line = get_next_token_line(token);
+    ASTNode* left = parse_add_sub_expression(token);
+    ASTNode* right;
+
+    while (booleans_helper(token)) {
+        if (check_next_token(token, SYM, "<")) {
             match_and_discard_next_token(token, SYM, "<");
-            right = parse_baseExpr(token);
-            op = BinaryOpNode_new(LTOP, left, right, line); 
+            right = parse_add_sub_expression(token);
+            left = BinaryOpNode_new(LTOP, left, right, line); 
         }
 
         else if (check_next_token(token, SYM, "<=")) {
             match_and_discard_next_token(token, SYM, "<=");
-            right = parse_baseExpr(token);
-            op = BinaryOpNode_new(LEOP, left, right, line); 
+            right = parse_add_sub_expression(token);
+            left = BinaryOpNode_new(LEOP, left, right, line);
         }
 
         else if (check_next_token(token, SYM, ">")) {
             match_and_discard_next_token(token, SYM, ">");
-            right = parse_baseExpr(token);
-            op = BinaryOpNode_new(GTOP, left, right, line); 
+            right = parse_add_sub_expression(token);
+            left = BinaryOpNode_new(GTOP, left, right, line);
         }
 
         else if (check_next_token(token, SYM, ">=")) {
             match_and_discard_next_token(token, SYM, ">=");
-            right = parse_baseExpr(token);
-            op = BinaryOpNode_new(GEOP, left, right, line); 
+            right = parse_add_sub_expression(token);
+            left = BinaryOpNode_new(GEOP, left, right, line);
         }
 
-        // Addition
-        else if (check_next_token(token, SYM, "+")) {
-            match_and_discard_next_token(token, SYM, "+");
-            right = parse_baseExpr(token);
-            op = BinaryOpNode_new(ADDOP, left, right, line);
+        else if (check_next_token(token, SYM, "==")) {
+            match_and_discard_next_token(token, SYM, "==");
+            right = parse_add_sub_expression(token);
+            left = BinaryOpNode_new(EQOP, left, right, line);
         }
 
-        // Subtraction
-        else if (check_next_token(token, SYM, "-")) {
-            match_and_discard_next_token(token, SYM, "-");
-            right = parse_baseExpr(token);
-
-            if (left == NULL) {
-                op = UnaryOpNode_new(NEGOP, right, line);
-            }
-            
-            else {
-                op = BinaryOpNode_new(SUBOP, left, right, line);
-            }
-        }
-
-        // Division
-        else if (check_next_token(token, SYM, "/")) {
-            match_and_discard_next_token(token, SYM, "/");
-            right = parse_baseExpr(token);
-            op = BinaryOpNode_new(DIVOP, left, right, line);
-        }
-
-        // Multiplication
-        else if (check_next_token(token, SYM, "*")) {
-            match_and_discard_next_token(token, SYM, "*");
-            right = parse_baseExpr(token);
-            op = BinaryOpNode_new(MULOP, left, right, line);
-        }
-
-        // Modulo
-        else if (check_next_token(token, SYM, "%")) {
-            match_and_discard_next_token(token, SYM, "%");
-            right = parse_baseExpr(token);
-            op = BinaryOpNode_new(MODOP, left, right, line);
-        }
-
-        // Negation operators
-        // WIP
-        else if (check_next_token(token, SYM, "!")) {
-            match_and_discard_next_token(token, SYM, "!");
-            right = parse_baseExpr(token);
-            op = UnaryOpNode_new(NEGOP, right, line); 
-        }
-
-        else {
-            return left;
+        else if (check_next_token(token, SYM, "!=")) {
+            match_and_discard_next_token(token, SYM, "!=");
+            right = parse_add_sub_expression(token);
+            left = BinaryOpNode_new(NEQOP, left, right, line);
         }
     }
 
-    return op;
+    return left;
+}
+
+bool and_or_helper(TokenQueue* token)
+{
+    return check_next_token(token, SYM, "&&")
+        || check_next_token(token, SYM, "||");
+}
+
+// && and || operators
+ASTNode* parse_and_or_expression(TokenQueue* token)
+{
+    int line = get_next_token_line(token);
+    ASTNode* left = parse_boolean_expression(token);
+    ASTNode* right;
+
+    while (and_or_helper(token)) {
+            if (check_next_token(token, SYM, "&&")) {
+            match_and_discard_next_token(token, SYM, "&&");
+            right = parse_boolean_expression(token);
+            left = BinaryOpNode_new(ANDOP, left, right, line); 
+        }
+
+        else if (check_next_token(token, SYM, "||")) {
+            match_and_discard_next_token(token, SYM, "||");
+            right = parse_boolean_expression(token);
+            left = BinaryOpNode_new(OROP, left, right, line);
+        }
+    }
+
+    return left;
 }
 
 // STMT -> Loc '=' Expr ';'
@@ -468,7 +507,7 @@ ASTNode* parse_statement (TokenQueue* token)
         // if '(' Expr ')' Block (else Block)?
         match_and_discard_next_token(token, KEY, "if");
         match_and_discard_next_token(token, SYM, "(");
-        ASTNode* expr = parse_expression(token);
+        ASTNode* expr = parse_and_or_expression(token);
         match_and_discard_next_token(token, SYM, ")");
         ASTNode* if_block = parse_block(token);
         ASTNode* else_block = NULL;
@@ -486,7 +525,7 @@ ASTNode* parse_statement (TokenQueue* token)
         int line = get_next_token_line(token);
         match_and_discard_next_token(token, KEY, "while");
         match_and_discard_next_token(token, SYM, "(");
-        ASTNode* expr = parse_expression(token);
+        ASTNode* expr = parse_and_or_expression(token);
         match_and_discard_next_token(token, SYM, ")");
         
         ASTNode* block = parse_block(token);
@@ -500,7 +539,7 @@ ASTNode* parse_statement (TokenQueue* token)
         ASTNode* expr = NULL;
 
         if (!check_next_token(token, SYM, ";")) {
-            expr = parse_expression(token);
+            expr = parse_and_or_expression(token);
         }
 
         res = ReturnNode_new(expr, line);
@@ -539,13 +578,13 @@ ASTNode* parse_statement (TokenQueue* token)
             ASTNode* index = NULL;
             if (check_next_token(token, SYM, "[")) {
                 match_and_discard_next_token(token, SYM, "[");
-                index = parse_expression(token);
+                index = parse_and_or_expression(token);
                 match_and_discard_next_token(token, SYM, "]");
             }
 
             ASTNode* loc = LocationNode_new(buffer, index, line);
             match_and_discard_next_token(token, SYM, "=");
-            ASTNode* expr = parse_expression(token);
+            ASTNode* expr = parse_and_or_expression(token);
             match_and_discard_next_token(token, SYM, ";");
 
             res = AssignmentNode_new(loc, expr, line);

@@ -1,5 +1,5 @@
 def void main()
 {
     int a;
-    a = (5 + 2) - 3;
+    a = 2 + 3 * 4;
 }
