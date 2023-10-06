@@ -169,7 +169,11 @@ ASTNode* parse_vardecl (TokenQueue* token)
         }
 
         else {
-            Error_throw_printf("Size of array has to be a Decimal on line %d\n", line);
+            Token* tok = TokenQueue_remove(token);
+            Error_throw_printf("Invalid array size \'%s\' on line %d\n",
+                    tok->text, line);
+
+            Token_free(tok);
         }
 
         match_and_discard_next_token(token, SYM, "]");
@@ -285,7 +289,7 @@ ASTNode* parse_baseExpr (TokenQueue* token) {
         match_and_discard_next_token(token, SYM, ")");
     }
 
-    else {
+    else if (check_next_token_type(token, ID)) {
         char buffer[MAX_TOKEN_LEN];
         parse_id(token, buffer);
 
@@ -309,6 +313,12 @@ ASTNode* parse_baseExpr (TokenQueue* token) {
 
             res = LocationNode_new(buffer, index, line);
         }
+    }
+
+    else {
+        Token* tok = TokenQueue_remove(token);
+        Error_throw_printf("Invalid base expression \'%s\' on line %d\n",
+                    tok->text, line);
     }
 
     return res;
@@ -560,7 +570,7 @@ ASTNode* parse_statement (TokenQueue* token)
         match_and_discard_next_token(token, SYM, ";");
     }
 
-    else {
+    else if (check_next_token_type(token, ID)) {
         char buffer[MAX_TOKEN_LEN];
         parse_id(token, buffer);
 
@@ -589,6 +599,10 @@ ASTNode* parse_statement (TokenQueue* token)
 
             res = AssignmentNode_new(loc, expr, line);
         }
+    }
+
+    else {
+        Error_throw_printf("Invalid statement on line %d\n", line);
     }
 
     return res;

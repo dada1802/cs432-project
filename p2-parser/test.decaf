@@ -1,5 +1,6 @@
 def void main()
 {
-    int a;
-    a = 2 + 3 * 4;
+    if () {
+        
+    }
 }
