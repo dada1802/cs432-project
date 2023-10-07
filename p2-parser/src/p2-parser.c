@@ -3,7 +3,7 @@
  * @brief Compiler phase 2: parser
  * 
  * Group members: David Nguyen, Chris Simmons.
- * We used an AI to help us extracting the string literal from the token.
+ * We used an AI to help us extracting the string literal from the token, the parse_string().
  */
 
 #include "p2-parser.h"
