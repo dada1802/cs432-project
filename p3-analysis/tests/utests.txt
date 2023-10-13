@@ -1,8 +1,5 @@
 Running suite(s): Default
-15%: Checks: 13, Failures: 10, Errors: 1
-public.c:25:F:Public:D_invalid_no_main:0: Assertion 'invalid_program("int a;")' failed
-public.c:26:F:Public:D_invalid_void_var:0: Assertion 'invalid_program("def int main () { " "void a;" " }")' failed
-public.c:27:F:Public:D_invalid_undef_var:0: Assertion 'invalid_program("def int main () { " "return a;" " }")' failed
+38%: Checks: 13, Failures: 7, Errors: 1
 public.c:28:F:Public:C_invalid_break:0: Assertion 'invalid_program("def int main () { " "break; return 0;" " }")' failed
 public.c:29:F:Public:C_var_type_mismatch:0: Assertion 'invalid_program("int x; def int main() { x=false; return 0; }")' failed
 public.c:30:F:Public:C_invalid_conditional:0: Assertion 'invalid_program("def int main() { if (1) { return 0; } }")' failed

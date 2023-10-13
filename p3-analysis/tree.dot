@@ -1,23 +1,9 @@
 digraph AST {
-5 [shape=box, label="Location name='a'"];
-6 [shape=box, label="Location name='b'"];
-4 [shape=box, label="BinaryOp op='+'"];
-4 -> 5;
-4 -> 6;
-3 [shape=box, label="Return"];
-3 -> 4;
-2 [shape=box, label="Block\nsymbolTable: (empty)"];
+3 [shape=box, label="VarDecl name='a'"];
+2 [shape=box, label="Block\nsymbolTable: \n  a : void"];
 2 -> 3;
-1 [shape=box, label="FuncDecl name='add'\nsymbolTable: \n  a : int\n  b : int"];
+1 [shape=box, label="FuncDecl name='main'\nsymbolTable: (empty)"];
 1 -> 2;
-10 [shape=box, label="Literal value=0"];
-9 [shape=box, label="Return"];
-9 -> 10;
-8 [shape=box, label="Block\nsymbolTable: (empty)"];
-8 -> 9;
-7 [shape=box, label="FuncDecl name='main'\nsymbolTable: (empty)"];
-7 -> 8;
-0 [shape=box, label="Program\nsymbolTable: \n  print_int : (int) -> void\n  print_bool : (bool) -> void\n  print_str : (str) -> void\n  add : (int, int) -> int\n  main : () -> int"];
+0 [shape=box, label="Program\nsymbolTable: \n  print_int : (int) -> void\n  print_bool : (bool) -> void\n  print_str : (str) -> void\n  main : () -> int"];
 0 -> 1;
-0 -> 7;
 }

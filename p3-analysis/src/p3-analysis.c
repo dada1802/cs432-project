@@ -85,6 +85,32 @@ Symbol* lookup_symbol_with_reporting(NodeVisitor* visitor, ASTNode* node, const 
  */
 #define GET_INFERRED_TYPE(N) (DecafType)(long)ASTNode_get_attribute(N, "type")
 
+void AnalysisVisitor_check_vardecl (NodeVisitor* visitor, ASTNode* node)
+{
+    if (node->vardecl.type == VOID) {
+        ErrorList_printf(ERROR_LIST, "Void varriable '%s' on line %d",
+            node->vardecl.name, node->source_line);
+    }
+}
+
+void AnalysisVisitor_check_location (NodeVisitor* visitor, ASTNode* node)
+{
+    lookup_symbol_with_reporting (visitor, node, node->location.name);
+}
+
+void AnalysisVisitor_check_main (NodeVisitor* visitor, ASTNode* node)
+{
+    Symbol* sym = lookup_symbol(node, "main");
+
+    if (sym == NULL) {
+        ErrorList_printf(ERROR_LIST, "Program does not contain a 'main' function!");
+    }
+
+    else if (!ParameterList_is_empty(sym->parameters) || sym->type != INT) {
+        ErrorList_printf(ERROR_LIST, "Incorrect 'main' function declaration!");
+    }
+}
+
 ErrorList* analyze (ASTNode* tree)
 {
     /* allocate analysis structures */
@@ -93,7 +119,9 @@ ErrorList* analyze (ASTNode* tree)
     v->dtor = (Destructor)AnalysisData_free;
 
     /* BOILERPLATE: TODO: register analysis callbacks */
-    
+    v->postvisit_vardecl = AnalysisVisitor_check_vardecl;
+    v->postvisit_location = AnalysisVisitor_check_location;
+    v->previsit_program = AnalysisVisitor_check_main;
 
     /* perform analysis, save error list, clean up, and return errors */
     NodeVisitor_traverse(v, tree);
