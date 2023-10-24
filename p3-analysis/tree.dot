@@ -1,9 +1,13 @@
 digraph AST {
-3 [shape=box, label="VarDecl name='a'"];
-2 [shape=box, label="Block\nsymbolTable: \n  a : void"];
+1 [shape=box, label="VarDecl name='main'"];
+5 [shape=box, label="Literal value=0\ntype: int"];
+4 [shape=box, label="Return\ntype: int"];
+4 -> 5;
+3 [shape=box, label="Block\nsymbolTable: (empty)"];
+3 -> 4;
+2 [shape=box, label="FuncDecl name='main'\nsymbolTable: (empty)"];
 2 -> 3;
-1 [shape=box, label="FuncDecl name='main'\nsymbolTable: (empty)"];
-1 -> 2;
-0 [shape=box, label="Program\nsymbolTable: \n  print_int : (int) -> void\n  print_bool : (bool) -> void\n  print_str : (str) -> void\n  main : () -> int"];
+0 [shape=box, label="Program\nsymbolTable: \n  print_int : (int) -> void\n  print_bool : (bool) -> void\n  print_str : (str) -> void\n  main : () -> int\n  main : int"];
 0 -> 1;
+0 -> 2;
 }
