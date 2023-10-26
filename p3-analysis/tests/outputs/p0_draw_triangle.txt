@@ -1,0 +1,55 @@
+Program [line 1]
+SYM TABLE:
+ print_int : (int) -> void
+ print_bool : (bool) -> void
+ print_str : (str) -> void
+ draw_triangle : (int) -> void
+ main : () -> int
+
+  FuncDecl name="draw_triangle" return_type=void parameters={base:int} [line 1]
+  SYM TABLE:
+   base : int
+
+    Block [line 2]
+    SYM TABLE:
+     i : int
+     num_spaces : int
+
+        Block [line 9]
+        SYM TABLE:
+
+        Block [line 15]
+        SYM TABLE:
+
+            Block [line 16]
+            SYM TABLE:
+
+            Block [line 20]
+            SYM TABLE:
+
+        Block [line 26]
+        SYM TABLE:
+
+            Block [line 28]
+            SYM TABLE:
+             n : int
+             spaces : int
+
+                Block [line 35]
+                SYM TABLE:
+
+                Block [line 41]
+                SYM TABLE:
+
+                Block [line 47]
+                SYM TABLE:
+
+                Block [line 52]
+                SYM TABLE:
+
+  FuncDecl name="main" return_type=int parameters={} [line 62]
+  SYM TABLE:
+
+    Block [line 63]
+    SYM TABLE:
+

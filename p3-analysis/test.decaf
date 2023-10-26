@@ -1,8 +1,5 @@
-int x[2];
 def int main()
 {
-    int a;
-    a = x;
-
+    print_str("test");
     return 0;
 }

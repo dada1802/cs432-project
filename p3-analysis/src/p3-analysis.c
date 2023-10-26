@@ -179,6 +179,7 @@ void AnalysisVisitor_postvisit_assignment(NodeVisitor* visitor, ASTNode* node)
 {
     DecafType actual = GET_INFERRED_TYPE(node->assignment.value);
     DecafType expected = GET_INFERRED_TYPE(node->assignment.location);
+
     if (expected != actual && actual != UNKNOWN)
         ErrorList_printf(ERROR_LIST, "Type mismatch: %s is incompatible with %s on line %d",
             DecafType_to_string(expected), DecafType_to_string(actual) , node->source_line);
@@ -274,11 +275,26 @@ void AnalysisVisitor_postvisit_binaryop(NodeVisitor* visitor, ASTNode* node)
 {
     DecafType left = GET_INFERRED_TYPE(node->binaryop.left);
     DecafType right = GET_INFERRED_TYPE(node->binaryop.right);
-    DecafType operator = GET_INFERRED_TYPE(node);
 
-    if (left != operator || right != operator)
-        ErrorList_printf(ERROR_LIST, "Type mismatch: %s expected but %s found on line %d",
-            DecafType_to_string(left), DecafType_to_string(right) , node->source_line);
+    if (node->binaryop.operator == ANDOP || node->binaryop.operator == OROP) {
+        if (left != BOOL)
+            ErrorList_printf(ERROR_LIST, "Type mismatch: bool expected but %s found on line %d",
+                DecafType_to_string(left), node->source_line);
+
+        if (right != BOOL)
+            ErrorList_printf(ERROR_LIST, "Type mismatch: bool expected but %s found on line %d",
+                DecafType_to_string(right) , node->source_line);
+    }
+
+    else {
+        if (left != INT)
+            ErrorList_printf(ERROR_LIST, "Type mismatch: int expected but %s found on line %d",
+                DecafType_to_string(left), node->source_line);
+
+        if (right != INT)
+            ErrorList_printf(ERROR_LIST, "Type mismatch: int expected but %s found on line %d",
+                DecafType_to_string(right) , node->source_line);
+    }
 }
 
 void AnalysisVisitor_previsit_unaryop(NodeVisitor* visitor, ASTNode* node)
@@ -306,13 +322,12 @@ void AnalysisVisitor_previsit_location(NodeVisitor* visitor, ASTNode* node)
     if (symbol == NULL)
         SET_INFERRED_TYPE(UNKNOWN);
 
-    else
+    else {
         SET_INFERRED_TYPE(symbol->type);
-}
-
-void AnalysisVisitor_postvisit_location(NodeVisitor* visitor, ASTNode* node)
-{
-
+        if (symbol->symbol_type == ARRAY_SYMBOL && node->location.index == NULL)
+            ErrorList_printf(ERROR_LIST, "Array '%s' accessed without index on line %d",
+                symbol->name, node->source_line);
+    }
 }
 
 void AnalysisVisitor_previsit_funccall(NodeVisitor* visitor, ASTNode* node)
@@ -322,20 +337,37 @@ void AnalysisVisitor_previsit_funccall(NodeVisitor* visitor, ASTNode* node)
     if (symbol == NULL)
         SET_INFERRED_TYPE(UNKNOWN);
 
-    else
+    else {
         SET_INFERRED_TYPE(symbol->type);
+        if (symbol->parameters->size != node->funccall.arguments->size)
+            ErrorList_printf(ERROR_LIST, "Invalid number of function arguments on line %d",
+                node->source_line);
+    }
+
 }
 
 void AnalysisVisitor_postvisit_funccall(NodeVisitor* visitor, ASTNode* node)
 {
     NodeList* list = node->funccall.arguments;
-    ASTNode* current = list->head;
+    ASTNode* current_actual = list->head;
+    Symbol* symbol = lookup_symbol_with_reporting(visitor, node, node->funccall.name);
+    ParameterList* parameters = symbol->parameters;
+    Parameter* current_expected = parameters->head;
     
-    // for (int i = 0; i < list->size; i++) {
-    //     DecafType type = GET_INFERRED_TYPE(current);
-    //     printf("type argument %d is %s\n", i, DecafType_to_string(type));
-    //     current = current->next;
-    // }
+    for (int i = 0; i < list->size; i++) {
+        DecafType actual = GET_INFERRED_TYPE(current_actual);
+
+        if (current_expected != NULL) {
+            DecafType expected = current_expected->type;
+            
+            if (actual != expected)
+                ErrorList_printf(ERROR_LIST, "Type mismatch in parameter %d of call to '%s': expected %s but found %s on line %d",
+                    i, symbol->name, DecafType_to_string(expected), DecafType_to_string(actual), node->source_line);
+
+            current_actual = current_actual->next;
+            current_expected = current_expected->next;
+        }
+    }
 }
 
 void AnalysisVisitor_previsit_literal(NodeVisitor* visitor, ASTNode* node)
@@ -377,7 +409,7 @@ ErrorList* analyze (ASTNode* tree)
     v->previsit_unaryop      = AnalysisVisitor_previsit_unaryop;
     v->postvisit_unaryop     = AnalysisVisitor_postvisit_unaryop;
     v->previsit_location     = AnalysisVisitor_previsit_location;
-    v->postvisit_location    = AnalysisVisitor_postvisit_location;
+    v->postvisit_location    = NULL;
     v->previsit_funccall     = AnalysisVisitor_previsit_funccall;
     v->postvisit_funccall    = AnalysisVisitor_postvisit_funccall;
     v->previsit_literal      = AnalysisVisitor_previsit_literal;

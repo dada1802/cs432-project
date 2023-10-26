@@ -1,0 +1,16 @@
+def int fact(int n)
+{
+    if (n == 1)
+    {
+        return 1;
+    }
+
+    return n * fact(n - 1);
+}
+
+def int main()
+{
+    int a;
+    a = fact(4);
+    return a;
+}

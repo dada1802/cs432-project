@@ -1,0 +1,32 @@
+def int min(int a, int b)
+{
+    if (a < b)
+    {
+        return a;
+    }
+
+    return b;
+}
+
+def int gcd(int a, int b)
+{
+    int m;
+    m = min(a, b);
+
+    while (m > 0)
+    {
+        if (a % m == 0 && b % m == 0)
+        {
+            return m;
+        }
+
+        m = m - 1;
+    }
+}
+
+def int main()
+{
+    int a;
+    a = gcd(10, 5);
+    return a;
+}

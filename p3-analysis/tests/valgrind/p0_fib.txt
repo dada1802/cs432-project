@@ -1,0 +1,42 @@
+==3080001== Memcheck, a memory error detector
+==3080001== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==3080001== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==3080001== Command: ../decaf inputs/p0_fib.decaf
+==3080001== 
+Program [line 1]
+SYM TABLE:
+ print_int : (int) -> void
+ print_bool : (bool) -> void
+ print_str : (str) -> void
+ fib : (int) -> int
+ main : () -> int
+
+  FuncDecl name="fib" return_type=int parameters={n:int} [line 1]
+  SYM TABLE:
+   n : int
+
+    Block [line 2]
+    SYM TABLE:
+
+        Block [line 4]
+        SYM TABLE:
+
+        Block [line 9]
+        SYM TABLE:
+
+  FuncDecl name="main" return_type=int parameters={} [line 16]
+  SYM TABLE:
+
+    Block [line 17]
+    SYM TABLE:
+     a : int
+
+==3080001== 
+==3080001== HEAP SUMMARY:
+==3080001==     in use at exit: 0 bytes in 0 blocks
+==3080001==   total heap usage: 2,101 allocs, 2,101 frees, 252,196 bytes allocated
+==3080001== 
+==3080001== All heap blocks were freed -- no leaks are possible
+==3080001== 
+==3080001== For lists of detected and suppressed errors, rerun with: -s
+==3080001== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

@@ -1,0 +1,29 @@
+def bool is_prime(int n)
+{
+    int i;
+    i = 2;
+
+    if (n == 0 || n == 1)
+    {
+        return false;
+    }
+
+    while (i < n)
+    {
+        if (n % i == 0)
+        {
+            return false;
+        }
+
+        i = i + 1;
+    }
+
+    return true;
+}
+
+def int main()
+{
+    bool a;
+    a = is_prime(4);
+    return 0;
+}

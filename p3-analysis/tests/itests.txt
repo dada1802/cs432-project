@@ -11,8 +11,16 @@ location_type_mismatch         pass
 unaryop_mismatch               pass
 good_unaryop                   pass
 duplicates                     pass
-funccall_parameter_type_mismatch FAIL (see outputs/funccall_parameter_type_mismatch.diff for details)
-array_no_index                 FAIL (see outputs/array_no_index.diff for details)
+funccall_parameter_check       pass
+array_no_index                 pass
+p0_fact                        pass
+p0_fib                         pass
+p0_is_prime                    pass
+p0_gcd                         pass
+p0_sum_nums                    pass
+p0_sort_nums                   pass
+p0_draw_triangle               pass
+p0_whole                       pass
 No memory leak found.
 No uninitialized value found.
 ========================================

@@ -1,1 +1,0 @@
-Type mismatch in parameter 0 of call to 'add2': expected int but found bool on line 9

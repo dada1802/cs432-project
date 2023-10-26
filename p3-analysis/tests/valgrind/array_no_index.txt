@@ -1,29 +1,15 @@
-==2611547== Memcheck, a memory error detector
-==2611547== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==2611547== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==2611547== Command: ../decaf inputs/array_no_index.decaf
-==2611547== 
-Program [line 1]
-SYM TABLE:
- print_int : (int) -> void
- print_bool : (bool) -> void
- print_str : (str) -> void
- main : () -> int
- x : int [2]
-
-  FuncDecl name="main" return_type=int parameters={} [line 2]
-  SYM TABLE:
-
-    Block [line 3]
-    SYM TABLE:
-     a : int
-
-==2611547== 
-==2611547== HEAP SUMMARY:
-==2611547==     in use at exit: 0 bytes in 0 blocks
-==2611547==   total heap usage: 1,836 allocs, 1,836 frees, 217,544 bytes allocated
-==2611547== 
-==2611547== All heap blocks were freed -- no leaks are possible
-==2611547== 
-==2611547== For lists of detected and suppressed errors, rerun with: -s
-==2611547== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3079939== Memcheck, a memory error detector
+==3079939== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==3079939== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==3079939== Command: ../decaf inputs/array_no_index.decaf
+==3079939== 
+Array 'x' accessed without index on line 5
+==3079939== 
+==3079939== HEAP SUMMARY:
+==3079939==     in use at exit: 0 bytes in 0 blocks
+==3079939==   total heap usage: 1,836 allocs, 1,836 frees, 217,528 bytes allocated
+==3079939== 
+==3079939== All heap blocks were freed -- no leaks are possible
+==3079939== 
+==3079939== For lists of detected and suppressed errors, rerun with: -s
+==3079939== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

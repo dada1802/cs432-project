@@ -1,0 +1,42 @@
+Program [line 1]
+SYM TABLE:
+ print_int : (int) -> void
+ print_bool : (bool) -> void
+ print_str : (str) -> void
+ min : (int, int) -> int
+ gcd : (int, int) -> int
+ main : () -> int
+
+  FuncDecl name="min" return_type=int parameters={a:int,b:int} [line 1]
+  SYM TABLE:
+   a : int
+   b : int
+
+    Block [line 2]
+    SYM TABLE:
+
+        Block [line 4]
+        SYM TABLE:
+
+  FuncDecl name="gcd" return_type=int parameters={a:int,b:int} [line 11]
+  SYM TABLE:
+   a : int
+   b : int
+
+    Block [line 12]
+    SYM TABLE:
+     m : int
+
+        Block [line 17]
+        SYM TABLE:
+
+            Block [line 19]
+            SYM TABLE:
+
+  FuncDecl name="main" return_type=int parameters={} [line 27]
+  SYM TABLE:
+
+    Block [line 28]
+    SYM TABLE:
+     a : int
+

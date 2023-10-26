@@ -1,0 +1,179 @@
+==3080659== Memcheck, a memory error detector
+==3080659== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==3080659== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==3080659== Command: ../decaf inputs/p0_whole.decaf
+==3080659== 
+Program [line 1]
+SYM TABLE:
+ print_int : (int) -> void
+ print_bool : (bool) -> void
+ print_str : (str) -> void
+ fact : (int) -> int
+ fib : (int) -> int
+ is_prime : (int) -> bool
+ min : (int, int) -> int
+ gcd : (int, int) -> int
+ sum_nums : (int) -> int
+ sort_nums : (int) -> void
+ draw_triangle : (int) -> void
+ main : () -> int
+ nums : int [100]
+
+  FuncDecl name="fact" return_type=int parameters={n:int} [line 5]
+  SYM TABLE:
+   n : int
+
+    Block [line 6]
+    SYM TABLE:
+
+        Block [line 8]
+        SYM TABLE:
+
+  FuncDecl name="fib" return_type=int parameters={n:int} [line 15]
+  SYM TABLE:
+   n : int
+
+    Block [line 16]
+    SYM TABLE:
+
+        Block [line 18]
+        SYM TABLE:
+
+        Block [line 23]
+        SYM TABLE:
+
+  FuncDecl name="is_prime" return_type=bool parameters={n:int} [line 30]
+  SYM TABLE:
+   n : int
+
+    Block [line 31]
+    SYM TABLE:
+     i : int
+
+        Block [line 36]
+        SYM TABLE:
+
+        Block [line 41]
+        SYM TABLE:
+
+            Block [line 43]
+            SYM TABLE:
+
+  FuncDecl name="min" return_type=int parameters={a:int,b:int} [line 54]
+  SYM TABLE:
+   a : int
+   b : int
+
+    Block [line 55]
+    SYM TABLE:
+
+        Block [line 57]
+        SYM TABLE:
+
+  FuncDecl name="gcd" return_type=int parameters={a:int,b:int} [line 64]
+  SYM TABLE:
+   a : int
+   b : int
+
+    Block [line 65]
+    SYM TABLE:
+     m : int
+
+        Block [line 70]
+        SYM TABLE:
+
+            Block [line 72]
+            SYM TABLE:
+
+  FuncDecl name="sum_nums" return_type=int parameters={len:int} [line 82]
+  SYM TABLE:
+   len : int
+
+    Block [line 83]
+    SYM TABLE:
+
+        Block [line 85]
+        SYM TABLE:
+
+  FuncDecl name="sort_nums" return_type=void parameters={len:int} [line 94]
+  SYM TABLE:
+   len : int
+
+    Block [line 95]
+    SYM TABLE:
+     check : bool
+
+        Block [line 100]
+        SYM TABLE:
+
+            Block [line 102]
+            SYM TABLE:
+             i : int
+
+                Block [line 108]
+                SYM TABLE:
+
+                    Block [line 110]
+                    SYM TABLE:
+                     temp : int
+
+  FuncDecl name="draw_triangle" return_type=void parameters={base:int} [line 124]
+  SYM TABLE:
+   base : int
+
+    Block [line 125]
+    SYM TABLE:
+     i : int
+     num_spaces : int
+
+        Block [line 132]
+        SYM TABLE:
+
+        Block [line 138]
+        SYM TABLE:
+
+            Block [line 139]
+            SYM TABLE:
+
+            Block [line 143]
+            SYM TABLE:
+
+        Block [line 149]
+        SYM TABLE:
+
+            Block [line 151]
+            SYM TABLE:
+             n : int
+             spaces : int
+
+                Block [line 158]
+                SYM TABLE:
+
+                Block [line 164]
+                SYM TABLE:
+
+                Block [line 170]
+                SYM TABLE:
+
+                Block [line 175]
+                SYM TABLE:
+
+  FuncDecl name="main" return_type=int parameters={} [line 185]
+  SYM TABLE:
+
+    Block [line 186]
+    SYM TABLE:
+     x : int
+
+        Block [line 233]
+        SYM TABLE:
+
+==3080659== 
+==3080659== HEAP SUMMARY:
+==3080659==     in use at exit: 0 bytes in 0 blocks
+==3080659==   total heap usage: 5,601 allocs, 5,601 frees, 774,404 bytes allocated
+==3080659== 
+==3080659== All heap blocks were freed -- no leaks are possible
+==3080659== 
+==3080659== For lists of detected and suppressed errors, rerun with: -s
+==3080659== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

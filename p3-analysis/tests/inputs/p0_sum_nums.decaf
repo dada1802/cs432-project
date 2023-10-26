@@ -1,0 +1,23 @@
+int nums[100];
+
+def int sum_nums(int len)
+{
+    if (len == 0)
+    {
+        return 0;
+    }
+
+    len = len - 1;
+
+    return nums[len] + sum_nums(len);
+}
+
+def int main()
+{
+    int a;
+    nums[0] = 1;
+    nums[1] = 2;
+    nums[2] = 3;
+    a = sum_nums(3);
+    return a;
+}
