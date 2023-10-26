@@ -166,7 +166,6 @@ void AnalysisVisitor_previsit_funcdecl(NodeVisitor* visitor, ASTNode* node)
 
         if (!ParameterList_is_empty(symbol->parameters))
             ErrorList_printf(ERROR_LIST, "'main' must take no parameters");
-
     }
 }
 
@@ -197,7 +196,6 @@ void AnalysisVisitor_postvisit_conditional(NodeVisitor* visitor, ASTNode* node)
     if (expected != actual && actual != UNKNOWN)
         ErrorList_printf(ERROR_LIST, "Type mismatch: %s expected but %s found on line %d",
             DecafType_to_string(expected), DecafType_to_string(actual) , node->source_line);
-
 }
 
 void AnalysisVisitor_previsit_whileLoop(NodeVisitor* visitor, ASTNode* node)
@@ -214,7 +212,6 @@ void AnalysisVisitor_postvisit_whileLoop(NodeVisitor* visitor, ASTNode* node)
     if (expected != actual && actual != UNKNOWN)
         ErrorList_printf(ERROR_LIST, "Type mismatch: %s expected but %s found on line %d",
             DecafType_to_string(expected), DecafType_to_string(actual) , node->source_line);
-
 }
 
 void AnalysisVisitor_previsit_return(NodeVisitor* visitor, ASTNode* node)
@@ -226,7 +223,6 @@ void AnalysisVisitor_previsit_return(NodeVisitor* visitor, ASTNode* node)
 
 void AnalysisVisitor_postvisit_return(NodeVisitor* visitor, ASTNode* node)
 {
-    
     DecafType expected = GET_INFERRED_TYPE(node);
     DecafType actual = GET_INFERRED_TYPE(node->funcreturn.value);
     if (expected != actual && actual != UNKNOWN)
@@ -343,7 +339,6 @@ void AnalysisVisitor_previsit_funccall(NodeVisitor* visitor, ASTNode* node)
             ErrorList_printf(ERROR_LIST, "Invalid number of function arguments on line %d",
                 node->source_line);
     }
-
 }
 
 void AnalysisVisitor_postvisit_funccall(NodeVisitor* visitor, ASTNode* node)
