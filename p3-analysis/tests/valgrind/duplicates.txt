@@ -1,18 +1,18 @@
-==3079823== Memcheck, a memory error detector
-==3079823== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==3079823== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==3079823== Command: ../decaf inputs/duplicates.decaf
-==3079823== 
+==3112434== Memcheck, a memory error detector
+==3112434== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==3112434== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==3112434== Command: ../decaf inputs/duplicates.decaf
+==3112434== 
 Duplicate symbols named 'a' in scope started on line 7
 Duplicate symbols named 'b' in scope started on line 7
 Duplicate symbols named 'test' in scope started on line 1
 Duplicate symbols named 'test2' in scope started on line 1
-==3079823== 
-==3079823== HEAP SUMMARY:
-==3079823==     in use at exit: 0 bytes in 0 blocks
-==3079823==   total heap usage: 1,930 allocs, 1,930 frees, 234,500 bytes allocated
-==3079823== 
-==3079823== All heap blocks were freed -- no leaks are possible
-==3079823== 
-==3079823== For lists of detected and suppressed errors, rerun with: -s
-==3079823== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3112434== 
+==3112434== HEAP SUMMARY:
+==3112434==     in use at exit: 0 bytes in 0 blocks
+==3112434==   total heap usage: 1,930 allocs, 1,930 frees, 234,500 bytes allocated
+==3112434== 
+==3112434== All heap blocks were freed -- no leaks are possible
+==3112434== 
+==3112434== For lists of detected and suppressed errors, rerun with: -s
+==3112434== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

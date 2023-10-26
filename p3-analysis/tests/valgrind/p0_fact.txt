@@ -1,8 +1,8 @@
-==3079975== Memcheck, a memory error detector
-==3079975== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==3079975== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==3079975== Command: ../decaf inputs/p0_fact.decaf
-==3079975== 
+==3112704== Memcheck, a memory error detector
+==3112704== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==3112704== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==3112704== Command: ../decaf inputs/p0_fact.decaf
+==3112704== 
 Program [line 1]
 SYM TABLE:
  print_int : (int) -> void
@@ -28,12 +28,12 @@ SYM TABLE:
     SYM TABLE:
      a : int
 
-==3079975== 
-==3079975== HEAP SUMMARY:
-==3079975==     in use at exit: 0 bytes in 0 blocks
-==3079975==   total heap usage: 2,020 allocs, 2,020 frees, 238,800 bytes allocated
-==3079975== 
-==3079975== All heap blocks were freed -- no leaks are possible
-==3079975== 
-==3079975== For lists of detected and suppressed errors, rerun with: -s
-==3079975== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3112704== 
+==3112704== HEAP SUMMARY:
+==3112704==     in use at exit: 0 bytes in 0 blocks
+==3112704==   total heap usage: 2,020 allocs, 2,020 frees, 238,800 bytes allocated
+==3112704== 
+==3112704== All heap blocks were freed -- no leaks are possible
+==3112704== 
+==3112704== For lists of detected and suppressed errors, rerun with: -s
+==3112704== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

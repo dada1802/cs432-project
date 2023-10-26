@@ -1,0 +1,23 @@
+Program [line 1]
+SYM TABLE:
+ print_int : (int) -> void
+ print_bool : (bool) -> void
+ print_str : (str) -> void
+ add : (int, int) -> int
+ main : () -> int
+
+  FuncDecl name="add" return_type=int parameters={x:int,y:int} [line 1]
+  SYM TABLE:
+   x : int
+   y : int
+
+    Block [line 2]
+    SYM TABLE:
+
+  FuncDecl name="main" return_type=int parameters={} [line 6]
+  SYM TABLE:
+
+    Block [line 7]
+    SYM TABLE:
+     a : int
+
