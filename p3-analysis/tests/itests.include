@@ -3,6 +3,18 @@
 #    <TAG>      used as the root for all filenames (i.e., "expected/$TAG.txt")
 #    <ARGS>     command-line arguments to test
 
-run_test    D_undefined_var             "inputs/undefined_var.decaf"
-run_test    B_add                       "inputs/add.decaf"
-
+run_test    D_undefined_var                     "inputs/undefined_var.decaf"
+run_test    B_add                               "inputs/add.decaf"
+run_test    main_parameters                     "inputs/main_parameters.decaf"
+run_test    main_wrong_return_type              "inputs/main_wrong_return_type.decaf"
+run_test    no_main                             "inputs/no_main.decaf"
+run_test    break_continue_outside_loop         "inputs/break_continue_outside_loop.decaf"
+run_test    wrong_return_type                   "inputs/wrong_return_type.decaf"
+run_test    array_size_zero                     "inputs/array_size_zero.decaf"
+run_test    literal_type_mismatch               "inputs/literal_type_mismatch.decaf"
+run_test    location_type_mismatch              "inputs/location_type_mismatch.decaf"
+run_test    unaryop_mismatch                    "inputs/unaryop_mismatch.decaf"
+run_test    good_unaryop                        "inputs/good_unaryop.decaf"
+run_test    duplicates                          "inputs/duplicates.decaf"
+run_test    funccall_parameter_type_mismatch    "inputs/funccall_parameter_type_mismatch.decaf"
+run_test    array_no_index                      "inputs/array_no_index.decaf"

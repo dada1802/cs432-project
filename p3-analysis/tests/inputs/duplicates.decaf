@@ -1,0 +1,16 @@
+int test;
+bool test;
+int test2;
+bool test2;
+
+def int main()
+{
+    int a;
+    int b;
+    int a;
+    int a;
+    int b;
+    int b;
+
+    return 0;
+}

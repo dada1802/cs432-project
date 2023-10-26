@@ -1,0 +1,18 @@
+==2611478== Memcheck, a memory error detector
+==2611478== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==2611478== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==2611478== Command: ../decaf inputs/duplicates.decaf
+==2611478== 
+Duplicate symbols named 'a' in scope started on line 7
+Duplicate symbols named 'b' in scope started on line 7
+Duplicate symbols named 'test' in scope started on line 1
+Duplicate symbols named 'test2' in scope started on line 1
+==2611478== 
+==2611478== HEAP SUMMARY:
+==2611478==     in use at exit: 0 bytes in 0 blocks
+==2611478==   total heap usage: 1,930 allocs, 1,930 frees, 234,500 bytes allocated
+==2611478== 
+==2611478== All heap blocks were freed -- no leaks are possible
+==2611478== 
+==2611478== For lists of detected and suppressed errors, rerun with: -s
+==2611478== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

@@ -1,0 +1,15 @@
+==2611291== Memcheck, a memory error detector
+==2611291== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==2611291== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==2611291== Command: ../decaf inputs/array_size_zero.decaf
+==2611291== 
+Array 'a' on line 1 must have positive non-zero length
+==2611291== 
+==2611291== HEAP SUMMARY:
+==2611291==     in use at exit: 0 bytes in 0 blocks
+==2611291==   total heap usage: 1,766 allocs, 1,766 frees, 206,428 bytes allocated
+==2611291== 
+==2611291== All heap blocks were freed -- no leaks are possible
+==2611291== 
+==2611291== For lists of detected and suppressed errors, rerun with: -s
+==2611291== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

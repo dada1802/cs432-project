@@ -3,6 +3,9 @@
  * @brief Compiler phase 3: static analysis
  */
 #include "p3-analysis.h"
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 /**
  * @brief State/data for static analysis visitor
@@ -94,15 +97,50 @@ void AnalysisVisitor_previsit_program (NodeVisitor* visitor, ASTNode* node)
     Symbol* symbol = lookup_symbol(node, "main");
 
     if (symbol == NULL)
-        ErrorList_printf(ERROR_LIST, "Program does not contain a 'main' function!");
+        ErrorList_printf(ERROR_LIST, "Program does not contain a 'main' function");
 
-    else if (!ParameterList_is_empty(symbol->parameters) || symbol->type != INT)
-        ErrorList_printf(ERROR_LIST, "Incorrect 'main' function declaration!");
+    else if (symbol->symbol_type != FUNCTION_SYMBOL)
+        ErrorList_printf(ERROR_LIST, "'main' must be a function");
 }
 
-void AnalysisVisitor_postvisit_program(NodeVisitor* visitor, ASTNode* node)
+// Helper method to check if str is already in the array for postvisit_program_block.
+bool helper_isDuplicate(char** array, int size, char* str)
 {
+    for (int i = 0; i < size; i++) {
+        if (!strcmp(array[i], str)) {
+            return 1; // String already exists in the array
+        }
+    }
+
+    return 0; // String does not exist in the array
+}
+
+void AnalysisVisitor_postvisit_program_block(NodeVisitor* visitor, ASTNode* node)
+{
+    SymbolTable* scope = (SymbolTable*)ASTNode_get_attribute(node, "symbolTable");
+    SymbolList* local = scope->local_symbols;
+    Symbol* first = local->head;
+    char** names = (char**)calloc(local->size, sizeof(char*));
+    int index = 0;
+
+    while (first != NULL) {
+        Symbol* second = first->next;
+
+        while (second != NULL) {
+            if (!strcmp(first->name, second->name) && !helper_isDuplicate(names, index, first->name)) {
+                names[index] = first->name;
+                ErrorList_printf(ERROR_LIST, "Duplicate symbols named '%s' in scope started on line %d",
+                        first->name, node->source_line);
+                index++;
+            }
+
+            second = second->next;
+        }
+
+        first = first->next;
+    }
     
+    free(names);
 }
 
 void AnalysisVisitor_previsit_vardecl (NodeVisitor* visitor, ASTNode* node)
@@ -119,15 +157,17 @@ void AnalysisVisitor_previsit_vardecl (NodeVisitor* visitor, ASTNode* node)
 void AnalysisVisitor_previsit_funcdecl(NodeVisitor* visitor, ASTNode* node)
 {
     DATA->name = node->funcdecl.name;
-}
 
-void AnalysisVisitor_previsit_block(NodeVisitor* visitor, ASTNode* node)
-{
-    SymbolTable* table = ASTNode_get_attribute(node, "symbolTable");
-    Symbol* symbol = SymbolTable_lookup(table->parent, "main");
-    if (symbol)
-        ErrorList_printf(ERROR_LIST, "Duplicate symbols named '%s' in scope started on line %d",
-            symbol->name, node->source_line);
+    if (!strcmp(DATA->name, "main")) {
+        Symbol* symbol = lookup_symbol_with_reporting(visitor, node, "main");
+
+        if (symbol->type != INT)
+            ErrorList_printf(ERROR_LIST, "'main' must return an integer");
+
+        if (!ParameterList_is_empty(symbol->parameters))
+            ErrorList_printf(ERROR_LIST, "'main' must take no parameters");
+
+    }
 }
 
 void AnalysisVisitor_previsit_assignment(NodeVisitor* visitor, ASTNode* node)
@@ -193,7 +233,7 @@ void AnalysisVisitor_postvisit_return(NodeVisitor* visitor, ASTNode* node)
             DecafType_to_string(expected), DecafType_to_string(actual) , node->source_line);
 
     else
-        DATA->return_value = node->funcreturn.value;
+        DATA->return_value = node->funcreturn.value->type;
 }
 
 void AnalysisVisitor_previsit_break(NodeVisitor* visitor, ASTNode* node)
@@ -241,7 +281,26 @@ void AnalysisVisitor_postvisit_binaryop(NodeVisitor* visitor, ASTNode* node)
             DecafType_to_string(left), DecafType_to_string(right) , node->source_line);
 }
 
-void AnalysisVisitor_previsit_location (NodeVisitor* visitor, ASTNode* node)
+void AnalysisVisitor_previsit_unaryop(NodeVisitor* visitor, ASTNode* node)
+{
+    if (node->unaryop.operator == NEGOP)
+        SET_INFERRED_TYPE(INT);
+
+    else
+        SET_INFERRED_TYPE(BOOL);
+}
+
+void AnalysisVisitor_postvisit_unaryop(NodeVisitor* visitor, ASTNode* node)
+{
+    DecafType operator = GET_INFERRED_TYPE(node);
+    DecafType child = GET_INFERRED_TYPE(node->unaryop.child);
+
+    if (operator != child)
+        ErrorList_printf(ERROR_LIST, "Type mismatch: %s expected but %s found on line %d",
+            DecafType_to_string(operator), DecafType_to_string(child), node->source_line);
+}
+
+void AnalysisVisitor_previsit_location(NodeVisitor* visitor, ASTNode* node)
 {
     Symbol* symbol = lookup_symbol_with_reporting (visitor, node, node->location.name);
     if (symbol == NULL)
@@ -249,6 +308,34 @@ void AnalysisVisitor_previsit_location (NodeVisitor* visitor, ASTNode* node)
 
     else
         SET_INFERRED_TYPE(symbol->type);
+}
+
+void AnalysisVisitor_postvisit_location(NodeVisitor* visitor, ASTNode* node)
+{
+
+}
+
+void AnalysisVisitor_previsit_funccall(NodeVisitor* visitor, ASTNode* node)
+{
+    Symbol* symbol = lookup_symbol_with_reporting(visitor, node, node->funccall.name);
+
+    if (symbol == NULL)
+        SET_INFERRED_TYPE(UNKNOWN);
+
+    else
+        SET_INFERRED_TYPE(symbol->type);
+}
+
+void AnalysisVisitor_postvisit_funccall(NodeVisitor* visitor, ASTNode* node)
+{
+    NodeList* list = node->funccall.arguments;
+    ASTNode* current = list->head;
+    
+    // for (int i = 0; i < list->size; i++) {
+    //     DecafType type = GET_INFERRED_TYPE(current);
+    //     printf("type argument %d is %s\n", i, DecafType_to_string(type));
+    //     current = current->next;
+    // }
 }
 
 void AnalysisVisitor_previsit_literal(NodeVisitor* visitor, ASTNode* node)
@@ -265,13 +352,13 @@ ErrorList* analyze (ASTNode* tree)
 
     /* BOILERPLATE: TODO: register analysis callbacks */
     v->previsit_program      = AnalysisVisitor_previsit_program;
-    v->postvisit_program     = AnalysisVisitor_postvisit_program;
+    v->postvisit_program     = AnalysisVisitor_postvisit_program_block;
     v->previsit_vardecl      = AnalysisVisitor_previsit_vardecl;
     v->postvisit_vardecl     = NULL;
     v->previsit_funcdecl     = AnalysisVisitor_previsit_funcdecl;
     v->postvisit_funcdecl    = NULL;
-    v->previsit_block        = AnalysisVisitor_previsit_block;
-    v->postvisit_block       = NULL;
+    v->previsit_block        = NULL;
+    v->postvisit_block       = AnalysisVisitor_postvisit_program_block;
     v->previsit_assignment   = AnalysisVisitor_previsit_assignment;
     v->postvisit_assignment  = AnalysisVisitor_postvisit_assignment;
     v->previsit_conditional  = AnalysisVisitor_previsit_conditional;
@@ -287,12 +374,12 @@ ErrorList* analyze (ASTNode* tree)
     v->previsit_binaryop     = AnalysisVisitor_previsit_binaryop;
     v->invisit_binaryop      = NULL;
     v->postvisit_binaryop    = AnalysisVisitor_postvisit_binaryop;
-    v->previsit_unaryop      = NULL;
-    v->postvisit_unaryop     = NULL;
+    v->previsit_unaryop      = AnalysisVisitor_previsit_unaryop;
+    v->postvisit_unaryop     = AnalysisVisitor_postvisit_unaryop;
     v->previsit_location     = AnalysisVisitor_previsit_location;
-    v->postvisit_location    = NULL;
-    v->previsit_funccall     = NULL;
-    v->postvisit_funccall    = NULL;
+    v->postvisit_location    = AnalysisVisitor_postvisit_location;
+    v->previsit_funccall     = AnalysisVisitor_previsit_funccall;
+    v->postvisit_funccall    = AnalysisVisitor_postvisit_funccall;
     v->previsit_literal      = AnalysisVisitor_previsit_literal;
     v->postvisit_literal     = NULL;
 

@@ -1,0 +1,2 @@
+Invalid 'break' outside loop on line 3
+Invalid 'continue' outside loop on line 4

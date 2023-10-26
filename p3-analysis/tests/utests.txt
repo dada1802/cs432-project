@@ -1,4 +1,2 @@
 Running suite(s): Default
-84%: Checks: 13, Failures: 2, Errors: 0
-public.c:31:F:Public:B_invalid_dup_var_global:0: Assertion 'invalid_program("def int main () { " "int a; bool b; int a; return 0;" " }")' failed
-public.c:35:F:Public:A_invalid_main_var:0: Assertion 'invalid_program("int main; def int foo(int a) { return 0; }")' failed
+100%: Checks: 13, Failures: 0, Errors: 0

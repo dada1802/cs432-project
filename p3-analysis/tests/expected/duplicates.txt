@@ -1,0 +1,4 @@
+Duplicate symbols named 'a' in scope started on line 7
+Duplicate symbols named 'b' in scope started on line 7
+Duplicate symbols named 'test' in scope started on line 1
+Duplicate symbols named 'test2' in scope started on line 1

@@ -1,5 +1,18 @@
 D_undefined_var                pass
 B_add                          pass
+main_parameters                pass
+main_wrong_return_type         pass
+no_main                        pass
+break_continue_outside_loop    pass
+wrong_return_type              pass
+array_size_zero                pass
+literal_type_mismatch          pass
+location_type_mismatch         pass
+unaryop_mismatch               pass
+good_unaryop                   pass
+duplicates                     pass
+funccall_parameter_type_mismatch FAIL (see outputs/funccall_parameter_type_mismatch.diff for details)
+array_no_index                 FAIL (see outputs/array_no_index.diff for details)
 No memory leak found.
 No uninitialized value found.
 ========================================

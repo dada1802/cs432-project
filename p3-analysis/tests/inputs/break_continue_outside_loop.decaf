@@ -1,8 +1,7 @@
-int x[2];
 def int main()
 {
-    int a;
-    a = x;
+    break;
+    continue;
 
     return 0;
 }

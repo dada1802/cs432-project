@@ -1,6 +1,12 @@
-def void main()
-{
-    if () {
-        
-    }
+bool d;
+
+def int main(){
+    int a;
+    int a;
+    int a;
+    int b;
+    int c;
+    bool d;
+    int b;
+    bool c;
 }
