@@ -14,6 +14,7 @@ duplicates                     pass
 funccall_parameter_check       pass
 array_no_index                 pass
 sample_input                   pass
+function_accessed_as_variable  pass
 p0_fact                        pass
 p0_fib                         pass
 p0_is_prime                    pass

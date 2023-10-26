@@ -1,15 +1,15 @@
-==3111934== Memcheck, a memory error detector
-==3111934== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==3111934== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==3111934== Command: ../decaf inputs/no_main.decaf
-==3111934== 
+==3189661== Memcheck, a memory error detector
+==3189661== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==3189661== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==3189661== Command: ../decaf inputs/no_main.decaf
+==3189661== 
 Program does not contain a 'main' function
-==3111934== 
-==3111934== HEAP SUMMARY:
-==3111934==     in use at exit: 0 bytes in 0 blocks
-==3111934==   total heap usage: 1,749 allocs, 1,749 frees, 197,736 bytes allocated
-==3111934== 
-==3111934== All heap blocks were freed -- no leaks are possible
-==3111934== 
-==3111934== For lists of detected and suppressed errors, rerun with: -s
-==3111934== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3189661== 
+==3189661== HEAP SUMMARY:
+==3189661==     in use at exit: 0 bytes in 0 blocks
+==3189661==   total heap usage: 1,749 allocs, 1,749 frees, 197,736 bytes allocated
+==3189661== 
+==3189661== All heap blocks were freed -- no leaks are possible
+==3189661== 
+==3189661== For lists of detected and suppressed errors, rerun with: -s
+==3189661== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

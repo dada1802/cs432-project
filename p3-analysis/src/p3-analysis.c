@@ -323,6 +323,10 @@ void AnalysisVisitor_previsit_location(NodeVisitor* visitor, ASTNode* node)
         if (symbol->symbol_type == ARRAY_SYMBOL && node->location.index == NULL)
             ErrorList_printf(ERROR_LIST, "Array '%s' accessed without index on line %d",
                 symbol->name, node->source_line);
+
+        else if (symbol->symbol_type == FUNCTION_SYMBOL)
+            ErrorList_printf(ERROR_LIST, "Function '%s' accessed as a variable on line %d",
+                symbol->name, node->source_line);
     }
 }
 

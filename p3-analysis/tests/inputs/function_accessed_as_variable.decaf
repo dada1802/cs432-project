@@ -5,6 +5,8 @@ def int foo()
 
 def int main()
 {
+    int a;
     foo = 2;
-    return 0;
+    a = foo;
+    return a;
 }
