@@ -1,16 +1,16 @@
-==132633== Memcheck, a memory error detector
-==132633== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==132633== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==132633== Command: ../decaf inputs/funccall_to_global_var.decaf
-==132633== 
+==697859== Memcheck, a memory error detector
+==697859== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==697859== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==697859== Command: ../decaf inputs/funccall_to_global_var.decaf
+==697859== 
 Invalid call to non-function 'ongo' on line 3
 Invalid number of function arguments on line 3
-==132633== 
-==132633== HEAP SUMMARY:
-==132633==     in use at exit: 0 bytes in 0 blocks
-==132633==   total heap usage: 1,723 allocs, 1,723 frees, 191,300 bytes allocated
-==132633== 
-==132633== All heap blocks were freed -- no leaks are possible
-==132633== 
-==132633== For lists of detected and suppressed errors, rerun with: -s
-==132633== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==697859== 
+==697859== HEAP SUMMARY:
+==697859==     in use at exit: 0 bytes in 0 blocks
+==697859==   total heap usage: 1,723 allocs, 1,723 frees, 191,300 bytes allocated
+==697859== 
+==697859== All heap blocks were freed -- no leaks are possible
+==697859== 
+==697859== For lists of detected and suppressed errors, rerun with: -s
+==697859== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

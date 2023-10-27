@@ -1,15 +1,15 @@
-==132156== Memcheck, a memory error detector
-==132156== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==132156== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==132156== Command: ../decaf inputs/binop_multiply_left_invalid.decaf
-==132156== 
+==696890== Memcheck, a memory error detector
+==696890== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==696890== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==696890== Command: ../decaf inputs/binop_multiply_left_invalid.decaf
+==696890== 
 Type mismatch: int expected but bool found on line 9
-==132156== 
-==132156== HEAP SUMMARY:
-==132156==     in use at exit: 0 bytes in 0 blocks
-==132156==   total heap usage: 1,919 allocs, 1,919 frees, 228,912 bytes allocated
-==132156== 
-==132156== All heap blocks were freed -- no leaks are possible
-==132156== 
-==132156== For lists of detected and suppressed errors, rerun with: -s
-==132156== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==696890== 
+==696890== HEAP SUMMARY:
+==696890==     in use at exit: 0 bytes in 0 blocks
+==696890==   total heap usage: 1,919 allocs, 1,919 frees, 228,912 bytes allocated
+==696890== 
+==696890== All heap blocks were freed -- no leaks are possible
+==696890== 
+==696890== For lists of detected and suppressed errors, rerun with: -s
+==696890== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

@@ -1,15 +1,15 @@
-==136590== Memcheck, a memory error detector
-==136590== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==136590== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==136590== Command: ../decaf inputs/string_comparison.decaf
-==136590== 
+==701239== Memcheck, a memory error detector
+==701239== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==701239== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==701239== Command: ../decaf inputs/string_comparison.decaf
+==701239== 
 Unsupported string equality check on line 4
-==136590== 
-==136590== HEAP SUMMARY:
-==136590==     in use at exit: 0 bytes in 0 blocks
-==136590==   total heap usage: 1,881 allocs, 1,881 frees, 229,976 bytes allocated
-==136590== 
-==136590== All heap blocks were freed -- no leaks are possible
-==136590== 
-==136590== For lists of detected and suppressed errors, rerun with: -s
-==136590== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==701239== 
+==701239== HEAP SUMMARY:
+==701239==     in use at exit: 0 bytes in 0 blocks
+==701239==   total heap usage: 1,881 allocs, 1,881 frees, 229,976 bytes allocated
+==701239== 
+==701239== All heap blocks were freed -- no leaks are possible
+==701239== 
+==701239== For lists of detected and suppressed errors, rerun with: -s
+==701239== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

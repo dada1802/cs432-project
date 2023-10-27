@@ -1,16 +1,16 @@
-==136787== Memcheck, a memory error detector
-==136787== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==136787== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==136787== Command: ../decaf inputs/unary_not_int.decaf
-==136787== 
+==701322== Memcheck, a memory error detector
+==701322== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==701322== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==701322== Command: ../decaf inputs/unary_not_int.decaf
+==701322== 
 Type mismatch: bool expected but int found on line 4
 Type mismatch: int is incompatible with bool on line 4
-==136787== 
-==136787== HEAP SUMMARY:
-==136787==     in use at exit: 0 bytes in 0 blocks
-==136787==   total heap usage: 1,867 allocs, 1,867 frees, 226,376 bytes allocated
-==136787== 
-==136787== All heap blocks were freed -- no leaks are possible
-==136787== 
-==136787== For lists of detected and suppressed errors, rerun with: -s
-==136787== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==701322== 
+==701322== HEAP SUMMARY:
+==701322==     in use at exit: 0 bytes in 0 blocks
+==701322==   total heap usage: 1,867 allocs, 1,867 frees, 226,376 bytes allocated
+==701322== 
+==701322== All heap blocks were freed -- no leaks are possible
+==701322== 
+==701322== For lists of detected and suppressed errors, rerun with: -s
+==701322== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

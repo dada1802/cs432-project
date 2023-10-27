@@ -1,15 +1,15 @@
-==130921== Memcheck, a memory error detector
-==130921== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==130921== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==130921== Command: ../decaf inputs/assign_bool_func_int_var.decaf
-==130921== 
+==695396== Memcheck, a memory error detector
+==695396== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==695396== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==695396== Command: ../decaf inputs/assign_bool_func_int_var.decaf
+==695396== 
 Type mismatch: int is incompatible with bool on line 3
-==130921== 
-==130921== HEAP SUMMARY:
-==130921==     in use at exit: 0 bytes in 0 blocks
-==130921==   total heap usage: 2,020 allocs, 2,020 frees, 251,016 bytes allocated
-==130921== 
-==130921== All heap blocks were freed -- no leaks are possible
-==130921== 
-==130921== For lists of detected and suppressed errors, rerun with: -s
-==130921== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==695396== 
+==695396== HEAP SUMMARY:
+==695396==     in use at exit: 0 bytes in 0 blocks
+==695396==   total heap usage: 2,020 allocs, 2,020 frees, 251,016 bytes allocated
+==695396== 
+==695396== All heap blocks were freed -- no leaks are possible
+==695396== 
+==695396== For lists of detected and suppressed errors, rerun with: -s
+==695396== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

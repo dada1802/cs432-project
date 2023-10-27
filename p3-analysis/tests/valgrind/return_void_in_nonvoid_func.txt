@@ -1,15 +1,15 @@
-==136486== Memcheck, a memory error detector
-==136486== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==136486== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==136486== Command: ../decaf inputs/return_void_in_nonvoid_func.decaf
-==136486== 
+==701171== Memcheck, a memory error detector
+==701171== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==701171== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==701171== Command: ../decaf inputs/return_void_in_nonvoid_func.decaf
+==701171== 
 Invalid void return from non-void function on line 5
-==136486== 
-==136486== HEAP SUMMARY:
-==136486==     in use at exit: 0 bytes in 0 blocks
-==136486==   total heap usage: 2,029 allocs, 2,029 frees, 251,752 bytes allocated
-==136486== 
-==136486== All heap blocks were freed -- no leaks are possible
-==136486== 
-==136486== For lists of detected and suppressed errors, rerun with: -s
-==136486== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==701171== 
+==701171== HEAP SUMMARY:
+==701171==     in use at exit: 0 bytes in 0 blocks
+==701171==   total heap usage: 2,029 allocs, 2,029 frees, 251,752 bytes allocated
+==701171== 
+==701171== All heap blocks were freed -- no leaks are possible
+==701171== 
+==701171== For lists of detected and suppressed errors, rerun with: -s
+==701171== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
