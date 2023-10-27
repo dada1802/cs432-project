@@ -1,0 +1,66 @@
+def bool is_prime1(int n)
+{
+    int count;
+    count = 2;
+    if (n == 2) {
+        return true;
+    }
+    if (n > 2) {
+        while (count < n) {
+            if (n % count == 0) {
+                return false;
+            }
+            count = count + 1;
+        }
+        return true;
+    }
+}
+
+def bool is_prime2(int n)
+{
+    int i;
+    i = 2;
+    if (n == 0) {
+        return false;
+    }
+
+    while (i < n)
+    {
+        if (n % i == 0)
+        {
+            return false;
+        }
+        i = i + 1;
+    }
+    return true;
+}
+
+def bool is_prime3(int n)
+{
+    int z;
+    z = 2;
+    if(n == 0 || n == 1)
+    {
+        return false;
+    }
+    if(n > 1)
+    {
+        while(z <= n/2)
+        {
+            if(n % z == 0)
+            {
+                return false;
+            }
+            else
+            {
+                z = z + 1;
+            }
+        }
+    }
+    return true;
+}
+
+def int main()
+{
+    return 0;
+}

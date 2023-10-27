@@ -1,0 +1,22 @@
+Program [line 1]
+SYM TABLE:
+ print_int : (int) -> void
+ print_bool : (bool) -> void
+ print_str : (str) -> void
+ main : () -> int
+ ongo : (int) -> void
+ a : int
+
+  FuncDecl name="main" return_type=int parameters={} [line 2]
+  SYM TABLE:
+
+    Block [line 3]
+    SYM TABLE:
+
+  FuncDecl name="ongo" return_type=void parameters={a:int} [line 6]
+  SYM TABLE:
+   a : int
+
+    Block [line 7]
+    SYM TABLE:
+

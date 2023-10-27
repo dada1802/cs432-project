@@ -1,0 +1,384 @@
+// CS 432 PROJECT 0: DECAF PROGRAMMING
+// Robbie Deonarain
+// AI Assisted tools were used for this PA
+
+def int fact(int n)
+{
+    int sum;
+    sum = 1;
+    while(n > 0)
+    {
+        sum = sum * n;
+        n = n - 1;
+    }
+    return sum;
+}
+
+def int fib(int n)
+{
+    if (n <= 1)
+    {
+        return n;
+    }
+    return (fib(n-1) + fib(n-2));
+}
+
+def bool is_prime(int n)
+{
+    int z;
+    z = 2;
+    if(n == 0 || n == 1)
+    {
+        return false;
+    }
+    if(n > 1)
+    {
+        while(z <= n/2)
+        {
+            if(n % z == 0)
+            {
+                return false;
+            }
+            else
+            {
+                z = z + 1;
+            }
+        }
+    }
+    return true;
+}
+
+def int gcd(int a, int b)
+{
+        int result;
+        if(a > b)
+        {
+            result = b;
+        }
+        else
+        {
+            result = a;
+        }
+        while (result > 0) {
+            if (a % result == 0 && b % result == 0) {
+                break;
+            }
+            result = result - 1;
+        }
+
+        // Return gcd of a and b
+        return result;
+}
+
+int nums[100];
+def int sum_nums(int len)
+{
+    int i;
+    int sum;
+     nums[0] = 1;
+     nums[1] = 2;
+     nums[2] = 3;
+     nums[3] = 4;
+     nums[4] = 5;
+     nums[5] = 6;
+     nums[6] = 7;
+     nums[7] = 8;
+     i = 0;
+     sum = 0;
+     // return 0 if 0
+    if(len == 0)
+    {
+        return 0;
+    }
+
+    while(i < len && i < 100)
+    {
+        sum = sum + nums[i];
+         i = i + 1;
+    }
+    return sum;
+}
+
+def void sort_nums(int len)
+{
+    // reference https://www.geeksforgeeks.org/java-program-for-selection-sort/
+    // based off of using selection sort
+    int i;
+    int j;
+    int mIndex;
+    int temp;
+     nums[0] = 47;
+     nums[1] = 1;
+     nums[2] = 5;
+     nums[3] = 3;
+     nums[4] = 4;
+     nums[5] = 7;
+     nums[6] = 6;
+     nums[7] = 8;
+    i = -1;
+    while(i < len - 1)
+    {
+        i = i + 1;
+        mIndex = i;
+        while(j < len)
+        {
+            if(nums[j] < nums[mIndex])
+            {
+                mIndex = j;
+            }
+            j = j+1;
+        }
+            temp = nums[mIndex];
+            nums[mIndex] = nums[i];
+            nums[i] = temp;
+           j = i + 1;
+    }
+    return;
+}
+
+def void draw_triangle(int base)
+{
+    int height;
+    int i;
+    int j;
+    int k;
+    if (base % 2 == 0)
+    {
+        height = base/ 2;
+    }
+    else
+    {
+        height = (base  + 1) / 2;
+    }
+    while (i < height) {
+        j = 0;
+        while (j < height - i - 1) {
+            print_str(" ");
+            j = j + 1;
+        }
+        k = 0;
+        while (k < base - 2 * j) {
+            print_str("#");
+            k = k + 1;
+        }
+        print_str("\n");
+        i = i + 1;
+    }
+    return;
+}
+
+// factorial testing
+def void test_fact(int num, int correct)
+{
+    int factorial;
+    factorial = fact(num);
+    if(factorial != correct)
+    {
+        print_str(" INCORRECT!");
+    }
+
+    return;
+}
+
+def void test_fib(int num, int correct)
+{
+    int fibo;
+    fibo = fib(num);
+    if(fibo != correct)
+    {
+        print_str(" INCORRECT!");
+    }
+    else
+    {
+        print_int(fibo);
+    }
+    return;
+}
+
+def void test_prime(int num, bool correct)
+{
+    bool p;
+    p = is_prime(num);
+    if(p != correct)
+    {
+        print_str(" INCORRECT!\n");
+    }
+    else
+    {
+        print_str("\nTHIS IS THE BOOLEAN THAT IS CORRECT\n");
+        print_bool(p);
+        print_str("\n");
+    }
+    return;
+}
+def void test_sumNum(int len, int correct)
+{
+    int sum;
+    sum = sum_nums(len);
+    if(sum != correct)
+    {
+        print_str("YOU ARE WRONGGGGG\n");
+    }
+    else
+    {
+        print_int(sum);
+        print_str("\nYOU ARE RIGHT\n");
+    }
+    return;
+}
+
+def void test_gcd(int a, int b, int correct)
+{
+    int g;
+    g = gcd(a,b);
+    if(g != correct)
+    {
+        print_str("YOU ARE WRONGGGGGGGGGG");
+    }
+    else
+    {
+        print_int(g);
+        print_str("YOU ARE RIGHT");
+    }
+    return;
+}
+
+def void print_nums()
+{
+    int count;
+    count = 0;
+    print_str("[");
+    while (count <= 100) {
+        print_int(nums[count]);
+        if (count < 100) {
+            print_str(", ");
+        }
+        count = count + 1;
+    }
+    print_str("]\n");
+}
+
+def int main()
+{
+    // // factorial
+    // test_fact(3,6);
+    // test_fact(4,24);
+    // test_fact(5,120);
+    // // fib
+    // test_fib(4,3);
+    // test_fib(1,1);
+    // test_fib(6,8);
+    // prime
+    //test_prime(17,true);
+    //test_prime(4,false);
+    //test_prime(0,false);
+    //test_prime(1,false);
+   //sumNum
+  // test_sumNum(8,36);
+   //gcd
+//    test_gcd(4,12,1);
+//    test_gcd(4,13,1);
+   // sort_nums(8);
+   //draw_triangle(3);
+    //return 0;
+    
+
+
+
+    int nums_start;
+    int ans_sum_nums;
+    int sum_nums_input;
+    int ans_gcd;
+    int gcd_input_1;
+    int gcd_input_2;
+    int triangle_max;
+    int count;
+
+    // Test is_prime
+    count = 0;
+    print_str("\nTest for is_prime:\n");
+    while (count <= 100) {
+        print_int(count);
+        print_str(" primeness: ");
+        print_bool(is_prime(count));
+        print_str("\n");
+        count = count + 1;
+    }
+
+    // Test factorial
+    count = 1;
+    print_str("\nTest for factorial\n");
+    while (count <= 10) {
+        print_int(count);
+        print_str("! = ");
+        print_int(fact(count));
+        print_str("\n");
+        count = count + 1;
+    }
+
+    // Test fibonacci
+    count = 0;
+    print_str("\nTest for fibonacci\n");
+    while (count <= 25) {
+        print_str("fib(");
+        print_int(count);
+        print_str(") = ");
+        print_int(fib(count));
+        print_str("\n");
+        count = count + 1;
+    }
+
+    // Test gcd
+    gcd_input_1 = 60;
+    gcd_input_2 = 84;
+    print_str("\nTest for gcd\n");
+    ans_gcd = gcd(gcd_input_1, gcd_input_2);
+    print_str("Result of gcd(");
+    print_int(gcd_input_1);
+    print_str(", ");
+    print_int(gcd_input_2);
+    print_str("): ");
+    print_int(ans_gcd);
+    print_str("\nCorrect answer: 12");
+    print_str("\n");
+
+    // Setup nums array
+    count = 0;
+    nums_start = 90;
+    print_str("\nSetting up nums array: ");
+    while (count <= 100) {
+        nums[count] = nums_start;
+        count = count + 1;
+        nums_start = nums_start - 1;
+    }
+    print_nums();
+
+    // Test sum_nums
+    sum_nums_input = 100;
+    print_str("\nTest for sum_nums\n");
+    ans_sum_nums = sum_nums(sum_nums_input);
+    print_str("Result of sum_nums(");
+    print_int(sum_nums_input);
+    print_str("): ");
+    print_int(ans_sum_nums);
+    print_str("\nCorrect answer: 4040");
+    print_str("\n");
+
+    // Test sort_nums
+    sort_nums(100);
+    print_str("\nTest for sort_nums\n");
+    print_nums();
+
+    // Test draw_triangle
+    triangle_max = 20;
+    count = 1;
+    print_str("\nTest for draw_triangle\n");
+    while (count <= triangle_max) {
+        draw_triangle(count);
+        count = count + 1;
+    }
+
+    print_str("\n");
+    return 0;
+}
+

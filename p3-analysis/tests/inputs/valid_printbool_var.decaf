@@ -1,0 +1,4 @@
+bool ongo;
+def int main() {
+    print_bool(ongo);
+}

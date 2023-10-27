@@ -1,0 +1,94 @@
+int nums[100];
+
+def void sort_nums(int len)
+{
+    int i;
+    int j;
+    int temp;
+    bool swapped;
+    i = 0;
+    while (i < len) {
+        swapped = false;
+        j = 0;
+        while (j < len - i - 1) {
+            if (nums[j] > nums[j + 1]) {
+                temp = nums[j];
+                nums[j] = nums[j + 1];
+                nums[j + 1] = temp;
+                swapped = true;
+            }
+            j = j + 1;
+        }
+        if (swapped == false) {
+            return;
+        }
+        i = i + 1;
+    }
+    return;
+}
+
+def void sort_nums2(int len)
+{
+    int i;
+    int j;
+    int temp;
+    i = 0;
+    while (i < len)
+    {
+        j = i + 1;
+        while (j < len)
+        {
+            if (nums[i] > nums[j])
+            {
+                temp = nums[i];
+                nums[i] = nums[j];
+                nums[j] = temp;
+            }
+            j = j + 1;
+        }
+        i = i + 1;
+    }
+    return;
+}
+
+def void sort_nums3(int len)
+{
+    // reference https://www.geeksforgeeks.org/java-program-for-selection-sort/
+    // based off of using selection sort
+    int i;
+    int j;
+    int mIndex;
+    int temp;
+     nums[0] = 47;
+     nums[1] = 1;
+     nums[2] = 5;
+     nums[3] = 3;
+     nums[4] = 4;
+     nums[5] = 7;
+     nums[6] = 6;
+     nums[7] = 8;
+    i = -1;
+    while(i < len - 1)
+    {
+        i = i + 1;
+        mIndex = i;
+        while(j < len)
+        {
+            if(nums[j] < nums[mIndex])
+            {
+                mIndex = j;
+            }
+            j = j+1;
+        }
+            temp = nums[mIndex];
+            nums[mIndex] = nums[i];
+            nums[i] = temp;
+           j = i + 1;
+    }
+    return;
+}
+
+def int main()
+{
+    return 0;
+}

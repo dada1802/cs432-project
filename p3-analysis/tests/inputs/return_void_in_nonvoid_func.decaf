@@ -1,0 +1,9 @@
+int a[5];
+def int main() {
+    bool fact;
+    fact = ongo(a[1], false, 6);
+    return;
+}
+def bool ongo(int a, bool b, int c) {
+    return true;
+}

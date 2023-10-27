@@ -1,16 +1,36 @@
-def int fact(int n)
+def int fact1(int n)
 {
-    if (n == 1)
-    {
+    if (n == 1) {
         return 1;
     }
+    return n * fact1(n - 1);
+}
 
-    return n * fact(n - 1);
+def int fact2(int n)
+{
+    int result;
+    result = 1;
+    while (n > 1)
+    {
+        result = result * n;
+        n = n - 1;
+    }
+    return result;
+}
+
+def int fact3(int n)
+{
+    int sum;
+    sum = 1;
+    while(n > 0)
+    {
+        sum = sum * n;
+        n = n - 1;
+    }
+    return sum;
 }
 
 def int main()
 {
-    int a;
-    a = fact(4);
-    return a;
+    return 0;
 }

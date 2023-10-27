@@ -1,0 +1,5 @@
+def int main()
+{
+    print_str(true);
+    return 0;
+}

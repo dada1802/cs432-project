@@ -1,0 +1,11 @@
+def int main()
+{
+    print_int(ongo(1));
+    return 0;
+}
+def int ongo(int i)
+{
+    bool b;
+    b = i && true;
+    return i + 1;
+}

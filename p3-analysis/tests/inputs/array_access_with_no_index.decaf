@@ -1,0 +1,5 @@
+int a[6];
+def int main() {
+    a = 5;
+    return 0x123;
+}

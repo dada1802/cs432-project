@@ -1,0 +1,5 @@
+def int main()
+{
+    print_str("multiple", "parameters");
+    return 0;
+}

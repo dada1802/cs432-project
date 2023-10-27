@@ -1,0 +1,1 @@
+Type mismatch in parameter 0 of call to 'print_str': expected str but found int on line 3

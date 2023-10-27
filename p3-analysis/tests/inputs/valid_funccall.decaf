@@ -1,0 +1,6 @@
+def int main() {
+    return hey();
+}
+def int hey() {
+    return 1;
+}

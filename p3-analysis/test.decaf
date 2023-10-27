@@ -1,10 +1,6 @@
-def int foo()
-{
+int array[5];
+def int main(){
+    int x;
+    x = array["buyue"];
     return 1;
-}
-
-def int main()
-{
-    foo = 2;
-    return 0;
 }

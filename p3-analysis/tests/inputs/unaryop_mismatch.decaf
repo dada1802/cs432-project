@@ -1,9 +1,0 @@
-def int main()
-{
-    bool a;
-    int b;
-    a = !2;
-    b = -false;
-
-    return 0;
-}

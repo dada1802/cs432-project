@@ -1,0 +1,10 @@
+def int main()
+{
+    bool b;
+    b = turtle();
+    return turtle();
+}
+def bool turtle()
+{
+    return !"buyue";
+}

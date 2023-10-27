@@ -1,4 +1,0 @@
-def bool main()
-{
-    return false;
-}

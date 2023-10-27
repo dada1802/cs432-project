@@ -1,0 +1,1 @@
+Duplicate symbols named 'main' in scope started on line 1

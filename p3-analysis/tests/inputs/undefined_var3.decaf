@@ -1,0 +1,7 @@
+def int main() {
+    fact = ongo(1, true, 3);
+    return 0;
+}
+def bool ongo(int a, bool b, int c) {
+    return true;
+}

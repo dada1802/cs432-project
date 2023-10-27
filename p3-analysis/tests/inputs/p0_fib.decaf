@@ -1,21 +1,41 @@
-def int fib(int n)
+def int fib1(int n)
 {
-    if (n == 0)
-    {
+    if (n == 0) {
         return 0;
     }
-
-    if (n == 1)
-    {
+    if (n == 1) {
         return 1;
     }
+    return fib1(n - 1) + fib1(n - 2);
+}
 
-    return fib(n - 1) + fib(n - 2);
+def int fib2(int n)
+{
+    int a;
+    int b;
+    int c;
+    a = 0;
+    b = 1;
+    while (n > 0)
+    {
+        c = a + b;
+        a = b;
+        b = c;
+        n = n - 1;
+    }
+    return a;
+}
+
+def int fib3(int n)
+{
+    if (n <= 1)
+    {
+        return n;
+    }
+    return (fib3(n-1) + fib3(n-2));
 }
 
 def int main()
 {
-    int a;
-    a = fib(5);
-    return a;
+    return 0;
 }

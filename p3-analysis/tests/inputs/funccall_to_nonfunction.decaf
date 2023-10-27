@@ -1,0 +1,5 @@
+int ongo;
+def int main()
+{
+    return ongo(1);
+}

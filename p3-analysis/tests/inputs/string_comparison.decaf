@@ -1,0 +1,6 @@
+def int main()
+{
+    bool a;
+    a = "" == "";
+    return 0;
+}

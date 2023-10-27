@@ -1,2 +1,0 @@
-Function 'foo' accessed as a variable on line 9
-Function 'foo' accessed as a variable on line 10

@@ -1,32 +1,53 @@
-def int min(int a, int b)
+def int gcd1(int a, int b)
 {
-    if (a < b)
-    {
-        return a;
+    int temp;
+    while (b != 0) {
+        temp = b;
+        b = a % b;
+        a = temp;
     }
-
-    return b;
+    return a;
 }
 
-def int gcd(int a, int b)
+def int gcd2(int a, int b)
 {
-    int m;
-    m = min(a, b);
-
-    while (m > 0)
+    while (a != b)
     {
-        if (a % m == 0 && b % m == 0)
+        if (a > b)
         {
-            return m;
+            a = a - b;
+        }
+        else
+        {
+            b = b - a;
+        }
+    }
+    return a;
+}
+
+def int gcd3(int a, int b)
+{
+        int result;
+        if(a > b)
+        {
+            result = b;
+        }
+        else
+        {
+            result = a;
+        }
+        while (result > 0) {
+            if (a % result == 0 && b % result == 0) {
+                break;
+            }
+            result = result - 1;
         }
 
-        m = m - 1;
-    }
+        // Return gcd of a and b
+        return result;
 }
 
 def int main()
 {
-    int a;
-    a = gcd(10, 5);
-    return a;
+    return 0;
 }

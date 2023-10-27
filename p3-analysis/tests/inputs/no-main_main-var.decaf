@@ -1,0 +1,4 @@
+int main;
+def int foo(int a) {
+    return 0;
+}

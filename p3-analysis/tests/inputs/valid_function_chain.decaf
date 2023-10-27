@@ -1,0 +1,15 @@
+int a;
+def int main()
+{
+    return other(a);
+}
+def bool ongo(int a)
+{
+    return true;
+}
+def int other(int b)
+{
+    bool a;
+    a = ongo(b % 6);
+    return 0;
+}

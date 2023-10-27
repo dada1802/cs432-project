@@ -1,0 +1,5 @@
+def int main()
+{
+    print_bool("buyue box");
+    return 0;
+}

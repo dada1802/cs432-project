@@ -1,0 +1,4 @@
+int ongo[6];
+def int main() {
+    print_int(ongo[1]);
+}

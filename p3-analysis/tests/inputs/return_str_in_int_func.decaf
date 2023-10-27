@@ -1,0 +1,10 @@
+def int main()
+{
+    int b;
+    b = test();
+    return b;
+}
+def int test()
+{
+    return "buyue box";
+}

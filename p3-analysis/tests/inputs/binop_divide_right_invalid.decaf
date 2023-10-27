@@ -1,0 +1,10 @@
+def int main()
+{
+    print_int(ongo(1));
+    return 0;
+}
+def int ongo(int i)
+{
+    bool b;
+    return 1 / b;
+}

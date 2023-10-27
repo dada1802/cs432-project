@@ -1,0 +1,7 @@
+def int main()
+{
+    int a;
+    int b;
+    print_int(a, b);
+    return 0;
+}

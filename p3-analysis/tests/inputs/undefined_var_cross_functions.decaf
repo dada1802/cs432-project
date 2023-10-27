@@ -1,0 +1,6 @@
+def int main() {
+    int b;
+}
+def void hey() {
+    b = 5;
+}

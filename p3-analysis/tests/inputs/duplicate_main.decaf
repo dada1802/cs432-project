@@ -1,0 +1,8 @@
+def int main() {
+    return 1;
+}
+def int main() {
+    int a;
+    a = 5;
+    return 0;
+}

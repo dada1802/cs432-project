@@ -1,0 +1,6 @@
+int array[5];
+def int main(){
+    int x;
+    x = array["buyue"];
+    return 1;
+}

@@ -1,0 +1,1 @@
+Type mismatch in parameter 0 of call to 'print_bool': expected bool but found str on line 3

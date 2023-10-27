@@ -1,0 +1,245 @@
+// CS 432 PROJECT 0: DECAF PROGRAMMING
+// Nick Spokes
+// I used an AI tool to create the structure/"blueprint" for the algorithm behind is_prime() and gcd().
+
+def int fact(int n)
+{
+    if (n == 1) {
+        return 1;
+    }
+    return n * fact(n - 1);
+}
+
+def int fib(int n)
+{
+    if (n == 0) {
+        return 0;
+    }
+    if (n == 1) {
+        return 1;
+    }
+    return fib(n - 1) + fib(n - 2);
+}
+
+def bool is_prime(int n)
+{
+    int count;
+    count = 2;
+    if (n == 2) {
+        return true;
+    }
+    if (n > 2) {
+        while (count < n) {
+            if (n % count == 0) {
+                return false;
+            }
+            count = count + 1;
+        }
+        return true;
+    }
+}
+
+def int gcd(int a, int b)
+{
+    int temp;
+    while (b != 0) {
+        temp = b;
+        b = a % b;
+        a = temp;
+    }
+    return a;
+}
+
+int nums[100];
+
+def int sum_nums(int len)
+{
+    int count;
+    int sum;
+    count = 0;
+    sum = 0;
+    while (count < len) {
+        sum = sum + nums[count];
+        count = count + 1;
+    }
+    return sum;
+}
+
+def void sort_nums(int len)
+{
+    int i;
+    int j;
+    int temp;
+    bool swapped;
+    i = 0;
+    while (i < len) {
+        swapped = false;
+        j = 0;
+        while (j < len - i - 1) {
+            if (nums[j] > nums[j + 1]) {
+                temp = nums[j];
+                nums[j] = nums[j + 1];
+                nums[j + 1] = temp;
+                swapped = true;
+            }
+            j = j + 1;
+        }
+        if (swapped == false) {
+            return;
+        }
+        i = i + 1;
+    }
+    return;
+}
+
+def void draw_triangle(int base)
+{
+    int rows;
+    int i;
+    int j;
+    int num_items;
+    int num_spaces;
+    i = 0;
+    num_items = 1;
+    rows = base / 2 + base % 2;
+    if (base % 2 == 0) {
+        num_items = 2;
+    }
+    while (i < rows) {
+        num_spaces = (base - num_items) / 2;
+        j = 0;
+        while (j < num_spaces) {
+            print_str(" ");
+            j = j + 1;
+        }
+        j = 0;
+        while (j < num_items) {
+            print_str("#");
+            j = j + 1;
+        }
+        j = 0;
+        while (j < num_spaces) {
+            print_str(" ");
+            j = j + 1;
+        }
+        print_str("\n");
+        num_items = num_items + 2;
+        i = i + 1;
+    }
+    return;
+}
+
+def void print_nums()
+{
+    int count;
+    count = 0;
+    print_str("[");
+    while (count <= 100) {
+        print_int(nums[count]);
+        if (count < 100) {
+            print_str(", ");
+        }
+        count = count + 1;
+    }
+    print_str("]\n");
+}
+
+def int main()
+{
+    int nums_start;
+    int ans_sum_nums;
+    int sum_nums_input;
+    int ans_gcd;
+    int gcd_input_1;
+    int gcd_input_2;
+    int triangle_max;
+    int count;
+
+    // Test is_prime
+    count = 0;
+    print_str("\nTest for is_prime:\n");
+    while (count <= 100) {
+        print_int(count);
+        print_str(" primeness: ");
+        print_bool(is_prime(count));
+        print_str("\n");
+        count = count + 1;
+    }
+
+    // Test factorial
+    count = 1;
+    print_str("\nTest for factorial\n");
+    while (count <= 10) {
+        print_int(count);
+        print_str("! = ");
+        print_int(fact(count));
+        print_str("\n");
+        count = count + 1;
+    }
+
+    // Test fibonacci
+    count = 0;
+    print_str("\nTest for fibonacci\n");
+    while (count <= 25) {
+        print_str("fib(");
+        print_int(count);
+        print_str(") = ");
+        print_int(fib(count));
+        print_str("\n");
+        count = count + 1;
+    }
+
+    // Test gcd
+    gcd_input_1 = 60;
+    gcd_input_2 = 84;
+    print_str("\nTest for gcd\n");
+    ans_gcd = gcd(gcd_input_1, gcd_input_2);
+    print_str("Result of gcd(");
+    print_int(gcd_input_1);
+    print_str(", ");
+    print_int(gcd_input_2);
+    print_str("): ");
+    print_int(ans_gcd);
+    print_str("\nCorrect answer: 12");
+    print_str("\n");
+
+    // Setup nums array
+    count = 0;
+    nums_start = 90;
+    print_str("\nSetting up nums array: ");
+    while (count <= 100) {
+        nums[count] = nums_start;
+        count = count + 1;
+        nums_start = nums_start - 1;
+    }
+    print_nums();
+
+    // Test sum_nums
+    sum_nums_input = 100;
+    print_str("\nTest for sum_nums\n");
+    ans_sum_nums = sum_nums(sum_nums_input);
+    print_str("Result of sum_nums(");
+    print_int(sum_nums_input);
+    print_str("): ");
+    print_int(ans_sum_nums);
+    print_str("\nCorrect answer: 4040");
+    print_str("\n");
+
+    // Test sort_nums
+    sort_nums(100);
+    print_str("\nTest for sort_nums\n");
+    print_nums();
+
+    // Test draw_triangle
+    triangle_max = 20;
+    count = 1;
+    print_str("\nTest for draw_triangle\n");
+    while (count <= triangle_max) {
+        draw_triangle(count);
+        count = count + 1;
+    }
+
+    print_str("\n");
+    return 0;
+}
+

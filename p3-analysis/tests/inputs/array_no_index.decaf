@@ -1,8 +1,0 @@
-int x[2];
-def int main()
-{
-    int a;
-    a = x;
-
-    return 0;
-}

@@ -1,0 +1,9 @@
+int a;
+def int main()
+{
+    return 0;
+}
+def void ongo(int a)
+{
+    return;
+}
