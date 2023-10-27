@@ -1,0 +1,79 @@
+Program [line 1]
+SYM TABLE:
+ print_int : (int) -> void
+ print_bool : (bool) -> void
+ print_str : (str) -> void
+ sort_nums : (int) -> void
+ sort_nums2 : (int) -> void
+ sort_nums3 : (int) -> void
+ main : () -> int
+ nums : int [100]
+
+  FuncDecl name="sort_nums" return_type=void parameters={len:int} [line 3]
+  SYM TABLE:
+   len : int
+
+    Block [line 4]
+    SYM TABLE:
+     i : int
+     j : int
+     temp : int
+     swapped : bool
+
+        Block [line 10]
+        SYM TABLE:
+
+            Block [line 13]
+            SYM TABLE:
+
+                Block [line 14]
+                SYM TABLE:
+
+            Block [line 22]
+            SYM TABLE:
+
+  FuncDecl name="sort_nums2" return_type=void parameters={len:int} [line 30]
+  SYM TABLE:
+   len : int
+
+    Block [line 31]
+    SYM TABLE:
+     i : int
+     j : int
+     temp : int
+
+        Block [line 37]
+        SYM TABLE:
+
+            Block [line 40]
+            SYM TABLE:
+
+                Block [line 42]
+                SYM TABLE:
+
+  FuncDecl name="sort_nums3" return_type=void parameters={len:int} [line 54]
+  SYM TABLE:
+   len : int
+
+    Block [line 55]
+    SYM TABLE:
+     i : int
+     j : int
+     mIndex : int
+     temp : int
+
+        Block [line 72]
+        SYM TABLE:
+
+            Block [line 76]
+            SYM TABLE:
+
+                Block [line 78]
+                SYM TABLE:
+
+  FuncDecl name="main" return_type=int parameters={} [line 91]
+  SYM TABLE:
+
+    Block [line 92]
+    SYM TABLE:
+

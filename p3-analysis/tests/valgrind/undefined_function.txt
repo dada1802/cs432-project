@@ -1,0 +1,15 @@
+==137054== Memcheck, a memory error detector
+==137054== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==137054== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==137054== Command: ../decaf inputs/undefined_function.decaf
+==137054== 
+Symbol 'ongo' undefined on line 3
+==137054== 
+==137054== HEAP SUMMARY:
+==137054==     in use at exit: 0 bytes in 0 blocks
+==137054==   total heap usage: 1,960 allocs, 1,960 frees, 241,192 bytes allocated
+==137054== 
+==137054== All heap blocks were freed -- no leaks are possible
+==137054== 
+==137054== For lists of detected and suppressed errors, rerun with: -s
+==137054== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

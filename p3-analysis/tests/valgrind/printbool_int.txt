@@ -1,0 +1,15 @@
+==135244== Memcheck, a memory error detector
+==135244== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==135244== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==135244== Command: ../decaf inputs/printbool_int.decaf
+==135244== 
+Type mismatch in parameter 0 of call to 'print_bool': expected bool but found int on line 3
+==135244== 
+==135244== HEAP SUMMARY:
+==135244==     in use at exit: 0 bytes in 0 blocks
+==135244==   total heap usage: 1,774 allocs, 1,774 frees, 208,464 bytes allocated
+==135244== 
+==135244== All heap blocks were freed -- no leaks are possible
+==135244== 
+==135244== For lists of detected and suppressed errors, rerun with: -s
+==135244== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

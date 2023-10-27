@@ -1,0 +1,15 @@
+==131385== Memcheck, a memory error detector
+==131385== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==131385== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==131385== Command: ../decaf inputs/binop_equals_invalid.decaf
+==131385== 
+Type mismatch: int is incompatible with bool on line 9
+==131385== 
+==131385== HEAP SUMMARY:
+==131385==     in use at exit: 0 bytes in 0 blocks
+==131385==   total heap usage: 2,007 allocs, 2,007 frees, 246,308 bytes allocated
+==131385== 
+==131385== All heap blocks were freed -- no leaks are possible
+==131385== 
+==131385== For lists of detected and suppressed errors, rerun with: -s
+==131385== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

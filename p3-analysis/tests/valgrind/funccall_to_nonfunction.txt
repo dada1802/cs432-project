@@ -1,0 +1,16 @@
+==132692== Memcheck, a memory error detector
+==132692== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==132692== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==132692== Command: ../decaf inputs/funccall_to_nonfunction.decaf
+==132692== 
+Invalid call to non-function 'ongo' on line 4
+Invalid number of function arguments on line 4
+==132692== 
+==132692== HEAP SUMMARY:
+==132692==     in use at exit: 0 bytes in 0 blocks
+==132692==   total heap usage: 1,761 allocs, 1,761 frees, 202,824 bytes allocated
+==132692== 
+==132692== All heap blocks were freed -- no leaks are possible
+==132692== 
+==132692== For lists of detected and suppressed errors, rerun with: -s
+==132692== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

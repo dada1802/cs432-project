@@ -1,0 +1,48 @@
+Program [line 1]
+SYM TABLE:
+ print_int : (int) -> void
+ print_bool : (bool) -> void
+ print_str : (str) -> void
+ fact1 : (int) -> int
+ fact2 : (int) -> int
+ fact3 : (int) -> int
+ main : () -> int
+
+  FuncDecl name="fact1" return_type=int parameters={n:int} [line 1]
+  SYM TABLE:
+   n : int
+
+    Block [line 2]
+    SYM TABLE:
+
+        Block [line 3]
+        SYM TABLE:
+
+  FuncDecl name="fact2" return_type=int parameters={n:int} [line 9]
+  SYM TABLE:
+   n : int
+
+    Block [line 10]
+    SYM TABLE:
+     result : int
+
+        Block [line 14]
+        SYM TABLE:
+
+  FuncDecl name="fact3" return_type=int parameters={n:int} [line 21]
+  SYM TABLE:
+   n : int
+
+    Block [line 22]
+    SYM TABLE:
+     sum : int
+
+        Block [line 26]
+        SYM TABLE:
+
+  FuncDecl name="main" return_type=int parameters={} [line 33]
+  SYM TABLE:
+
+    Block [line 34]
+    SYM TABLE:
+

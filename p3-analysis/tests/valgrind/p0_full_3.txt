@@ -1,0 +1,277 @@
+==133993== Memcheck, a memory error detector
+==133993== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==133993== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==133993== Command: ../decaf inputs/p0_full_3.decaf
+==133993== 
+dot: graph is too large for cairo-renderer bitmaps. Scaling by 0.717379 to fit
+Program [line 1]
+SYM TABLE:
+ print_int : (int) -> void
+ print_bool : (bool) -> void
+ print_str : (str) -> void
+ fact : (int) -> int
+ fib : (int) -> int
+ is_prime : (int) -> bool
+ gcd : (int, int) -> int
+ sum_nums : (int) -> int
+ sort_nums : (int) -> void
+ draw_triangle : (int) -> void
+ test_fact : (int, int) -> void
+ test_fib : (int, int) -> void
+ test_prime : (int, bool) -> void
+ test_sumNum : (int, int) -> void
+ test_gcd : (int, int, int) -> void
+ print_nums : () -> void
+ main : () -> int
+ nums : int [100]
+
+  FuncDecl name="fact" return_type=int parameters={n:int} [line 5]
+  SYM TABLE:
+   n : int
+
+    Block [line 6]
+    SYM TABLE:
+     sum : int
+
+        Block [line 10]
+        SYM TABLE:
+
+  FuncDecl name="fib" return_type=int parameters={n:int} [line 17]
+  SYM TABLE:
+   n : int
+
+    Block [line 18]
+    SYM TABLE:
+
+        Block [line 20]
+        SYM TABLE:
+
+  FuncDecl name="is_prime" return_type=bool parameters={n:int} [line 26]
+  SYM TABLE:
+   n : int
+
+    Block [line 27]
+    SYM TABLE:
+     z : int
+
+        Block [line 31]
+        SYM TABLE:
+
+        Block [line 35]
+        SYM TABLE:
+
+            Block [line 37]
+            SYM TABLE:
+
+                Block [line 39]
+                SYM TABLE:
+
+                Block [line 43]
+                SYM TABLE:
+
+  FuncDecl name="gcd" return_type=int parameters={a:int,b:int} [line 51]
+  SYM TABLE:
+   a : int
+   b : int
+
+    Block [line 52]
+    SYM TABLE:
+     result : int
+
+        Block [line 55]
+        SYM TABLE:
+
+        Block [line 59]
+        SYM TABLE:
+
+        Block [line 62]
+        SYM TABLE:
+
+            Block [line 63]
+            SYM TABLE:
+
+  FuncDecl name="sum_nums" return_type=int parameters={len:int} [line 74]
+  SYM TABLE:
+   len : int
+
+    Block [line 75]
+    SYM TABLE:
+     i : int
+     sum : int
+
+        Block [line 90]
+        SYM TABLE:
+
+        Block [line 95]
+        SYM TABLE:
+
+  FuncDecl name="sort_nums" return_type=void parameters={len:int} [line 102]
+  SYM TABLE:
+   len : int
+
+    Block [line 103]
+    SYM TABLE:
+     i : int
+     j : int
+     mIndex : int
+     temp : int
+
+        Block [line 120]
+        SYM TABLE:
+
+            Block [line 124]
+            SYM TABLE:
+
+                Block [line 126]
+                SYM TABLE:
+
+  FuncDecl name="draw_triangle" return_type=void parameters={base:int} [line 139]
+  SYM TABLE:
+   base : int
+
+    Block [line 140]
+    SYM TABLE:
+     height : int
+     i : int
+     j : int
+     k : int
+
+        Block [line 146]
+        SYM TABLE:
+
+        Block [line 150]
+        SYM TABLE:
+
+        Block [line 153]
+        SYM TABLE:
+
+            Block [line 155]
+            SYM TABLE:
+
+            Block [line 160]
+            SYM TABLE:
+
+  FuncDecl name="test_fact" return_type=void parameters={num:int,correct:int} [line 171]
+  SYM TABLE:
+   num : int
+   correct : int
+
+    Block [line 172]
+    SYM TABLE:
+     factorial : int
+
+        Block [line 176]
+        SYM TABLE:
+
+  FuncDecl name="test_fib" return_type=void parameters={num:int,correct:int} [line 183]
+  SYM TABLE:
+   num : int
+   correct : int
+
+    Block [line 184]
+    SYM TABLE:
+     fibo : int
+
+        Block [line 188]
+        SYM TABLE:
+
+        Block [line 192]
+        SYM TABLE:
+
+  FuncDecl name="test_prime" return_type=void parameters={num:int,correct:bool} [line 198]
+  SYM TABLE:
+   num : int
+   correct : bool
+
+    Block [line 199]
+    SYM TABLE:
+     p : bool
+
+        Block [line 203]
+        SYM TABLE:
+
+        Block [line 207]
+        SYM TABLE:
+
+  FuncDecl name="test_sumNum" return_type=void parameters={len:int,correct:int} [line 214]
+  SYM TABLE:
+   len : int
+   correct : int
+
+    Block [line 215]
+    SYM TABLE:
+     sum : int
+
+        Block [line 219]
+        SYM TABLE:
+
+        Block [line 223]
+        SYM TABLE:
+
+  FuncDecl name="test_gcd" return_type=void parameters={a:int,b:int,correct:int} [line 230]
+  SYM TABLE:
+   a : int
+   b : int
+   correct : int
+
+    Block [line 231]
+    SYM TABLE:
+     g : int
+
+        Block [line 235]
+        SYM TABLE:
+
+        Block [line 239]
+        SYM TABLE:
+
+  FuncDecl name="print_nums" return_type=void parameters={} [line 246]
+  SYM TABLE:
+
+    Block [line 247]
+    SYM TABLE:
+     count : int
+
+        Block [line 251]
+        SYM TABLE:
+
+            Block [line 253]
+            SYM TABLE:
+
+  FuncDecl name="main" return_type=int parameters={} [line 261]
+  SYM TABLE:
+
+    Block [line 262]
+    SYM TABLE:
+     nums_start : int
+     ans_sum_nums : int
+     sum_nums_input : int
+     ans_gcd : int
+     gcd_input_1 : int
+     gcd_input_2 : int
+     triangle_max : int
+     count : int
+
+        Block [line 300]
+        SYM TABLE:
+
+        Block [line 311]
+        SYM TABLE:
+
+        Block [line 322]
+        SYM TABLE:
+
+        Block [line 349]
+        SYM TABLE:
+
+        Block [line 376]
+        SYM TABLE:
+
+==133993== 
+==133993== HEAP SUMMARY:
+==133993==     in use at exit: 0 bytes in 0 blocks
+==133993==   total heap usage: 7,381 allocs, 7,381 frees, 1,026,000 bytes allocated
+==133993== 
+==133993== All heap blocks were freed -- no leaks are possible
+==133993== 
+==133993== For lists of detected and suppressed errors, rerun with: -s
+==133993== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

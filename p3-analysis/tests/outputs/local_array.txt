@@ -1,0 +1,1 @@
+Local variable 'a' on line 2 cannot be an array

@@ -1,0 +1,15 @@
+==130772== Memcheck, a memory error detector
+==130772== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==130772== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==130772== Command: ../decaf inputs/array_bad_index.decaf
+==130772== 
+Type mismatch: int expected but str found on line 4
+==130772== 
+==130772== HEAP SUMMARY:
+==130772==     in use at exit: 0 bytes in 0 blocks
+==130772==   total heap usage: 1,859 allocs, 1,859 frees, 221,356 bytes allocated
+==130772== 
+==130772== All heap blocks were freed -- no leaks are possible
+==130772== 
+==130772== For lists of detected and suppressed errors, rerun with: -s
+==130772== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

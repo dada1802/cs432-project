@@ -1,0 +1,2 @@
+Type mismatch: int expected but bool found on line 5
+Type mismatch: bool expected but str found on line 9

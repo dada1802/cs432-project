@@ -1,0 +1,52 @@
+Program [line 1]
+SYM TABLE:
+ print_int : (int) -> void
+ print_bool : (bool) -> void
+ print_str : (str) -> void
+ fib1 : (int) -> int
+ fib2 : (int) -> int
+ fib3 : (int) -> int
+ main : () -> int
+
+  FuncDecl name="fib1" return_type=int parameters={n:int} [line 1]
+  SYM TABLE:
+   n : int
+
+    Block [line 2]
+    SYM TABLE:
+
+        Block [line 3]
+        SYM TABLE:
+
+        Block [line 6]
+        SYM TABLE:
+
+  FuncDecl name="fib2" return_type=int parameters={n:int} [line 12]
+  SYM TABLE:
+   n : int
+
+    Block [line 13]
+    SYM TABLE:
+     a : int
+     b : int
+     c : int
+
+        Block [line 20]
+        SYM TABLE:
+
+  FuncDecl name="fib3" return_type=int parameters={n:int} [line 29]
+  SYM TABLE:
+   n : int
+
+    Block [line 30]
+    SYM TABLE:
+
+        Block [line 32]
+        SYM TABLE:
+
+  FuncDecl name="main" return_type=int parameters={} [line 38]
+  SYM TABLE:
+
+    Block [line 39]
+    SYM TABLE:
+

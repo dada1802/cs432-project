@@ -1,0 +1,2 @@
+Invalid call to non-function 'ongo' on line 4
+Invalid number of function arguments on line 4

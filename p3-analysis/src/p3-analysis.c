@@ -352,34 +352,37 @@ void AnalysisVisitor_postvisit_unaryop(NodeVisitor* visitor, ASTNode* node)
 
 void AnalysisVisitor_previsit_location(NodeVisitor* visitor, ASTNode* node)
 {
-    Symbol* symbol = lookup_symbol_with_reporting (visitor, node, node->location.name);
+    Symbol* symbol = lookup_symbol_with_reporting(visitor, node, node->location.name);
     if (symbol == NULL)
         SET_INFERRED_TYPE(UNKNOWN);
 
-    else 
+    else {
         SET_INFERRED_TYPE(symbol->type);
     
-    if (symbol != NULL) {
-        if (symbol->symbol_type == ARRAY_SYMBOL) {
-            if (node->location.index == NULL)
-                ErrorList_printf(ERROR_LIST, "Array '%s' accessed without index on line %d",
+        if (symbol != NULL) {
+            if (symbol->symbol_type == ARRAY_SYMBOL) {
+                if (node->location.index == NULL)
+                    ErrorList_printf(ERROR_LIST, "Array '%s' accessed without index on line %d",
+                        symbol->name, node->source_line);
+            }
+
+            else if (symbol->symbol_type == SCALAR_SYMBOL && node->location.index != NULL)
+                ErrorList_printf(ERROR_LIST, "Scalar '%s' accessed as an array on line %d",
                     symbol->name, node->source_line);
 
-            else {
-                // DecafType type = GET_INFERRED_TYPE(node->location.index);
-                // printf("Type of %s is %s", symbol->name, DecafType_to_string(type));
-                // ErrorList_printf(ERROR_LIST, "Type mismatch: int expected but %s found on line %d",
-                //     DecafType_to_string(GET_INFERRED_TYPE(node->location.index)), node->source_line);
-            }
+            else if (symbol->symbol_type == FUNCTION_SYMBOL)
+                ErrorList_printf(ERROR_LIST, "Function '%s' accessed as a variable on line %d",
+                    symbol->name, node->source_line);
         }
+    }
+}
 
-        else if (symbol->symbol_type == SCALAR_SYMBOL && node->location.index != NULL)
-            ErrorList_printf(ERROR_LIST, "Scalar '%s' accessed as an array on line %d",
-                symbol->name, node->source_line);
-
-        else if (symbol->symbol_type == FUNCTION_SYMBOL)
-            ErrorList_printf(ERROR_LIST, "Function '%s' accessed as a variable on line %d",
-                symbol->name, node->source_line);
+void AnalysisVisitor_postvisit_location(NodeVisitor* visitor, ASTNode* node)
+{
+    if (GET_INFERRED_TYPE(node) != UNKNOWN) {
+        if (node->location.index != NULL && GET_INFERRED_TYPE(node->location.index) != INT)
+            ErrorList_printf(ERROR_LIST, "Type mismatch: int expected but %s found on line %d",
+                DecafType_to_string(GET_INFERRED_TYPE(node->location.index)), node->source_line);
     }
 }
 
@@ -464,7 +467,7 @@ ErrorList* analyze (ASTNode* tree)
     v->previsit_unaryop      = AnalysisVisitor_previsit_unaryop;
     v->postvisit_unaryop     = AnalysisVisitor_postvisit_unaryop;
     v->previsit_location     = AnalysisVisitor_previsit_location;
-    v->postvisit_location    = NULL;
+    v->postvisit_location    = AnalysisVisitor_postvisit_location;
     v->previsit_funccall     = NULL;
     v->postvisit_funccall    = AnalysisVisitor_postvisit_funccall;
     v->previsit_literal      = AnalysisVisitor_previsit_literal;

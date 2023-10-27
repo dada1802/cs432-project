@@ -1,0 +1,56 @@
+Program [line 1]
+SYM TABLE:
+ print_int : (int) -> void
+ print_bool : (bool) -> void
+ print_str : (str) -> void
+ sum_nums1 : (int) -> int
+ sum_nums2 : (int) -> int
+ sum_nums3 : (int) -> int
+ main : () -> int
+ nums : int [100]
+
+  FuncDecl name="sum_nums1" return_type=int parameters={len:int} [line 3]
+  SYM TABLE:
+   len : int
+
+    Block [line 4]
+    SYM TABLE:
+     count : int
+     sum : int
+
+        Block [line 9]
+        SYM TABLE:
+
+  FuncDecl name="sum_nums2" return_type=int parameters={len:int} [line 16]
+  SYM TABLE:
+   len : int
+
+    Block [line 17]
+    SYM TABLE:
+     sum : int
+     i : int
+
+        Block [line 23]
+        SYM TABLE:
+
+  FuncDecl name="sum_nums3" return_type=int parameters={len:int} [line 30]
+  SYM TABLE:
+   len : int
+
+    Block [line 31]
+    SYM TABLE:
+     i : int
+     sum : int
+
+        Block [line 46]
+        SYM TABLE:
+
+        Block [line 51]
+        SYM TABLE:
+
+  FuncDecl name="main" return_type=int parameters={} [line 58]
+  SYM TABLE:
+
+    Block [line 59]
+    SYM TABLE:
+

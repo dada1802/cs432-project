@@ -1,0 +1,15 @@
+==135620== Memcheck, a memory error detector
+==135620== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==135620== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==135620== Command: ../decaf inputs/printbool_multiple_parameters.decaf
+==135620== 
+Invalid number of function arguments on line 5
+==135620== 
+==135620== HEAP SUMMARY:
+==135620==     in use at exit: 0 bytes in 0 blocks
+==135620==   total heap usage: 1,818 allocs, 1,818 frees, 217,072 bytes allocated
+==135620== 
+==135620== All heap blocks were freed -- no leaks are possible
+==135620== 
+==135620== For lists of detected and suppressed errors, rerun with: -s
+==135620== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

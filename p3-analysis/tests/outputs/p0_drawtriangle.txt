@@ -1,0 +1,96 @@
+Program [line 1]
+SYM TABLE:
+ print_int : (int) -> void
+ print_bool : (bool) -> void
+ print_str : (str) -> void
+ draw_triangle1 : (int) -> void
+ draw_triangle2 : (int) -> void
+ draw_triangle : (int) -> void
+ main : () -> int
+ nums : int [100]
+
+  FuncDecl name="draw_triangle1" return_type=void parameters={base:int} [line 3]
+  SYM TABLE:
+   base : int
+
+    Block [line 4]
+    SYM TABLE:
+     rows : int
+     i : int
+     j : int
+     num_items : int
+     num_spaces : int
+
+        Block [line 13]
+        SYM TABLE:
+
+        Block [line 16]
+        SYM TABLE:
+
+            Block [line 19]
+            SYM TABLE:
+
+            Block [line 24]
+            SYM TABLE:
+
+            Block [line 29]
+            SYM TABLE:
+
+  FuncDecl name="draw_triangle2" return_type=void parameters={base:int} [line 40]
+  SYM TABLE:
+   base : int
+
+    Block [line 41]
+    SYM TABLE:
+     spaces : int
+     current_spaces : int
+     stars : int
+     current_stars : int
+
+        Block [line 50]
+        SYM TABLE:
+
+        Block [line 55]
+        SYM TABLE:
+
+            Block [line 58]
+            SYM TABLE:
+
+            Block [line 66]
+            SYM TABLE:
+
+            Block [line 74]
+            SYM TABLE:
+
+  FuncDecl name="draw_triangle" return_type=void parameters={base:int} [line 80]
+  SYM TABLE:
+   base : int
+
+    Block [line 81]
+    SYM TABLE:
+     height : int
+     i : int
+     j : int
+     k : int
+
+        Block [line 87]
+        SYM TABLE:
+
+        Block [line 91]
+        SYM TABLE:
+
+        Block [line 94]
+        SYM TABLE:
+
+            Block [line 96]
+            SYM TABLE:
+
+            Block [line 101]
+            SYM TABLE:
+
+  FuncDecl name="main" return_type=int parameters={} [line 111]
+  SYM TABLE:
+
+    Block [line 112]
+    SYM TABLE:
+

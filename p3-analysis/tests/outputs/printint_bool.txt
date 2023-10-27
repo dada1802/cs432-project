@@ -1,0 +1,1 @@
+Type mismatch in parameter 0 of call to 'print_int': expected int but found bool on line 3

@@ -1,0 +1,2 @@
+Type mismatch: int expected but bool found on line 5
+Symbol 'durdle' undefined on line 9

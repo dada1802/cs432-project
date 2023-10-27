@@ -1,0 +1,66 @@
+Program [line 1]
+SYM TABLE:
+ print_int : (int) -> void
+ print_bool : (bool) -> void
+ print_str : (str) -> void
+ gcd1 : (int, int) -> int
+ gcd2 : (int, int) -> int
+ gcd3 : (int, int) -> int
+ main : () -> int
+
+  FuncDecl name="gcd1" return_type=int parameters={a:int,b:int} [line 1]
+  SYM TABLE:
+   a : int
+   b : int
+
+    Block [line 2]
+    SYM TABLE:
+     temp : int
+
+        Block [line 4]
+        SYM TABLE:
+
+  FuncDecl name="gcd2" return_type=int parameters={a:int,b:int} [line 12]
+  SYM TABLE:
+   a : int
+   b : int
+
+    Block [line 13]
+    SYM TABLE:
+
+        Block [line 15]
+        SYM TABLE:
+
+            Block [line 17]
+            SYM TABLE:
+
+            Block [line 21]
+            SYM TABLE:
+
+  FuncDecl name="gcd3" return_type=int parameters={a:int,b:int} [line 28]
+  SYM TABLE:
+   a : int
+   b : int
+
+    Block [line 29]
+    SYM TABLE:
+     result : int
+
+        Block [line 32]
+        SYM TABLE:
+
+        Block [line 36]
+        SYM TABLE:
+
+        Block [line 39]
+        SYM TABLE:
+
+            Block [line 40]
+            SYM TABLE:
+
+  FuncDecl name="main" return_type=int parameters={} [line 50]
+  SYM TABLE:
+
+    Block [line 51]
+    SYM TABLE:
+

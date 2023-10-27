@@ -1,0 +1,90 @@
+==134326== Memcheck, a memory error detector
+==134326== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==134326== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==134326== Command: ../decaf inputs/p0_isprime.decaf
+==134326== 
+Program [line 1]
+SYM TABLE:
+ print_int : (int) -> void
+ print_bool : (bool) -> void
+ print_str : (str) -> void
+ is_prime1 : (int) -> bool
+ is_prime2 : (int) -> bool
+ is_prime3 : (int) -> bool
+ main : () -> int
+
+  FuncDecl name="is_prime1" return_type=bool parameters={n:int} [line 1]
+  SYM TABLE:
+   n : int
+
+    Block [line 2]
+    SYM TABLE:
+     count : int
+
+        Block [line 5]
+        SYM TABLE:
+
+        Block [line 8]
+        SYM TABLE:
+
+            Block [line 9]
+            SYM TABLE:
+
+                Block [line 10]
+                SYM TABLE:
+
+  FuncDecl name="is_prime2" return_type=bool parameters={n:int} [line 19]
+  SYM TABLE:
+   n : int
+
+    Block [line 20]
+    SYM TABLE:
+     i : int
+
+        Block [line 23]
+        SYM TABLE:
+
+        Block [line 28]
+        SYM TABLE:
+
+            Block [line 30]
+            SYM TABLE:
+
+  FuncDecl name="is_prime3" return_type=bool parameters={n:int} [line 38]
+  SYM TABLE:
+   n : int
+
+    Block [line 39]
+    SYM TABLE:
+     z : int
+
+        Block [line 43]
+        SYM TABLE:
+
+        Block [line 47]
+        SYM TABLE:
+
+            Block [line 49]
+            SYM TABLE:
+
+                Block [line 51]
+                SYM TABLE:
+
+                Block [line 55]
+                SYM TABLE:
+
+  FuncDecl name="main" return_type=int parameters={} [line 63]
+  SYM TABLE:
+
+    Block [line 64]
+    SYM TABLE:
+
+==134326== 
+==134326== HEAP SUMMARY:
+==134326==     in use at exit: 0 bytes in 0 blocks
+==134326==   total heap usage: 2,911 allocs, 2,911 frees, 386,980 bytes allocated
+==134326== 
+==134326== All heap blocks were freed -- no leaks are possible
+==134326== 
+==134326== For lists of detected and suppressed errors, rerun with: -s
+==134326== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
