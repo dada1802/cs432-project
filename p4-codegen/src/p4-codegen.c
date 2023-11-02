@@ -1,6 +1,9 @@
 /**
  * @file p4-codegen.c
  * @brief Compiler phase 4: code generation
+ * 
+ * Group members: David Nguyen, Chris Simmons.
+ * We did not use any AI-assist tools while creating this solution.
  */
 #include "p4-codegen.h"
 
@@ -13,6 +16,7 @@ typedef struct CodeGenData
      * @brief Reference to the epilogue jump label for the current function
      */
     Operand current_epilogue_jump_label;
+
 
     /* add any new desired state information (and clean it up in CodeGenData_free) */
 } CodeGenData;
@@ -130,19 +134,129 @@ void CodeGenVisitor_previsit_funcdecl (NodeVisitor* visitor, ASTNode* node)
     DATA->current_epilogue_jump_label = anonymous_label();
 }
 
-void CodeGenVisitor_gen_funcdecl (NodeVisitor* visitor, ASTNode* node)
+void CodeGenVisitor_postvisit_funcdecl (NodeVisitor* visitor, ASTNode* node)
 {
     /* every function begins with the corresponding call label */
     EMIT1OP(LABEL, call_label(node->funcdecl.name));
 
     /* BOILERPLATE: TODO: implement prologue */
+    Operand base_reg = base_register();
+    Operand stack_reg = stack_register();
+
+    EMIT1OP(PUSH, base_reg);
+    EMIT2OP(I2I, stack_reg, base_reg);
+    EMIT3OP(ADD_I, stack_reg, int_const(8 * node->funcdecl.body->block.variables->size), stack_reg);
 
     /* copy code from body */
     ASTNode_copy_code(node, node->funcdecl.body);
 
     EMIT1OP(LABEL, DATA->current_epilogue_jump_label);
     /* BOILERPLATE: TODO: implement epilogue */
+    EMIT2OP(I2I, base_reg, stack_reg);
+    EMIT1OP(POP, base_reg);
     EMIT0OP(RETURN);
+}
+
+void CodeGenVisitor_postvisit_block (NodeVisitor* visitor, ASTNode* node)
+{
+    /* copy code from each statement */
+    FOR_EACH(ASTNode*, statement, node->block.statements) {
+        ASTNode_copy_code(node, statement);
+    }
+}
+
+void CodeGenVisitor_postvisit_assignment (NodeVisitor* visitor, ASTNode* node)
+{
+    /* Copy code from the value */
+    ASTNode_copy_code(node, node->assignment.value);
+    Operand value = virtual_register();
+
+    EMIT2OP(LOAD_I, int_const(node->assignment.value), value);
+    // EMIT2OP(STORE_AI, value, base_register())
+}
+
+void CodeGenVisitor_postvisit_return (NodeVisitor* visitor, ASTNode* node)
+{
+    /* Copy code from the return value node */
+    ASTNode_copy_code(node, node->funcreturn.value);
+
+    EMIT2OP(I2I, ASTNode_get_temp_reg(node->funcreturn.value), return_register());
+}
+
+void CodeGenVisitor_postvisit_binaryop (NodeVisitor* visitor, ASTNode* node)
+{
+    /* Copy code from the left and right subchildren and assign them to the registers */
+    ASTNode_copy_code(node, node->binaryop.left);
+    ASTNode_copy_code(node, node->binaryop.right);
+
+    Operand left = ASTNode_get_temp_reg(node->binaryop.left);
+    Operand right = ASTNode_get_temp_reg(node->binaryop.right);
+    Operand result = virtual_register();
+
+    /* switch statement for the different operators */
+    switch (node->binaryop.operator)
+    {
+    case ADDOP:
+        EMIT3OP(ADD, left, right, result);
+        break;
+
+    case SUBOP:
+        EMIT3OP(SUB, left, right, result);
+        break;
+    
+    case MULOP:
+        EMIT3OP(MULT, left, right, result);
+        break;
+    
+    case DIVOP:
+        EMIT3OP(DIV, left, right, result);
+        break;
+
+    case MODOP:
+        EMIT3OP(DIV, left, right, result);
+        EMIT3OP(MULT, right, result, result);
+        EMIT3OP(SUB, left, result, result);
+        break;
+    
+    default:
+        break;
+    }
+    
+    ASTNode_set_temp_reg(node, result);
+}
+
+void CodeGenVisitor_postvisit_unaryop (NodeVisitor* visitor, ASTNode* node)
+{
+    /* Copy code from the child */
+    ASTNode_copy_code(node, node->unaryop.child);
+
+    Operand child = ASTNode_get_temp_reg(node->unaryop.child);
+    Operand result = virtual_register();
+
+    /* Switch statement for the 2 unary operators */
+    switch (node->unaryop.operator)
+    {
+    case NEGOP:
+        EMIT2OP(NEG, child, result);
+        break;
+
+    case NOTOP:
+        EMIT2OP(NOT, child, result);
+        break;
+    
+    default:
+        break;
+    }
+
+    ASTNode_set_temp_reg(node, result);
+}
+
+void CodeGenVisitor_postvisit_literal (NodeVisitor* visitor, ASTNode* node)
+{
+    Operand r0 = virtual_register();
+    EMIT2OP(LOAD_I, int_const(node->literal.integer), r0);
+
+    ASTNode_set_temp_reg(node, r0);
 }
 
 #endif
@@ -150,21 +264,53 @@ InsnList* generate_code (ASTNode* tree)
 {
     InsnList* iloc = InsnList_new();
 
-
     NodeVisitor* v = NodeVisitor_new();
     v->data = CodeGenData_new();
     v->dtor = (Destructor)CodeGenData_free;
+    v->previsit_program      = NULL;
     v->postvisit_program     = CodeGenVisitor_gen_program;
+    v->previsit_vardecl      = NULL;
+    v->postvisit_vardecl     = NULL;
     v->previsit_funcdecl     = CodeGenVisitor_previsit_funcdecl;
-    v->postvisit_funcdecl    = CodeGenVisitor_gen_funcdecl;
+    v->postvisit_funcdecl    = CodeGenVisitor_postvisit_funcdecl;
+    v->previsit_block        = NULL;
+    v->postvisit_block       = CodeGenVisitor_postvisit_block;
+    v->previsit_assignment   = NULL;
+    v->postvisit_assignment  = CodeGenVisitor_postvisit_assignment;
+    v->previsit_conditional  = NULL;
+    v->postvisit_conditional = NULL;
+    v->previsit_whileloop    = NULL;
+    v->postvisit_whileloop   = NULL;
+    v->previsit_return       = NULL;
+    v->postvisit_return      = CodeGenVisitor_postvisit_return;
+    v->previsit_break        = NULL;
+    v->postvisit_break       = NULL;
+    v->previsit_continue     = NULL;
+    v->postvisit_continue    = NULL;
+    v->previsit_binaryop     = NULL;
+    v->invisit_binaryop      = NULL;
+    v->postvisit_binaryop    = CodeGenVisitor_postvisit_binaryop;
+    v->previsit_unaryop      = NULL;
+    v->postvisit_unaryop     = CodeGenVisitor_postvisit_unaryop;
+    v->previsit_location     = NULL;
+    v->postvisit_location    = NULL;
+    v->previsit_funccall     = NULL;
+    v->postvisit_funccall    = NULL;
+    v->previsit_literal      = NULL;
+    v->postvisit_literal     = CodeGenVisitor_postvisit_literal;
 
     /* generate code into AST attributes */
-    NodeVisitor_traverse_and_free(v, tree);
-
-    /* copy generated code into new list (the AST may be deallocated before
-     * the ILOC code is needed) */
-    FOR_EACH(ILOCInsn*, i, (InsnList*)ASTNode_get_attribute(tree, "code")) {
-        InsnList_add(iloc, ILOCInsn_copy(i));
+    if (tree == NULL)
+        InsnList_add(iloc, NULL);
+    
+    else {
+        NodeVisitor_traverse_and_free(v, tree);
+        /* copy generated code into new list (the AST may be deallocated before
+        * the ILOC code is needed) */
+        FOR_EACH(ILOCInsn*, i, (InsnList*)ASTNode_get_attribute(tree, "code")) {
+            InsnList_add(iloc, ILOCInsn_copy(i));
+        }
     }
+
     return iloc;
 }
