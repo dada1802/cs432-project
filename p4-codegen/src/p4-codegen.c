@@ -16,6 +16,7 @@ typedef struct CodeGenData
      * @brief Reference to the epilogue jump label for the current function
      */
     Operand current_epilogue_jump_label;
+    Operand offset;
 
 
     /* add any new desired state information (and clean it up in CodeGenData_free) */
@@ -31,6 +32,7 @@ CodeGenData* CodeGenData_new (void)
     CodeGenData* data = (CodeGenData*)calloc(1, sizeof(CodeGenData));
     CHECK_MALLOC_PTR(data);
     data->current_epilogue_jump_label = empty_operand();
+    data->offset = empty_operand();
     return data;
 }
 
@@ -145,13 +147,14 @@ void CodeGenVisitor_postvisit_funcdecl (NodeVisitor* visitor, ASTNode* node)
 
     EMIT1OP(PUSH, base_reg);
     EMIT2OP(I2I, stack_reg, base_reg);
-    EMIT3OP(ADD_I, stack_reg, int_const(8 * node->funcdecl.body->block.variables->size), stack_reg);
+    EMIT3OP(ADD_I, stack_reg, int_const(-8 * node->funcdecl.body->block.variables->size), stack_reg);
 
     /* copy code from body */
     ASTNode_copy_code(node, node->funcdecl.body);
+    EMIT1OP(JUMP, DATA->current_epilogue_jump_label);
 
-    EMIT1OP(LABEL, DATA->current_epilogue_jump_label);
     /* BOILERPLATE: TODO: implement epilogue */
+    EMIT1OP(LABEL, DATA->current_epilogue_jump_label);
     EMIT2OP(I2I, base_reg, stack_reg);
     EMIT1OP(POP, base_reg);
     EMIT0OP(RETURN);
@@ -169,10 +172,8 @@ void CodeGenVisitor_postvisit_assignment (NodeVisitor* visitor, ASTNode* node)
 {
     /* Copy code from the value */
     ASTNode_copy_code(node, node->assignment.value);
-    Operand value = virtual_register();
 
-    EMIT2OP(LOAD_I, int_const(node->assignment.value), value);
-    // EMIT2OP(STORE_AI, value, base_register())
+    EMIT3OP(STORE_AI, ASTNode_get_temp_reg(node->assignment.value), base_register(), DATA->offset);
 }
 
 void CodeGenVisitor_postvisit_return (NodeVisitor* visitor, ASTNode* node)
@@ -251,6 +252,18 @@ void CodeGenVisitor_postvisit_unaryop (NodeVisitor* visitor, ASTNode* node)
     ASTNode_set_temp_reg(node, result);
 }
 
+void CodeGenVisitor_postvisit_location (NodeVisitor* visitor, ASTNode* node)
+{
+    Symbol* loc = lookup_symbol(node, node->location.name);
+    Operand virtual_reg = virtual_register();
+
+    if (loc != NULL) {
+        DATA->offset = var_offset(node, loc);
+        EMIT3OP(LOAD_AI, base_register(), DATA->offset, virtual_reg);
+        ASTNode_set_temp_reg(node, virtual_reg);
+    }
+}
+
 void CodeGenVisitor_postvisit_literal (NodeVisitor* visitor, ASTNode* node)
 {
     Operand r0 = virtual_register();
@@ -293,7 +306,7 @@ InsnList* generate_code (ASTNode* tree)
     v->previsit_unaryop      = NULL;
     v->postvisit_unaryop     = CodeGenVisitor_postvisit_unaryop;
     v->previsit_location     = NULL;
-    v->postvisit_location    = NULL;
+    v->postvisit_location    = CodeGenVisitor_postvisit_location;
     v->previsit_funccall     = NULL;
     v->postvisit_funccall    = NULL;
     v->previsit_literal      = NULL;

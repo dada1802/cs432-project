@@ -4,6 +4,7 @@ main:
   addI SP, 0 => SP
   loadI 4 => r0
   i2i r0 => RET
+  jump l0
 l0:
   i2i BP => SP
   pop BP
@@ -61,7 +62,7 @@ stack:  65528: -9999999
 other memory:
 ==========================
 
-Executing: l0:
+Executing: jump l0
 
 ==========================
 sp=65528 bp=65528 ret=4

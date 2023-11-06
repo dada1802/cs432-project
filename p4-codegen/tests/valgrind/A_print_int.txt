@@ -1,14 +1,15 @@
-==2441207== Memcheck, a memory error detector
-==2441207== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==2441207== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==2441207== Command: ../decaf inputs/print_int.decaf
-==2441207== 
+==1349783== Memcheck, a memory error detector
+==1349783== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==1349783== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==1349783== Command: ../decaf inputs/print_int.decaf
+==1349783== 
 main:
   push BP
   i2i SP => BP
   addI SP, 0 => SP
   loadI 0 => r1
   i2i r1 => RET
+  jump l0
 l0:
   i2i BP => SP
   pop BP
@@ -66,7 +67,7 @@ stack:  65528: -9999999
 other memory:
 ==========================
 
-Executing: l0:
+Executing: jump l0
 
 ==========================
 sp=65528 bp=65528 ret=0
@@ -95,12 +96,12 @@ other memory:  65528: -9999999
 
 Executing: return
 RETURN VALUE = 0
-==2441207== 
-==2441207== HEAP SUMMARY:
-==2441207==     in use at exit: 0 bytes in 0 blocks
-==2441207==   total heap usage: 1,833 allocs, 1,833 frees, 363,188 bytes allocated
-==2441207== 
-==2441207== All heap blocks were freed -- no leaks are possible
-==2441207== 
-==2441207== For lists of detected and suppressed errors, rerun with: -s
-==2441207== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==1349783== 
+==1349783== HEAP SUMMARY:
+==1349783==     in use at exit: 0 bytes in 0 blocks
+==1349783==   total heap usage: 1,836 allocs, 1,836 frees, 366,644 bytes allocated
+==1349783== 
+==1349783== All heap blocks were freed -- no leaks are possible
+==1349783== 
+==1349783== For lists of detected and suppressed errors, rerun with: -s
+==1349783== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
