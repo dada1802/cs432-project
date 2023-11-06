@@ -1,6 +1,9 @@
+def int ten()
+{
+    return 10;
+}
+
 def int main()
 {
-    int a;
-    a = 2 + 3 * 4;
-    return a;
+    return ten();
 }

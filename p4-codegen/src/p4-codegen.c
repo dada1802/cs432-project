@@ -264,6 +264,20 @@ void CodeGenVisitor_postvisit_location (NodeVisitor* visitor, ASTNode* node)
     }
 }
 
+void CodeGenVisitor_postvisit_funccall (NodeVisitor* visitor, ASTNode* node)
+{
+    Symbol* function = lookup_symbol(node, node->funccall.name);
+
+    if (function != NULL) {
+        Operand stack_reg = stack_register();
+        Operand value = virtual_register();
+        EMIT1OP(CALL, call_label(function->name));
+        EMIT3OP(ADD_I, stack_reg, int_const(8 * node->funccall.arguments->size), stack_reg);
+        EMIT2OP(I2I, return_register(), value);
+        ASTNode_set_temp_reg(node, value);
+    }
+}
+
 void CodeGenVisitor_postvisit_literal (NodeVisitor* visitor, ASTNode* node)
 {
     Operand r0 = virtual_register();
@@ -308,7 +322,7 @@ InsnList* generate_code (ASTNode* tree)
     v->previsit_location     = NULL;
     v->postvisit_location    = CodeGenVisitor_postvisit_location;
     v->previsit_funccall     = NULL;
-    v->postvisit_funccall    = NULL;
+    v->postvisit_funccall    = CodeGenVisitor_postvisit_funccall;
     v->previsit_literal      = NULL;
     v->postvisit_literal     = CodeGenVisitor_postvisit_literal;
 
