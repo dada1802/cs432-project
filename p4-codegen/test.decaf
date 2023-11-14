@@ -1,9 +1,5 @@
-def int ten()
-{
-    return 10;
-}
-
 def int main()
 {
-    return ten();
+    print_str("test");
+    return 2;
 }

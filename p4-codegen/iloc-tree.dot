@@ -1,19 +1,15 @@
 digraph AST {
-4 [shape=box, label="Literal value=10\nreg: r0\ncode: \nloadI 10 => r0\ntype: int"];
-3 [shape=box, label="Return\ncode: \nloadI 10 => r0\ni2i r0 => RET"];
+4 [shape=box, label="Literal value='test'\nreg: r0\ncode: \nloadI 1953719668 => r0\ntype: str"];
+3 [shape=box, label="FuncCall name='print_str'\ncode: \nprint \"test\"\ntype: void"];
 3 -> 4;
-2 [shape=box, label="Block\ncode: \nloadI 10 => r0\ni2i r0 => RET\nsymbolTable: (empty)"];
-2 -> 3;
-1 [shape=box, label="FuncDecl name='ten'\ncode: \nten:\npush BP\ni2i SP => BP\naddI SP, 0 => SP\nloadI 10 => r0\ni2i r0 => RET\njump l0\nl0:\ni2i BP => SP\npop BP\nreturn\nlocalSize: 0\nsymbolTable: (empty)"];
-1 -> 2;
-8 [shape=box, label="FuncCall name='ten'\nreg: r1\ncode: \ncall ten\naddI SP, 0 => SP\ni2i RET => r1\ntype: int"];
-7 [shape=box, label="Return\ncode: \ncall ten\naddI SP, 0 => SP\ni2i RET => r1\ni2i r1 => RET"];
-7 -> 8;
-6 [shape=box, label="Block\ncode: \ncall ten\naddI SP, 0 => SP\ni2i RET => r1\ni2i r1 => RET\nsymbolTable: (empty)"];
-6 -> 7;
-5 [shape=box, label="FuncDecl name='main'\ncode: \nmain:\npush BP\ni2i SP => BP\naddI SP, 0 => SP\ncall ten\naddI SP, 0 => SP\ni2i RET => r1\ni2i r1 => RET\njump l1\nl1:\ni2i BP => SP\npop BP\nreturn\nlocalSize: 0\nsymbolTable: (empty)"];
+6 [shape=box, label="Literal value=2\nreg: r1\ncode: \nloadI 2 => r1\ntype: int"];
+5 [shape=box, label="Return\ncode: \nloadI 2 => r1\ni2i r1 => RET"];
 5 -> 6;
-0 [shape=box, label="Program\ncode: (...)\nstaticSize: 0\nsymbolTable: \n  print_int : (int) -> void\n  print_bool : (bool) -> void\n  print_str : (str) -> void\n  ten : () -> int\n  main : () -> int"];
+2 [shape=box, label="Block\ncode: \nprint \"test\"\nloadI 2 => r1\ni2i r1 => RET\nsymbolTable: (empty)"];
+2 -> 3;
+2 -> 5;
+1 [shape=box, label="FuncDecl name='main'\ncode: \nmain:\npush BP\ni2i SP => BP\naddI SP, 0 => SP\nprint \"test\"\nloadI 2 => r1\ni2i r1 => RET\njump l0\nl0:\ni2i BP => SP\npop BP\nreturn\nlocalSize: 0\nsymbolTable: (empty)"];
+1 -> 2;
+0 [shape=box, label="Program\ncode: (...)\nstaticSize: 0\nsymbolTable: \n  print_int : (int) -> void\n  print_bool : (bool) -> void\n  print_str : (str) -> void\n  main : () -> int"];
 0 -> 1;
-0 -> 5;
 }

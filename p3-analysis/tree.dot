@@ -1,23 +1,15 @@
 digraph AST {
-1 [shape=box, label="VarDecl name='array'"];
-4 [shape=box, label="VarDecl name='x'"];
-6 [shape=box, label="Location name='x'\ntype: int"];
-8 [shape=box, label="Literal value='buyue'\ntype: str"];
-7 [shape=box, label="Location name='array'\ntype: int"];
-7 -> 8;
-5 [shape=box, label="Assignment\ntype: invalid"];
-5 -> 6;
-5 -> 7;
-10 [shape=box, label="Literal value=1\ntype: int"];
-9 [shape=box, label="Return\ntype: int"];
-9 -> 10;
-3 [shape=box, label="Block\nsymbolTable: \n  x : int"];
+4 [shape=box, label="Literal value=2\ntype: int"];
+3 [shape=box, label="FuncCall name='print_int'\ntype: void"];
 3 -> 4;
-3 -> 5;
-3 -> 9;
-2 [shape=box, label="FuncDecl name='main'\nsymbolTable: (empty)"];
+6 [shape=box, label="Literal value=0\ntype: int"];
+5 [shape=box, label="Return\ntype: int"];
+5 -> 6;
+2 [shape=box, label="Block\nsymbolTable: (empty)"];
 2 -> 3;
-0 [shape=box, label="Program\nsymbolTable: \n  print_int : (int) -> void\n  print_bool : (bool) -> void\n  print_str : (str) -> void\n  main : () -> int\n  array : int [5]"];
+2 -> 5;
+1 [shape=box, label="FuncDecl name='main'\nsymbolTable: (empty)"];
+1 -> 2;
+0 [shape=box, label="Program\nsymbolTable: \n  print_int : (int) -> void\n  print_bool : (bool) -> void\n  print_str : (str) -> void\n  main : () -> int"];
 0 -> 1;
-0 -> 2;
 }
