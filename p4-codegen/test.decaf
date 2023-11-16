@@ -1,5 +1,6 @@
 def int main()
 {
-    print_str("test");
-    return 2;
+    int a;
+    a = 2;
+    return a;
 }
