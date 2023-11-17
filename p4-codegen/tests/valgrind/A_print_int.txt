@@ -1,8 +1,8 @@
-==273623== Memcheck, a memory error detector
-==273623== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==273623== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==273623== Command: ../decaf inputs/print_int.decaf
-==273623== 
+==297077== Memcheck, a memory error detector
+==297077== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==297077== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==297077== Command: ../decaf inputs/print_int.decaf
+==297077== 
 main:
   push BP
   i2i SP => BP
@@ -116,59 +116,59 @@ other memory:  65528: -9999999
 
 Executing: return
 RETURN VALUE = 0
-==273623== 
-==273623== HEAP SUMMARY:
-==273623==     in use at exit: 184,800 bytes in 7 blocks
-==273623==   total heap usage: 1,856 allocs, 1,849 frees, 562,244 bytes allocated
-==273623== 
-==273623== 26,400 bytes in 1 blocks are definitely lost in loss record 1 of 7
-==273623==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==273623==    by 0x1094E4: CodeGenData_new (p4-codegen.c:44)
-==273623==    by 0x10C8ED: generate_code (p4-codegen.c:511)
-==273623==    by 0x1187FA: main (main.c:156)
-==273623== 
-==273623== 26,400 bytes in 1 blocks are definitely lost in loss record 2 of 7
-==273623==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==273623==    by 0x109501: CodeGenData_new (p4-codegen.c:45)
-==273623==    by 0x10C8ED: generate_code (p4-codegen.c:511)
-==273623==    by 0x1187FA: main (main.c:156)
-==273623== 
-==273623== 26,400 bytes in 1 blocks are definitely lost in loss record 3 of 7
-==273623==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==273623==    by 0x10951E: CodeGenData_new (p4-codegen.c:46)
-==273623==    by 0x10C8ED: generate_code (p4-codegen.c:511)
-==273623==    by 0x1187FA: main (main.c:156)
-==273623== 
-==273623== 26,400 bytes in 1 blocks are definitely lost in loss record 4 of 7
-==273623==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==273623==    by 0x109549: CodeGenData_new (p4-codegen.c:48)
-==273623==    by 0x10C8ED: generate_code (p4-codegen.c:511)
-==273623==    by 0x1187FA: main (main.c:156)
-==273623== 
-==273623== 26,400 bytes in 1 blocks are definitely lost in loss record 5 of 7
-==273623==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==273623==    by 0x109566: CodeGenData_new (p4-codegen.c:49)
-==273623==    by 0x10C8ED: generate_code (p4-codegen.c:511)
-==273623==    by 0x1187FA: main (main.c:156)
-==273623== 
-==273623== 26,400 bytes in 1 blocks are definitely lost in loss record 6 of 7
-==273623==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==273623==    by 0x109583: CodeGenData_new (p4-codegen.c:50)
-==273623==    by 0x10C8ED: generate_code (p4-codegen.c:511)
-==273623==    by 0x1187FA: main (main.c:156)
-==273623== 
-==273623== 26,400 bytes in 1 blocks are definitely lost in loss record 7 of 7
-==273623==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==273623==    by 0x1095E4: CodeGenData_new (p4-codegen.c:55)
-==273623==    by 0x10C8ED: generate_code (p4-codegen.c:511)
-==273623==    by 0x1187FA: main (main.c:156)
-==273623== 
-==273623== LEAK SUMMARY:
-==273623==    definitely lost: 184,800 bytes in 7 blocks
-==273623==    indirectly lost: 0 bytes in 0 blocks
-==273623==      possibly lost: 0 bytes in 0 blocks
-==273623==    still reachable: 0 bytes in 0 blocks
-==273623==         suppressed: 0 bytes in 0 blocks
-==273623== 
-==273623== For lists of detected and suppressed errors, rerun with: -s
-==273623== ERROR SUMMARY: 7 errors from 7 contexts (suppressed: 0 from 0)
+==297077== 
+==297077== HEAP SUMMARY:
+==297077==     in use at exit: 184,800 bytes in 7 blocks
+==297077==   total heap usage: 1,856 allocs, 1,849 frees, 562,244 bytes allocated
+==297077== 
+==297077== 26,400 bytes in 1 blocks are definitely lost in loss record 1 of 7
+==297077==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==297077==    by 0x1094E4: CodeGenData_new (p4-codegen.c:44)
+==297077==    by 0x10CA16: generate_code (p4-codegen.c:520)
+==297077==    by 0x118923: main (main.c:156)
+==297077== 
+==297077== 26,400 bytes in 1 blocks are definitely lost in loss record 2 of 7
+==297077==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==297077==    by 0x109501: CodeGenData_new (p4-codegen.c:45)
+==297077==    by 0x10CA16: generate_code (p4-codegen.c:520)
+==297077==    by 0x118923: main (main.c:156)
+==297077== 
+==297077== 26,400 bytes in 1 blocks are definitely lost in loss record 3 of 7
+==297077==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==297077==    by 0x10951E: CodeGenData_new (p4-codegen.c:46)
+==297077==    by 0x10CA16: generate_code (p4-codegen.c:520)
+==297077==    by 0x118923: main (main.c:156)
+==297077== 
+==297077== 26,400 bytes in 1 blocks are definitely lost in loss record 4 of 7
+==297077==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==297077==    by 0x109549: CodeGenData_new (p4-codegen.c:48)
+==297077==    by 0x10CA16: generate_code (p4-codegen.c:520)
+==297077==    by 0x118923: main (main.c:156)
+==297077== 
+==297077== 26,400 bytes in 1 blocks are definitely lost in loss record 5 of 7
+==297077==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==297077==    by 0x109566: CodeGenData_new (p4-codegen.c:49)
+==297077==    by 0x10CA16: generate_code (p4-codegen.c:520)
+==297077==    by 0x118923: main (main.c:156)
+==297077== 
+==297077== 26,400 bytes in 1 blocks are definitely lost in loss record 6 of 7
+==297077==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==297077==    by 0x109583: CodeGenData_new (p4-codegen.c:50)
+==297077==    by 0x10CA16: generate_code (p4-codegen.c:520)
+==297077==    by 0x118923: main (main.c:156)
+==297077== 
+==297077== 26,400 bytes in 1 blocks are definitely lost in loss record 7 of 7
+==297077==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==297077==    by 0x1095E4: CodeGenData_new (p4-codegen.c:55)
+==297077==    by 0x10CA16: generate_code (p4-codegen.c:520)
+==297077==    by 0x118923: main (main.c:156)
+==297077== 
+==297077== LEAK SUMMARY:
+==297077==    definitely lost: 184,800 bytes in 7 blocks
+==297077==    indirectly lost: 0 bytes in 0 blocks
+==297077==      possibly lost: 0 bytes in 0 blocks
+==297077==    still reachable: 0 bytes in 0 blocks
+==297077==         suppressed: 0 bytes in 0 blocks
+==297077== 
+==297077== For lists of detected and suppressed errors, rerun with: -s
+==297077== ERROR SUMMARY: 7 errors from 7 contexts (suppressed: 0 from 0)

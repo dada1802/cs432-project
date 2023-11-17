@@ -475,7 +475,16 @@ void CodeGenVisitor_postvisit_funccall (NodeVisitor* visitor, ASTNode* node)
             
             for (int i = 0; i < list1->size; i++) {
                 ASTNode_copy_code(node, item);
-                arguments[list1->size - 1 - i] = ASTNode_get_temp_reg(item);
+
+                Symbol* name = lookup_symbol(item, item->location.name);
+                Operand val = ASTNode_get_temp_reg(item);
+
+                if (name != NULL && name->symbol_type == ARRAY_SYMBOL) {
+                    EMIT3OP(LOAD_AO, DATA->load_256[DATA->index - 1], val, val);
+                    DATA->index = DATA->index - 1;
+                }
+
+                arguments[list1->size - 1 - i] = val;
                 item = item->next;
             }
 

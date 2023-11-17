@@ -66,6 +66,11 @@ TEST_MAIN(Nested_conditionals, 3,
         "if (a < 3) { if (b < 5) { c = 3; } else { c = 2; } }"
         "return c;")
 
+TEST_PROGRAM(Funccall_array_element, 5,
+        "def int add(int a, int b) { return a + b; }"
+        "int a[1];"
+        "def int main() { int c; c = 2; a[0] = 3; return add(a[0], c); }")
+
 #endif
 
 /**
@@ -100,6 +105,7 @@ void public_tests (Suite *s)
     TEST(Element_assigned_location);
     TEST(Add_two_array_elements);
     TEST(Nested_conditionals);
+    TEST(Funccall_array_element);
 
     suite_add_tcase (s, tc);
 }
