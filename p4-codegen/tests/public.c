@@ -71,6 +71,10 @@ TEST_PROGRAM(Funccall_array_element, 5,
         "int a[1];"
         "def int main() { int c; c = 2; a[0] = 3; return add(a[0], c); }")
 
+TEST_PROGRAM(Unaryop_array_element, -3,
+        "int a[1];"
+        "def int main() { a[0] = 3; return -a[0]; }")
+
 #endif
 
 /**
@@ -106,6 +110,7 @@ void public_tests (Suite *s)
     TEST(Add_two_array_elements);
     TEST(Nested_conditionals);
     TEST(Funccall_array_element);
+    TEST(Unaryop_array_element);
 
     suite_add_tcase (s, tc);
 }

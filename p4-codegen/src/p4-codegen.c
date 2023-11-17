@@ -65,6 +65,13 @@ CodeGenData* CodeGenData_new (void)
 void CodeGenData_free (CodeGenData* data)
 {
     /* free everything in data that is allocated on the heap */
+    free(data->whileloop_l1);
+    free(data->whileloop_l2);
+    free(data->whileloop_l3);
+    free(data->conditional_l1);
+    free(data->conditional_l2);
+    free(data->conditional_l3);
+    free(data->load_256);
 
     /* free "data" itself */
     free(data);
@@ -149,6 +156,7 @@ void CodeGenVisitor_gen_program (NodeVisitor* visitor, ASTNode* node)
     }
 }
 
+/* ============================== PREVISIT FUNCDECL ============================== */
 void CodeGenVisitor_previsit_funcdecl (NodeVisitor* visitor, ASTNode* node)
 {
     /* generate a label reference for the epilogue that can be used while
@@ -157,6 +165,7 @@ void CodeGenVisitor_previsit_funcdecl (NodeVisitor* visitor, ASTNode* node)
     DATA->current_epilogue_jump_label = anonymous_label();
 }
 
+/* ============================== POSTVISIT FUNCDECL ============================== */
 void CodeGenVisitor_postvisit_funcdecl (NodeVisitor* visitor, ASTNode* node)
 {
     /* every function begins with the corresponding call label */
@@ -181,6 +190,7 @@ void CodeGenVisitor_postvisit_funcdecl (NodeVisitor* visitor, ASTNode* node)
     EMIT0OP(RETURN);
 }
 
+/* ============================== POSTVISIT BLOCK ============================== */
 void CodeGenVisitor_postvisit_block (NodeVisitor* visitor, ASTNode* node)
 {
     /* copy code from each statement */
@@ -189,6 +199,7 @@ void CodeGenVisitor_postvisit_block (NodeVisitor* visitor, ASTNode* node)
     }
 }
 
+/* ============================== POSTVISIT ASSIGNMENT ============================== */
 void CodeGenVisitor_postvisit_assignment (NodeVisitor* visitor, ASTNode* node)
 {
     /* Copy code from the value */
@@ -196,24 +207,31 @@ void CodeGenVisitor_postvisit_assignment (NodeVisitor* visitor, ASTNode* node)
     Symbol* loc = lookup_symbol(node, node->assignment.location->location.name);
     Symbol* val = lookup_symbol(node, node->assignment.value->location.name);
 
+    /* If the location exists */
     if (loc != NULL) {
         Operand ret = ASTNode_get_temp_reg(node->assignment.value);
+
+        /* If the right hand side of the assignment is a location */
         if (val != NULL && val->symbol_type == ARRAY_SYMBOL) {
             EMIT3OP(LOAD_AO, DATA->load_256[DATA->index - 1], ret, ret);
             DATA->index = DATA->index - 1;
         }
 
+        /* If the left hand side of the assignment is an array */
         if (loc->symbol_type == ARRAY_SYMBOL) {
             ASTNode_copy_code(node, node->assignment.location);
             EMIT3OP(STORE_AO, ret, DATA->load_256[DATA->index - 1], ASTNode_get_temp_reg(node->assignment.location));
             DATA->index = DATA->index - 1;
         }
+
+        /* Else it is a simple variable */
         else {
             EMIT3OP(STORE_AI, ret, base_register(), var_offset(node, loc));
         }
     }
 }
 
+/* ============================== PREVISIT CONDITIONAL ============================== */
 void CodeGenVisitor_previsit_conditional (NodeVisitor* visitor, ASTNode* node)
 {
     DATA->conditional_l1[DATA->depth_conditionals] = anonymous_label();
@@ -222,18 +240,21 @@ void CodeGenVisitor_previsit_conditional (NodeVisitor* visitor, ASTNode* node)
     DATA->depth_conditionals = DATA->depth_conditionals + 1;
 }
 
+/* ============================== POSTVISIT CONDITIONAL ============================== */
 void CodeGenVisitor_postvisit_conditional (NodeVisitor* visitor, ASTNode* node)
 {
     Operand virtual_reg = ASTNode_get_temp_reg(node->conditional.condition);
 
+    /* Copy the code from the condition */
     ASTNode_copy_code(node, node->conditional.condition);
 
     EMIT3OP(CBR, virtual_reg, DATA->conditional_l1[DATA->depth_conditionals - 1], DATA->conditional_l2[DATA->depth_conditionals - 1]);
 
-    /* First label, usually the if block */
+    /* Code for the if block */
     EMIT1OP(LABEL, DATA->conditional_l1[DATA->depth_conditionals - 1]);
     ASTNode_copy_code(node, node->conditional.if_block);
 
+    /* If there is an else block */
     if (node->conditional.else_block != NULL) {
         DATA->conditional_l3[DATA->depth_conditionals - 1] = anonymous_label();
         EMIT1OP(JUMP, DATA->conditional_l3[DATA->depth_conditionals - 1]);
@@ -249,6 +270,7 @@ void CodeGenVisitor_postvisit_conditional (NodeVisitor* visitor, ASTNode* node)
     DATA->depth_conditionals = DATA->depth_conditionals - 1;
 }
 
+/* ============================== PREVISIT WHILELOOP ============================== */
 void CodeGenVisitor_previsit_whileloop (NodeVisitor* visitor, ASTNode* node)
 {
     DATA->whileloop_l1[DATA->depth_whileloops] = anonymous_label();
@@ -258,6 +280,7 @@ void CodeGenVisitor_previsit_whileloop (NodeVisitor* visitor, ASTNode* node)
     DATA->depth_whileloops = DATA->depth_whileloops + 1;
 }
 
+/* ============================== POSTVISIT WHILELOOP ============================== */
 void CodeGenVisitor_postvisit_whileloop (NodeVisitor* visitor, ASTNode* node)
 {
     /* Copy code from condition */
@@ -275,51 +298,60 @@ void CodeGenVisitor_postvisit_whileloop (NodeVisitor* visitor, ASTNode* node)
     DATA->depth_whileloops = DATA->depth_whileloops - 1;
 }
 
+/* ============================== POSTVISIT RETURN ============================== */
 void CodeGenVisitor_postvisit_return (NodeVisitor* visitor, ASTNode* node)
 {
     /* Copy code from the return value node */
     ASTNode_copy_code(node, node->funcreturn.value);
-    Symbol* val = lookup_symbol(node, node->funcreturn.value->location.name);
 
+    Symbol* val = lookup_symbol(node, node->funcreturn.value->location.name);
     Operand ret = ASTNode_get_temp_reg(node->funcreturn.value);
 
+    /* If the return value is a location */
     if (val != NULL) {
         if (val->symbol_type == ARRAY_SYMBOL) {
             EMIT3OP(LOAD_AO, DATA->load_256[DATA->index - 1], ret, ret);
+            DATA->index = DATA->index - 1;
         }
     }
 
     EMIT2OP(I2I, ret, return_register());
 }
 
+/* ============================== POSTVISIT BREAK ============================== */
 void CodeGenVisitor_postvisit_break (NodeVisitor* visitor, ASTNode* node)
 {
     EMIT1OP(JUMP, DATA->whileloop_l3[DATA->depth_whileloops - 1]);
 }
 
+/* ============================== POSTVISIT CONTINUE ============================== */
 void CodeGenVisitor_postvisit_continue (NodeVisitor* visitor, ASTNode* node)
 {
     EMIT1OP(JUMP, DATA->whileloop_l1[DATA->depth_whileloops - 1]);
 }
 
+/* ============================== POSTVISIT BINARYOP ============================== */
 void CodeGenVisitor_postvisit_binaryop (NodeVisitor* visitor, ASTNode* node)
 {
-    /* Copy code from the left and right subchildren and assign them to the registers */
     Symbol* left_val = lookup_symbol(node, node->binaryop.left->location.name);
     Symbol* right_val = lookup_symbol(node, node->binaryop.right->location.name);
     Operand left = ASTNode_get_temp_reg(node->binaryop.left);
     Operand right = ASTNode_get_temp_reg(node->binaryop.right);
     Operand result = virtual_register();
 
+    /* Code for left child */
     ASTNode_copy_code(node, node->binaryop.left);
 
+    /* If left operand is an array */
     if (left_val != NULL && left_val->symbol_type == ARRAY_SYMBOL) {
         EMIT3OP(LOAD_AO, DATA->load_256[DATA->index - 2], left, left);
         DATA->index = DATA->index - 1;
     }
 
+    /* Code for right child */
     ASTNode_copy_code(node, node->binaryop.right);
 
+    /* If right operand is an array */
     if (right_val != NULL && right_val->symbol_type == ARRAY_SYMBOL) {
         EMIT3OP(LOAD_AO, DATA->load_256[DATA->index], right, right);
         DATA->index = DATA->index - 1;
@@ -389,13 +421,21 @@ void CodeGenVisitor_postvisit_binaryop (NodeVisitor* visitor, ASTNode* node)
     ASTNode_set_temp_reg(node, result);
 }
 
+/* ============================== POSTVISIT UNARYOP ============================== */
 void CodeGenVisitor_postvisit_unaryop (NodeVisitor* visitor, ASTNode* node)
 {
+    Operand child = ASTNode_get_temp_reg(node->unaryop.child);
+    Operand result = virtual_register();
+    Symbol* child_val = lookup_symbol(node, node->unaryop.child->location.name);
+
     /* Copy code from the child */
     ASTNode_copy_code(node, node->unaryop.child);
 
-    Operand child = ASTNode_get_temp_reg(node->unaryop.child);
-    Operand result = virtual_register();
+    /* If the child is an array */
+    if (child_val != NULL && child_val->symbol_type == ARRAY_SYMBOL) {
+        EMIT3OP(LOAD_AO, DATA->load_256[DATA->index - 1], child, child);
+        DATA->index = DATA->index - 1;
+    }
 
     /* Switch statement for the 2 unary operators */
     switch (node->unaryop.operator)
@@ -415,6 +455,7 @@ void CodeGenVisitor_postvisit_unaryop (NodeVisitor* visitor, ASTNode* node)
     ASTNode_set_temp_reg(node, result);
 }
 
+/* ============================== POSTVISIT LOCATION ============================== */
 void CodeGenVisitor_postvisit_location (NodeVisitor* visitor, ASTNode* node)
 {
     Symbol* loc = lookup_symbol(node, node->location.name);
@@ -438,6 +479,7 @@ void CodeGenVisitor_postvisit_location (NodeVisitor* visitor, ASTNode* node)
     }
 }
 
+/* ============================== POSTVISIT FUNCCALL ============================== */
 void CodeGenVisitor_postvisit_funccall (NodeVisitor* visitor, ASTNode* node)
 {
     Symbol* function = lookup_symbol(node, node->funccall.name);
@@ -503,6 +545,7 @@ void CodeGenVisitor_postvisit_funccall (NodeVisitor* visitor, ASTNode* node)
     free(arguments);
 }
 
+/* ============================== POSTVISIT LITERAL ============================== */
 void CodeGenVisitor_postvisit_literal (NodeVisitor* visitor, ASTNode* node)
 {
     Operand r0 = virtual_register();

@@ -1,22 +1,6 @@
 A_memcheck                     FAIL (see outputs/A_memcheck.diff for details)
 A_print_int                    FAIL (see outputs/A_print_int.diff for details)
-Memory leak(s) found. See files listed below for details.
-  - valgrind/A_memcheck.txt
-  - valgrind/A_memcheck.txt
-  - valgrind/A_memcheck.txt
-  - valgrind/A_memcheck.txt
-  - valgrind/A_memcheck.txt
-  - valgrind/A_memcheck.txt
-  - valgrind/A_memcheck.txt
-  - valgrind/A_memcheck.txt
-  - valgrind/A_print_int.txt
-  - valgrind/A_print_int.txt
-  - valgrind/A_print_int.txt
-  - valgrind/A_print_int.txt
-  - valgrind/A_print_int.txt
-  - valgrind/A_print_int.txt
-  - valgrind/A_print_int.txt
-  - valgrind/A_print_int.txt
+No memory leak found.
 No uninitialized value found.
 ========================================
  NOTICE: THIS TESTSUITE IS INCOMPLETE.
