@@ -1,15 +1,130 @@
-==293072== Memcheck, a memory error detector
-==293072== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==293072== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==293072== Command: ../decaf inputs/sanity.decaf
-==293072== 
+==180494== Memcheck, a memory error detector
+==180494== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==180494== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==180494== Command: ../decaf inputs/sanity.decaf
+==180494== 
+main:
+  push BP
+  i2i SP => BP
+  addI SP, 0 => SP
+  loadI 4 => r0
+  i2i r0 => RET
+  jump l0
+l0:
+  i2i BP => SP
+  pop BP
+  return
+
+==========================
+sp=65536 bp=-9999999 ret=-9999999
+registers: 
+stack:
+other memory:
+==========================
+
+Executing: push BP
+
+==========================
+sp=65528 bp=-9999999 ret=-9999999
+registers: 
+stack:  65528: -9999999
+other memory:
+==========================
+
+Executing: i2i SP => BP
+
+==========================
+sp=65528 bp=65528 ret=-9999999
+registers: 
+stack:  65528: -9999999
+other memory:
+==========================
+
+Executing: addI SP, 0 => SP
+
+==========================
+sp=65528 bp=65528 ret=-9999999
+registers: 
+stack:  65528: -9999999
+other memory:
+==========================
+
+Executing: loadI 4 => r0
+
+==========================
+sp=65528 bp=65528 ret=-9999999
+registers:  r0=4
+stack:  65528: -9999999
+other memory:
+==========================
+
+Executing: i2i r0 => RET
+
+==========================
+sp=65528 bp=65528 ret=4
+registers:  r0=4
+stack:  65528: -9999999
+other memory:
+==========================
+
+Executing: jump l0
+
+==========================
+sp=65528 bp=65528 ret=4
+registers:  r0=4
+stack:  65528: -9999999
+other memory:
+==========================
+
+Executing: i2i BP => SP
+
+==========================
+sp=65528 bp=65528 ret=4
+registers:  r0=4
+stack:  65528: -9999999
+other memory:
+==========================
+
+Executing: pop BP
+
+==========================
+sp=65536 bp=-9999999 ret=4
+registers:  r0=4
+stack:
+other memory:  65528: -9999999
+==========================
+
+Executing: return
 RETURN VALUE = 4
-==293072== 
-==293072== HEAP SUMMARY:
-==293072==     in use at exit: 0 bytes in 0 blocks
-==293072==   total heap usage: 1,800 allocs, 1,800 frees, 358,044 bytes allocated
-==293072== 
-==293072== All heap blocks were freed -- no leaks are possible
-==293072== 
-==293072== For lists of detected and suppressed errors, rerun with: -s
-==293072== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==180494== 
+==180494== HEAP SUMMARY:
+==180494==     in use at exit: 79,200 bytes in 3 blocks
+==180494==   total heap usage: 1,803 allocs, 1,800 frees, 436,484 bytes allocated
+==180494== 
+==180494== 26,400 bytes in 1 blocks are definitely lost in loss record 1 of 3
+==180494==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==180494==    by 0x1094E4: CodeGenData_new (p4-codegen.c:41)
+==180494==    by 0x10BF17: generate_code (p4-codegen.c:450)
+==180494==    by 0x117E24: main (main.c:156)
+==180494== 
+==180494== 26,400 bytes in 1 blocks are definitely lost in loss record 2 of 3
+==180494==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==180494==    by 0x109501: CodeGenData_new (p4-codegen.c:42)
+==180494==    by 0x10BF17: generate_code (p4-codegen.c:450)
+==180494==    by 0x117E24: main (main.c:156)
+==180494== 
+==180494== 26,400 bytes in 1 blocks are definitely lost in loss record 3 of 3
+==180494==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==180494==    by 0x10951E: CodeGenData_new (p4-codegen.c:43)
+==180494==    by 0x10BF17: generate_code (p4-codegen.c:450)
+==180494==    by 0x117E24: main (main.c:156)
+==180494== 
+==180494== LEAK SUMMARY:
+==180494==    definitely lost: 79,200 bytes in 3 blocks
+==180494==    indirectly lost: 0 bytes in 0 blocks
+==180494==      possibly lost: 0 bytes in 0 blocks
+==180494==    still reachable: 0 bytes in 0 blocks
+==180494==         suppressed: 0 bytes in 0 blocks
+==180494== 
+==180494== For lists of detected and suppressed errors, rerun with: -s
+==180494== ERROR SUMMARY: 3 errors from 3 contexts (suppressed: 0 from 0)

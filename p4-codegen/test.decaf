@@ -4,6 +4,7 @@ def int main()
     int b;
     int i;
     a = 0;
+    i = 0;
 
     while (a < 2) {
         b = 0;

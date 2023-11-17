@@ -1,31 +1,161 @@
-==293149== Memcheck, a memory error detector
-==293149== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==293149== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==293149== Command: ../decaf inputs/print_int.decaf
-==293149== 
-7RETURN VALUE = 0
-==293149== 
-==293149== HEAP SUMMARY:
-==293149==     in use at exit: 264 bytes in 1 blocks
-==293149==   total heap usage: 1,849 allocs, 1,848 frees, 378,956 bytes allocated
-==293149== 
-==293149== 264 bytes in 1 blocks are definitely lost in loss record 1 of 1
-==293149==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==293149==    by 0x10B639: CodeGenVisitor_postvisit_funccall (p4-codegen.c:379)
-==293149==    by 0x114160: NodeVisitor_traverse (visitor.c:168)
-==293149==    by 0x1139E6: NodeVisitor_traverse (visitor.c:92)
-==293149==    by 0x113905: NodeVisitor_traverse (visitor.c:82)
-==293149==    by 0x1137CC: NodeVisitor_traverse (visitor.c:70)
-==293149==    by 0x11424D: NodeVisitor_traverse_and_free (visitor.c:184)
-==293149==    by 0x10BFA2: generate_code (p4-codegen.c:486)
-==293149==    by 0x117C8C: main (main.c:156)
-==293149== 
-==293149== LEAK SUMMARY:
-==293149==    definitely lost: 264 bytes in 1 blocks
-==293149==    indirectly lost: 0 bytes in 0 blocks
-==293149==      possibly lost: 0 bytes in 0 blocks
-==293149==    still reachable: 0 bytes in 0 blocks
-==293149==         suppressed: 0 bytes in 0 blocks
-==293149== 
-==293149== For lists of detected and suppressed errors, rerun with: -s
-==293149== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
+==180558== Memcheck, a memory error detector
+==180558== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==180558== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==180558== Command: ../decaf inputs/print_int.decaf
+==180558== 
+main:
+  push BP
+  i2i SP => BP
+  addI SP, 0 => SP
+  loadI 7 => r0
+  print r0
+  loadI 0 => r1
+  i2i r1 => RET
+  jump l0
+l0:
+  i2i BP => SP
+  pop BP
+  return
+
+==========================
+sp=65536 bp=-9999999 ret=-9999999
+registers: 
+stack:
+other memory:
+==========================
+
+Executing: push BP
+
+==========================
+sp=65528 bp=-9999999 ret=-9999999
+registers: 
+stack:  65528: -9999999
+other memory:
+==========================
+
+Executing: i2i SP => BP
+
+==========================
+sp=65528 bp=65528 ret=-9999999
+registers: 
+stack:  65528: -9999999
+other memory:
+==========================
+
+Executing: addI SP, 0 => SP
+
+==========================
+sp=65528 bp=65528 ret=-9999999
+registers: 
+stack:  65528: -9999999
+other memory:
+==========================
+
+Executing: loadI 7 => r0
+
+==========================
+sp=65528 bp=65528 ret=-9999999
+registers:  r0=7
+stack:  65528: -9999999
+other memory:
+==========================
+
+Executing: print r0
+7
+==========================
+sp=65528 bp=65528 ret=-9999999
+registers:  r0=7
+stack:  65528: -9999999
+other memory:
+==========================
+
+Executing: loadI 0 => r1
+
+==========================
+sp=65528 bp=65528 ret=-9999999
+registers:  r0=7 r1=0
+stack:  65528: -9999999
+other memory:
+==========================
+
+Executing: i2i r1 => RET
+
+==========================
+sp=65528 bp=65528 ret=0
+registers:  r0=7 r1=0
+stack:  65528: -9999999
+other memory:
+==========================
+
+Executing: jump l0
+
+==========================
+sp=65528 bp=65528 ret=0
+registers:  r0=7 r1=0
+stack:  65528: -9999999
+other memory:
+==========================
+
+Executing: i2i BP => SP
+
+==========================
+sp=65528 bp=65528 ret=0
+registers:  r0=7 r1=0
+stack:  65528: -9999999
+other memory:
+==========================
+
+Executing: pop BP
+
+==========================
+sp=65536 bp=-9999999 ret=0
+registers:  r0=7 r1=0
+stack:
+other memory:  65528: -9999999
+==========================
+
+Executing: return
+RETURN VALUE = 0
+==180558== 
+==180558== HEAP SUMMARY:
+==180558==     in use at exit: 79,464 bytes in 4 blocks
+==180558==   total heap usage: 1,852 allocs, 1,848 frees, 457,396 bytes allocated
+==180558== 
+==180558== 264 bytes in 1 blocks are definitely lost in loss record 1 of 4
+==180558==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==180558==    by 0x10B817: CodeGenVisitor_postvisit_funccall (p4-codegen.c:385)
+==180558==    by 0x1142F8: NodeVisitor_traverse (visitor.c:168)
+==180558==    by 0x113B7E: NodeVisitor_traverse (visitor.c:92)
+==180558==    by 0x113A9D: NodeVisitor_traverse (visitor.c:82)
+==180558==    by 0x113964: NodeVisitor_traverse (visitor.c:70)
+==180558==    by 0x1143E5: NodeVisitor_traverse_and_free (visitor.c:184)
+==180558==    by 0x10C13A: generate_code (p4-codegen.c:489)
+==180558==    by 0x117E24: main (main.c:156)
+==180558== 
+==180558== 26,400 bytes in 1 blocks are definitely lost in loss record 2 of 4
+==180558==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==180558==    by 0x1094E4: CodeGenData_new (p4-codegen.c:41)
+==180558==    by 0x10BF17: generate_code (p4-codegen.c:450)
+==180558==    by 0x117E24: main (main.c:156)
+==180558== 
+==180558== 26,400 bytes in 1 blocks are definitely lost in loss record 3 of 4
+==180558==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==180558==    by 0x109501: CodeGenData_new (p4-codegen.c:42)
+==180558==    by 0x10BF17: generate_code (p4-codegen.c:450)
+==180558==    by 0x117E24: main (main.c:156)
+==180558== 
+==180558== 26,400 bytes in 1 blocks are definitely lost in loss record 4 of 4
+==180558==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==180558==    by 0x10951E: CodeGenData_new (p4-codegen.c:43)
+==180558==    by 0x10BF17: generate_code (p4-codegen.c:450)
+==180558==    by 0x117E24: main (main.c:156)
+==180558== 
+==180558== LEAK SUMMARY:
+==180558==    definitely lost: 79,464 bytes in 4 blocks
+==180558==    indirectly lost: 0 bytes in 0 blocks
+==180558==      possibly lost: 0 bytes in 0 blocks
+==180558==    still reachable: 0 bytes in 0 blocks
+==180558==         suppressed: 0 bytes in 0 blocks
+==180558== 
+==180558== For lists of detected and suppressed errors, rerun with: -s
+==180558== ERROR SUMMARY: 4 errors from 4 contexts (suppressed: 0 from 0)

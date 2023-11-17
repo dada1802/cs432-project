@@ -43,6 +43,11 @@ TEST_PROGRAM(A_funccall_params, 5,
         "def int add(int a, int b) { return a + b; } "
         "def int main() { return add(2,3); }")
 
+TEST_MAIN(Nested_whileloops, 6,
+        "int a; int b; int c; a = 0; c = 0;"
+        "while (a < 2) { b = 0; while (b < 3) { c = c + 1; b = b + 1; } a = a + 1; }"
+        "return c;")
+
 #endif
 
 /**
@@ -70,6 +75,9 @@ void public_tests (Suite *s)
     TEST(B_funccall);
 
     TEST(A_funccall_params);
+
+    /* Custom tests */
+    TEST(Nested_whileloops);
 
     suite_add_tcase (s, tc);
 }
