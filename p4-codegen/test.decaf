@@ -2,19 +2,20 @@ def int main()
 {
     int a;
     int b;
-    int i;
-    a = 0;
-    i = 0;
+    int c;
+    a = 2;
+    b = 3;
+    c = 1;
 
-    while (a < 2) {
-        b = 0;
-
-        while (b < 3) {
-            i = i + 1;
-            b = b + 1;
+    if (a < 3) {
+        if (b < 5) {
+            c = 3;
         }
-        a = a + 1;
+
+        else {
+            c = 2;
+        }
     }
 
-    return i;
+    return c;
 }

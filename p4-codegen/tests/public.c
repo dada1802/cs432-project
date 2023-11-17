@@ -48,6 +48,24 @@ TEST_MAIN(Nested_whileloops, 6,
         "while (a < 2) { b = 0; while (b < 3) { c = c + 1; b = b + 1; } a = a + 1; }"
         "return c;")
 
+TEST_PROGRAM(Location_assigned_element, 4,
+        "int a[1];"
+        "def int main() { int b; a[0] = 4; b = a[0]; return b; }")
+
+TEST_PROGRAM(Element_assigned_location, 2,
+        "int a[1];"
+        "def int main() { int b; b = 2; a[0] = b; return a[0]; }")
+
+TEST_PROGRAM(Add_two_array_elements, 5,
+        "int a[2];"
+        "def int main() { a[0] = 2; a[1] = 3; return a[0] + a[1]; }")
+
+TEST_MAIN(Nested_conditionals, 3,
+        "int a; int b; int c;"
+        "a = 2; b = 3; c = 1;"
+        "if (a < 3) { if (b < 5) { c = 3; } else { c = 2; } }"
+        "return c;")
+
 #endif
 
 /**
@@ -78,6 +96,10 @@ void public_tests (Suite *s)
 
     /* Custom tests */
     TEST(Nested_whileloops);
+    TEST(Location_assigned_element);
+    TEST(Element_assigned_location);
+    TEST(Add_two_array_elements);
+    TEST(Nested_conditionals);
 
     suite_add_tcase (s, tc);
 }

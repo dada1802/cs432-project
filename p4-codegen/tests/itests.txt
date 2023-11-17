@@ -5,6 +5,13 @@ Memory leak(s) found. See files listed below for details.
   - valgrind/A_memcheck.txt
   - valgrind/A_memcheck.txt
   - valgrind/A_memcheck.txt
+  - valgrind/A_memcheck.txt
+  - valgrind/A_memcheck.txt
+  - valgrind/A_memcheck.txt
+  - valgrind/A_memcheck.txt
+  - valgrind/A_print_int.txt
+  - valgrind/A_print_int.txt
+  - valgrind/A_print_int.txt
   - valgrind/A_print_int.txt
   - valgrind/A_print_int.txt
   - valgrind/A_print_int.txt

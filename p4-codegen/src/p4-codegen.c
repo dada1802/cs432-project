@@ -18,14 +18,17 @@ typedef struct CodeGenData
     Operand current_epilogue_jump_label;
 
     /* add any new desired state information (and clean it up in CodeGenData_free) */
-    Operand conditional_l1;
-    Operand conditional_l2;
-    Operand conditional_l3;
+    Operand* conditional_l1;
+    Operand* conditional_l2;
+    Operand* conditional_l3;
+    int depth_conditionals;
     char *predefined_functions[3];
     Operand* whileloop_l1;
     Operand* whileloop_l2;
     Operand* whileloop_l3;
-    int depth;
+    Operand* load_256;
+    int depth_whileloops;
+    int index;
 } CodeGenData;
 
 /**
@@ -41,13 +44,16 @@ CodeGenData* CodeGenData_new (void)
     data->whileloop_l1 = (Operand*)calloc(100, sizeof(Operand));
     data->whileloop_l2 = (Operand*)calloc(100, sizeof(Operand));
     data->whileloop_l3 = (Operand*)calloc(100, sizeof(Operand));
-    data->depth = 0;
-    data->conditional_l1 = empty_operand();
-    data->conditional_l2 = empty_operand();
-    data->conditional_l3 = empty_operand();
+    data->depth_whileloops = 0;
+    data->conditional_l1 = (Operand*)calloc(100, sizeof(Operand));
+    data->conditional_l2 = (Operand*)calloc(100, sizeof(Operand));
+    data->conditional_l3 = (Operand*)calloc(100, sizeof(Operand));
+    data->depth_conditionals = 0;
     data->predefined_functions[0] = "print_int";
     data->predefined_functions[1] = "print_str";
     data->predefined_functions[2] = "print_bool";
+    data->load_256 = (Operand*)calloc(100, sizeof(Operand));
+    data->index = 0;
     return data;
 }
 
@@ -188,15 +194,32 @@ void CodeGenVisitor_postvisit_assignment (NodeVisitor* visitor, ASTNode* node)
     /* Copy code from the value */
     ASTNode_copy_code(node, node->assignment.value);
     Symbol* loc = lookup_symbol(node, node->assignment.location->location.name);
+    Symbol* val = lookup_symbol(node, node->assignment.value->location.name);
 
-    if (loc != NULL)
-        EMIT3OP(STORE_AI, ASTNode_get_temp_reg(node->assignment.value), base_register(), var_offset(node, loc));
+    if (loc != NULL) {
+        Operand ret = ASTNode_get_temp_reg(node->assignment.value);
+        if (val != NULL && val->symbol_type == ARRAY_SYMBOL) {
+            EMIT3OP(LOAD_AO, DATA->load_256[DATA->index - 1], ret, ret);
+            DATA->index = DATA->index - 1;
+        }
+
+        if (loc->symbol_type == ARRAY_SYMBOL) {
+            ASTNode_copy_code(node, node->assignment.location);
+            EMIT3OP(STORE_AO, ret, DATA->load_256[DATA->index - 1], ASTNode_get_temp_reg(node->assignment.location));
+            DATA->index = DATA->index - 1;
+        }
+        else {
+            EMIT3OP(STORE_AI, ret, base_register(), var_offset(node, loc));
+        }
+    }
 }
 
 void CodeGenVisitor_previsit_conditional (NodeVisitor* visitor, ASTNode* node)
 {
-    DATA->conditional_l1 = anonymous_label();
-    DATA->conditional_l2 = anonymous_label();
+    DATA->conditional_l1[DATA->depth_conditionals] = anonymous_label();
+    DATA->conditional_l2[DATA->depth_conditionals] = anonymous_label();
+    
+    DATA->depth_conditionals = DATA->depth_conditionals + 1;
 }
 
 void CodeGenVisitor_postvisit_conditional (NodeVisitor* visitor, ASTNode* node)
@@ -205,78 +228,102 @@ void CodeGenVisitor_postvisit_conditional (NodeVisitor* visitor, ASTNode* node)
 
     ASTNode_copy_code(node, node->conditional.condition);
 
-    EMIT3OP(CBR, virtual_reg, DATA->conditional_l1, DATA->conditional_l2);
+    EMIT3OP(CBR, virtual_reg, DATA->conditional_l1[DATA->depth_conditionals - 1], DATA->conditional_l2[DATA->depth_conditionals - 1]);
 
     /* First label, usually the if block */
-    EMIT1OP(LABEL, DATA->conditional_l1);
+    EMIT1OP(LABEL, DATA->conditional_l1[DATA->depth_conditionals - 1]);
     ASTNode_copy_code(node, node->conditional.if_block);
 
     if (node->conditional.else_block != NULL) {
-        DATA->conditional_l3 = anonymous_label();
-        EMIT1OP(JUMP, DATA->conditional_l3);
-        EMIT1OP(LABEL, DATA->conditional_l2);
+        DATA->conditional_l3[DATA->depth_conditionals - 1] = anonymous_label();
+        EMIT1OP(JUMP, DATA->conditional_l3[DATA->depth_conditionals - 1]);
+        EMIT1OP(LABEL, DATA->conditional_l2[DATA->depth_conditionals - 1]);
         ASTNode_copy_code(node, node->conditional.else_block);
-        EMIT1OP(LABEL, DATA->conditional_l3);
+        EMIT1OP(LABEL, DATA->conditional_l3[DATA->depth_conditionals - 1]);
     }
 
     else {
-        EMIT1OP(LABEL, DATA->conditional_l2);
+        EMIT1OP(LABEL, DATA->conditional_l2[DATA->depth_conditionals - 1]);
     }
+
+    DATA->depth_conditionals = DATA->depth_conditionals - 1;
 }
 
 void CodeGenVisitor_previsit_whileloop (NodeVisitor* visitor, ASTNode* node)
 {
-    DATA->whileloop_l1[DATA->depth] = anonymous_label();
-    DATA->whileloop_l2[DATA->depth] = anonymous_label();
-    DATA->whileloop_l3[DATA->depth] = anonymous_label();
+    DATA->whileloop_l1[DATA->depth_whileloops] = anonymous_label();
+    DATA->whileloop_l2[DATA->depth_whileloops] = anonymous_label();
+    DATA->whileloop_l3[DATA->depth_whileloops] = anonymous_label();
 
-    DATA->depth = DATA->depth + 1;
+    DATA->depth_whileloops = DATA->depth_whileloops + 1;
 }
 
 void CodeGenVisitor_postvisit_whileloop (NodeVisitor* visitor, ASTNode* node)
 {
     /* Copy code from condition */
-    EMIT1OP(LABEL, DATA->whileloop_l1[DATA->depth - 1]);
+    EMIT1OP(LABEL, DATA->whileloop_l1[DATA->depth_whileloops - 1]);
     ASTNode_copy_code(node, node->whileloop.condition);
-    EMIT3OP(CBR, ASTNode_get_temp_reg(node->whileloop.condition), DATA->whileloop_l2[DATA->depth - 1], DATA->whileloop_l3[DATA->depth - 1]);
+    EMIT3OP(CBR, ASTNode_get_temp_reg(node->whileloop.condition), DATA->whileloop_l2[DATA->depth_whileloops - 1], DATA->whileloop_l3[DATA->depth_whileloops - 1]);
 
     /* Copy code from body */
-    EMIT1OP(LABEL, DATA->whileloop_l2[DATA->depth - 1]);
+    EMIT1OP(LABEL, DATA->whileloop_l2[DATA->depth_whileloops - 1]);
     ASTNode_copy_code(node, node->whileloop.body);
-    EMIT1OP(JUMP, DATA->whileloop_l1[DATA->depth - 1]);
+    EMIT1OP(JUMP, DATA->whileloop_l1[DATA->depth_whileloops - 1]);
 
-    EMIT1OP(LABEL, DATA->whileloop_l3[DATA->depth - 1]);
+    EMIT1OP(LABEL, DATA->whileloop_l3[DATA->depth_whileloops - 1]);
 
-    DATA->depth = DATA->depth - 1;
+    DATA->depth_whileloops = DATA->depth_whileloops - 1;
 }
 
 void CodeGenVisitor_postvisit_return (NodeVisitor* visitor, ASTNode* node)
 {
     /* Copy code from the return value node */
     ASTNode_copy_code(node, node->funcreturn.value);
+    Symbol* val = lookup_symbol(node, node->funcreturn.value->location.name);
 
-    EMIT2OP(I2I, ASTNode_get_temp_reg(node->funcreturn.value), return_register());
+    Operand ret = ASTNode_get_temp_reg(node->funcreturn.value);
+
+    if (val != NULL) {
+        if (val->symbol_type == ARRAY_SYMBOL) {
+            EMIT3OP(LOAD_AO, DATA->load_256[DATA->index - 1], ret, ret);
+        }
+    }
+
+    EMIT2OP(I2I, ret, return_register());
 }
 
 void CodeGenVisitor_postvisit_break (NodeVisitor* visitor, ASTNode* node)
 {
-    EMIT1OP(JUMP, DATA->whileloop_l3[DATA->depth - 1]);
+    EMIT1OP(JUMP, DATA->whileloop_l3[DATA->depth_whileloops - 1]);
 }
 
 void CodeGenVisitor_postvisit_continue (NodeVisitor* visitor, ASTNode* node)
 {
-    EMIT1OP(JUMP, DATA->whileloop_l1[DATA->depth - 1]);
+    EMIT1OP(JUMP, DATA->whileloop_l1[DATA->depth_whileloops - 1]);
 }
 
 void CodeGenVisitor_postvisit_binaryop (NodeVisitor* visitor, ASTNode* node)
 {
     /* Copy code from the left and right subchildren and assign them to the registers */
-    ASTNode_copy_code(node, node->binaryop.left);
-    ASTNode_copy_code(node, node->binaryop.right);
-
+    Symbol* left_val = lookup_symbol(node, node->binaryop.left->location.name);
+    Symbol* right_val = lookup_symbol(node, node->binaryop.right->location.name);
     Operand left = ASTNode_get_temp_reg(node->binaryop.left);
     Operand right = ASTNode_get_temp_reg(node->binaryop.right);
     Operand result = virtual_register();
+
+    ASTNode_copy_code(node, node->binaryop.left);
+
+    if (left_val != NULL && left_val->symbol_type == ARRAY_SYMBOL) {
+        EMIT3OP(LOAD_AO, DATA->load_256[DATA->index - 2], left, left);
+        DATA->index = DATA->index - 1;
+    }
+
+    ASTNode_copy_code(node, node->binaryop.right);
+
+    if (right_val != NULL && right_val->symbol_type == ARRAY_SYMBOL) {
+        EMIT3OP(LOAD_AO, DATA->load_256[DATA->index], right, right);
+        DATA->index = DATA->index - 1;
+    }
 
     /* switch statement for the different operators */
     switch (node->binaryop.operator)
@@ -373,9 +420,21 @@ void CodeGenVisitor_postvisit_location (NodeVisitor* visitor, ASTNode* node)
     Symbol* loc = lookup_symbol(node, node->location.name);
 
     if (loc != NULL) {
-        Operand virtual_reg = virtual_register();
-        EMIT3OP(LOAD_AI, base_register(),var_offset(node, loc), virtual_reg);
-        ASTNode_set_temp_reg(node, virtual_reg);
+        Operand val = virtual_register();
+        if (loc->symbol_type == ARRAY_SYMBOL) {
+            Operand virtual_reg1 = virtual_register();
+            ASTNode_copy_code(node, node->location.index);
+            EMIT2OP(LOAD_I, int_const(256), virtual_reg1);
+            DATA->load_256[DATA->index] = virtual_reg1;
+            EMIT3OP(MULT_I, ASTNode_get_temp_reg(node->location.index), int_const(8), val);
+            DATA->index = DATA->index + 1;
+        }
+
+        else {
+            EMIT3OP(LOAD_AI, base_register(),var_offset(node, loc), val);
+        }
+
+        ASTNode_set_temp_reg(node, val);
     }
 }
 
@@ -431,6 +490,8 @@ void CodeGenVisitor_postvisit_funccall (NodeVisitor* visitor, ASTNode* node)
             ASTNode_set_temp_reg(node, value);
         }
     }
+
+    free(arguments);
 }
 
 void CodeGenVisitor_postvisit_literal (NodeVisitor* visitor, ASTNode* node)
