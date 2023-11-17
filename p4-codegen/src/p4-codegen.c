@@ -488,15 +488,22 @@ void CodeGenVisitor_postvisit_funccall (NodeVisitor* visitor, ASTNode* node)
     if (function != NULL) {
         
         /* Predefined functions */
-        ASTNode* item = node->funccall.arguments->head;
-        Symbol* param = lookup_symbol(item, item->location.name);
-        Operand result = virtual_register();
+        
+        ASTNode* item;
+        Symbol* param;
+        Operand result;
+
+        if (function->parameters->size != 0) {
+            item = node->funccall.arguments->head;
+            param = lookup_symbol(item, item->location.name);
+            result = ASTNode_get_temp_reg(item);
+        }
 
         if (!strcmp(function->name, "print_int")) {
             ASTNode_copy_code(node, item);
             
             if (param != NULL && param->symbol_type == ARRAY_SYMBOL) {
-                EMIT3OP(LOAD_AO, DATA->load_256[DATA->index - 1], ASTNode_get_temp_reg(item), result);
+                EMIT3OP(LOAD_AO, DATA->load_256[DATA->index - 1], result, result);
                 DATA->index = DATA->index - 1;
             }
             
@@ -509,7 +516,7 @@ void CodeGenVisitor_postvisit_funccall (NodeVisitor* visitor, ASTNode* node)
 
         else if (!strcmp(function->name, "print_bool")) {
             ASTNode_copy_code(node, item);
-            EMIT1OP(PRINT, ASTNode_get_temp_reg(item));
+            EMIT1OP(PRINT, result);
         }
 
         else {

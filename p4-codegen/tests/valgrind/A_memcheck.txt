@@ -1,107 +1,15 @@
-==337791== Memcheck, a memory error detector
-==337791== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==337791== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==337791== Command: ../decaf inputs/sanity.decaf
-==337791== 
-main:
-  push BP
-  i2i SP => BP
-  addI SP, 0 => SP
-  loadI 4 => r0
-  i2i r0 => RET
-  jump l0
-l0:
-  i2i BP => SP
-  pop BP
-  return
-
-==========================
-sp=65536 bp=-9999999 ret=-9999999
-registers: 
-stack:
-other memory:
-==========================
-
-Executing: push BP
-
-==========================
-sp=65528 bp=-9999999 ret=-9999999
-registers: 
-stack:  65528: -9999999
-other memory:
-==========================
-
-Executing: i2i SP => BP
-
-==========================
-sp=65528 bp=65528 ret=-9999999
-registers: 
-stack:  65528: -9999999
-other memory:
-==========================
-
-Executing: addI SP, 0 => SP
-
-==========================
-sp=65528 bp=65528 ret=-9999999
-registers: 
-stack:  65528: -9999999
-other memory:
-==========================
-
-Executing: loadI 4 => r0
-
-==========================
-sp=65528 bp=65528 ret=-9999999
-registers:  r0=4
-stack:  65528: -9999999
-other memory:
-==========================
-
-Executing: i2i r0 => RET
-
-==========================
-sp=65528 bp=65528 ret=4
-registers:  r0=4
-stack:  65528: -9999999
-other memory:
-==========================
-
-Executing: jump l0
-
-==========================
-sp=65528 bp=65528 ret=4
-registers:  r0=4
-stack:  65528: -9999999
-other memory:
-==========================
-
-Executing: i2i BP => SP
-
-==========================
-sp=65528 bp=65528 ret=4
-registers:  r0=4
-stack:  65528: -9999999
-other memory:
-==========================
-
-Executing: pop BP
-
-==========================
-sp=65536 bp=-9999999 ret=4
-registers:  r0=4
-stack:
-other memory:  65528: -9999999
-==========================
-
-Executing: return
+==1200235== Memcheck, a memory error detector
+==1200235== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==1200235== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==1200235== Command: ../decaf inputs/sanity.decaf
+==1200235== 
 RETURN VALUE = 4
-==337791== 
-==337791== HEAP SUMMARY:
-==337791==     in use at exit: 0 bytes in 0 blocks
-==337791==   total heap usage: 1,807 allocs, 1,807 frees, 541,332 bytes allocated
-==337791== 
-==337791== All heap blocks were freed -- no leaks are possible
-==337791== 
-==337791== For lists of detected and suppressed errors, rerun with: -s
-==337791== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==1200235== 
+==1200235== HEAP SUMMARY:
+==1200235==     in use at exit: 0 bytes in 0 blocks
+==1200235==   total heap usage: 1,809 allocs, 1,809 frees, 543,460 bytes allocated
+==1200235== 
+==1200235== All heap blocks were freed -- no leaks are possible
+==1200235== 
+==1200235== For lists of detected and suppressed errors, rerun with: -s
+==1200235== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
