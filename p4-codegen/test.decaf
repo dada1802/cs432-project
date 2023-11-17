@@ -1,7 +1,75 @@
-int a[1];
+def void draw_triangle(int base)
+{
+    int i;
+    int num_spaces;
+    i = 1;
+    num_spaces = base / 2;
+    
+    if (base % 2 == 0)
+    {
+        i = 2;
+        num_spaces = num_spaces - 1;
+    }
+
+    if (base <= 2)
+    {
+        if (base == 1) {
+            print_str("#");
+        }
+
+        else {
+            print_str("##");
+        }
+    }
+
+    else
+    {
+        while (i <= base)
+        {
+            int n;
+            int spaces;
+            n = 0;
+            spaces = 0;
+
+            while (spaces < num_spaces)
+            {
+                print_str(" ");
+                spaces = spaces + 1;
+            }
+
+            while (n < i)
+            {
+                print_str("#");
+                n = n + 1;
+            }
+
+            while (spaces > 0)
+            {
+                print_str(" ");
+                spaces = spaces - 1;
+            }
+
+            if (i < base) {
+                print_str("\n");
+            }
+
+            i = i + 2;
+            num_spaces = num_spaces - 1;
+        }
+    }
+}
+
 def int main()
 {
-    a[0] = 3;
+    print_str("\nTest draw_triangle() function.\n");
+    draw_triangle(1);
+    print_str("\n");
+    draw_triangle(2);
+    print_str("\n");
+    draw_triangle(5);
+    print_str("\n");
+    draw_triangle(8);
+    print_str("\n");
 
-    return -a[0];
+    return -1;
 }

@@ -181,7 +181,6 @@ void CodeGenVisitor_postvisit_funcdecl (NodeVisitor* visitor, ASTNode* node)
 
     /* copy code from body */
     ASTNode_copy_code(node, node->funcdecl.body);
-    EMIT1OP(JUMP, DATA->current_epilogue_jump_label);
 
     /* BOILERPLATE: TODO: implement epilogue */
     EMIT1OP(LABEL, DATA->current_epilogue_jump_label);
@@ -316,6 +315,7 @@ void CodeGenVisitor_postvisit_return (NodeVisitor* visitor, ASTNode* node)
     }
 
     EMIT2OP(I2I, ret, return_register());
+    EMIT1OP(JUMP, DATA->current_epilogue_jump_label);
 }
 
 /* ============================== POSTVISIT BREAK ============================== */
@@ -488,21 +488,26 @@ void CodeGenVisitor_postvisit_funccall (NodeVisitor* visitor, ASTNode* node)
     if (function != NULL) {
         
         /* Predefined functions */
-        ASTNode* item;
+        ASTNode* item = node->funccall.arguments->head;
+        Symbol* param = lookup_symbol(item, item->location.name);
+        Operand result = virtual_register();
 
         if (!strcmp(function->name, "print_int")) {
-            item = node->funccall.arguments->head;
             ASTNode_copy_code(node, item);
-            EMIT1OP(PRINT, ASTNode_get_temp_reg(item));
+            
+            if (param != NULL && param->symbol_type == ARRAY_SYMBOL) {
+                EMIT3OP(LOAD_AO, DATA->load_256[DATA->index - 1], ASTNode_get_temp_reg(item), result);
+                DATA->index = DATA->index - 1;
+            }
+            
+            EMIT1OP(PRINT, result);
         }
 
         else if (!strcmp(function->name, "print_str")) {
-            item = node->funccall.arguments->head;
             EMIT1OP(PRINT, str_const(item->literal.string));
         }
 
         else if (!strcmp(function->name, "print_bool")) {
-            item = node->funccall.arguments->head;
             ASTNode_copy_code(node, item);
             EMIT1OP(PRINT, ASTNode_get_temp_reg(item));
         }
@@ -518,7 +523,7 @@ void CodeGenVisitor_postvisit_funccall (NodeVisitor* visitor, ASTNode* node)
             for (int i = 0; i < list1->size; i++) {
                 ASTNode_copy_code(node, item);
 
-                Symbol* name = lookup_symbol(item, item->location.name);
+                Symbol* name = lookup_symbol(node, item->location.name);
                 Operand val = ASTNode_get_temp_reg(item);
 
                 if (name != NULL && name->symbol_type == ARRAY_SYMBOL) {
