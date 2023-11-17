@@ -18,13 +18,14 @@ typedef struct CodeGenData
     Operand current_epilogue_jump_label;
 
     /* add any new desired state information (and clean it up in CodeGenData_free) */
-    Operand whileloop_l1;
-    Operand whileloop_l2;
-    Operand whileloop_l3;
     Operand conditional_l1;
     Operand conditional_l2;
     Operand conditional_l3;
     char *predefined_functions[3];
+    Operand* whileloop_l1;
+    Operand* whileloop_l2;
+    Operand* whileloop_l3;
+    int depth;
 } CodeGenData;
 
 /**
@@ -37,9 +38,10 @@ CodeGenData* CodeGenData_new (void)
     CodeGenData* data = (CodeGenData*)calloc(1, sizeof(CodeGenData));
     CHECK_MALLOC_PTR(data);
     data->current_epilogue_jump_label = empty_operand();
-    data->whileloop_l1 = empty_operand();
-    data->whileloop_l2 = empty_operand();
-    data->whileloop_l3 = empty_operand();
+    data->whileloop_l1 = (Operand*)calloc(100, sizeof(Operand));
+    data->whileloop_l2 = (Operand*)calloc(100, sizeof(Operand));
+    data->whileloop_l3 = (Operand*)calloc(100, sizeof(Operand));
+    data->depth = 0;
     data->conditional_l1 = empty_operand();
     data->conditional_l2 = empty_operand();
     data->conditional_l3 = empty_operand();
@@ -224,24 +226,28 @@ void CodeGenVisitor_postvisit_conditional (NodeVisitor* visitor, ASTNode* node)
 
 void CodeGenVisitor_previsit_whileloop (NodeVisitor* visitor, ASTNode* node)
 {
-    DATA->whileloop_l1 = anonymous_label();
-    DATA->whileloop_l2 = anonymous_label();
-    DATA->whileloop_l3 = anonymous_label();
+    DATA->whileloop_l1[DATA->depth] = anonymous_label();
+    DATA->whileloop_l2[DATA->depth] = anonymous_label();
+    DATA->whileloop_l3[DATA->depth] = anonymous_label();
+
+    DATA->depth = DATA->depth + 1;
 }
 
 void CodeGenVisitor_postvisit_whileloop (NodeVisitor* visitor, ASTNode* node)
 {
     /* Copy code from condition */
-    EMIT1OP(LABEL, DATA->whileloop_l1);
+    EMIT1OP(LABEL, DATA->whileloop_l1[DATA->depth - 1]);
     ASTNode_copy_code(node, node->whileloop.condition);
-    EMIT3OP(CBR, ASTNode_get_temp_reg(node->whileloop.condition), DATA->whileloop_l2, DATA->whileloop_l3);
+    EMIT3OP(CBR, ASTNode_get_temp_reg(node->whileloop.condition), DATA->whileloop_l2[DATA->depth - 1], DATA->whileloop_l3[DATA->depth - 1]);
 
     /* Copy code from body */
-    EMIT1OP(LABEL, DATA->whileloop_l2);
+    EMIT1OP(LABEL, DATA->whileloop_l2[DATA->depth - 1]);
     ASTNode_copy_code(node, node->whileloop.body);
-    EMIT1OP(JUMP, DATA->whileloop_l1);
+    EMIT1OP(JUMP, DATA->whileloop_l1[DATA->depth - 1]);
 
-    EMIT1OP(LABEL, DATA->whileloop_l3);
+    EMIT1OP(LABEL, DATA->whileloop_l3[DATA->depth - 1]);
+
+    DATA->depth = DATA->depth - 1;
 }
 
 void CodeGenVisitor_postvisit_return (NodeVisitor* visitor, ASTNode* node)
@@ -254,12 +260,12 @@ void CodeGenVisitor_postvisit_return (NodeVisitor* visitor, ASTNode* node)
 
 void CodeGenVisitor_postvisit_break (NodeVisitor* visitor, ASTNode* node)
 {
-    EMIT1OP(JUMP, DATA->whileloop_l3);
+    EMIT1OP(JUMP, DATA->whileloop_l3[DATA->depth - 1]);
 }
 
 void CodeGenVisitor_postvisit_continue (NodeVisitor* visitor, ASTNode* node)
 {
-    EMIT1OP(JUMP, DATA->whileloop_l1);
+    EMIT1OP(JUMP, DATA->whileloop_l1[DATA->depth - 1]);
 }
 
 void CodeGenVisitor_postvisit_binaryop (NodeVisitor* visitor, ASTNode* node)
