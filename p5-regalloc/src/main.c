@@ -162,7 +162,7 @@ int main(int argc, char** argv)
     InsnList_print(iloc, stdout);
 
     /* run program (change 'true' to 'false' to disable trace output) */
-    int return_value = run_simulator(iloc, true);
+    int return_value = run_simulator(iloc, false);
     printf("RETURN VALUE = %d\n", return_value);
 
     /* enable this to generate Y86 (requires a functional P5 solution first) */

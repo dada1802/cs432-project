@@ -77,4 +77,40 @@ void insert_load(int bp_offset, int pr, ILOCInsn* prev_insn)
 
 void allocate_registers (InsnList* list, int num_physical_registers)
 {
+    // each instruction i in program:
+    FOR_EACH(ILOCInsn*, i, list) {
+
+        printf("allocating \"");
+        ILOCInsn_print(i, stdout);
+        printf("\"");
+
+        // for each read vr in i:
+        ILOCInsn* read_regs = ILOCInsn_get_read_registers(i);
+        for (int op = 0; op < 3; op++) {
+            Operand vr = read_regs->op[op];
+            if (vr.type == VIRTUAL_REG) {
+                printf(" reads register %d", vr.id);
+
+                // make sure vr is in a phys reg
+                int pr = vr.id; // TODO: pr = ensure(vr)
+                replace_register(vr.id, pr, i);     // change register id
+            }
+
+            // TODO: if dist(vr) == INFINITY:      // if no future use
+            //     name[pr] = INVALID              // then free pr
+        }
+        free(read_regs);
+
+        // for each written vr in i:
+        Operand vr = ILOCInsn_get_write_register(i);
+        if (vr.type == VIRTUAL_REG) {
+            printf(" writes register %d", vr.id);
+
+            // make sure phys reg is available
+            int pr = vr.id; // TODO: pr = allocate(vr)
+            replace_register(vr.id, pr, i);     // change register id
+        }
+
+        printf("\n");
+    }
 }

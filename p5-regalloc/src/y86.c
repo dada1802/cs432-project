@@ -48,10 +48,10 @@ const char* reg_name(Operand op)
                 exit(EXIT_FAILURE);
             }
             switch (op.id) {
-                case 0: reg = "%rcx"; break;    // r0
-                case 1: reg = "%rdx"; break;    // r1
-                case 2: reg = "%r10"; break;    // r2
-                case 3: reg = "%r11"; break;    // r3
+                case 0: reg = "%rcx"; break;    // R0
+                case 1: reg = "%rdx"; break;    // R1
+                case 2: reg = "%r10"; break;    // R2
+                case 3: reg = "%r11"; break;    // R3
             }
             break;
         default:
