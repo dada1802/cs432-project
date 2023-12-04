@@ -3,7 +3,11 @@
  * @brief Compiler phase 5: register allocation
  */
 #include "p5-regalloc.h"
-#include <math.h>
+
+int name[MAX_PHYSICAL_REGS];
+int offset[MAX_VIRTUAL_REGS];
+#define INFINITY -2
+#define INVALID -1
 
 /**
  * @brief Replace a virtual register id with a physical register id
@@ -76,8 +80,8 @@ void insert_load(int bp_offset, int pr, ILOCInsn* prev_insn)
     prev_insn->next = new_insn;
 }
 
- int ensure(Operand vr, int* name, int size)
- {
+int ensure(Operand vr, int size)
+{
     for (int pr = 0; pr < size; pr++) {
         if (name[pr] == vr.id) {                    // if the vr is in a phys reg
             return pr;                              // then use it
@@ -90,13 +94,13 @@ void insert_load(int bp_offset, int pr, ILOCInsn* prev_insn)
     }
     
     return -1;
- }
+}
 
-int allocate(Operand vr, int* name, int size)
+int allocate(Operand vr, int size)
 {
     for (int pr = 0; pr < size; pr++) {
-        if (name[pr] == -1) {                       // if there's a free register
-            name[pr] = vr.id;                          // then allocate it
+        if (name[pr] == INVALID) {                       // if there's a free register
+            name[pr] = vr.id;                       // then allocate it
             return pr;                              // and use it
         }
     }
@@ -108,64 +112,92 @@ int allocate(Operand vr, int* name, int size)
     return -1;
 }
 
-double dist(Operand vr, int current, InsnList* list)
+double dist(Operand vr, int start, InsnList* list)
 {
     // return number of instructions until vr is next used (INFINITY if no use)
-    double distance = INFINITY;
-    double next = current + 1;
-    InsnList* l = list;
+    int current = 0;
+    bool check = false;
 
-    for (int i = 0; i < next; i++) {
-        
+    FOR_EACH(ILOCInsn*, i, list) {
+        // Save reference to stack allocator instruction if i is a call label.
+        if (i->form == CALL) {
+
+        }
+
+        // for each read vr in i:
+        ILOCInsn* read_regs = ILOCInsn_get_read_registers(i);
+        for (int op = 0; op < 3; op++) {
+            Operand vr1 = read_regs->op[op];
+            if (vr1.type == VIRTUAL_REG && current > start && vr.id == vr1.id) {
+                check = true;
+                break;
+            }
+        }
+
+        free(read_regs);
+
+        if (check) {
+            break;
+        }
+
+        current++;
     }
 
-    return distance;
+    if (check) {
+        return current;
+    }
+
+    return INFINITY;
 }
+
+// void spill(int pr) {
+//     emit store from pr onto the stack at some offset x
+//     offset[name[pr]] = x
+//     name[pr] = INVALID
+// }
 
 void allocate_registers (InsnList* list, int num_physical_registers)
 {
-    int* name = calloc(num_physical_registers, sizeof(int));
+    if (list == NULL) {
+        return;
+    }
+
     int current = 0;
 
-    /* Register is not used if set to -1 */
+    /* Set unused registers to INVALID */
     for (int i = 0; i < num_physical_registers; i++) {
-        name[i] = -1;
+        name[i] = INVALID;
     }
-    
-    if (list != NULL) {
-        // each instruction i in program:
-        FOR_EACH(ILOCInsn*, i, list) {
-            // for each read vr in i:
-            ILOCInsn* read_regs = ILOCInsn_get_read_registers(i);
-            for (int op = 0; op < 3; op++) {
-                Operand vr = read_regs->op[op];
-                int pr = -1;
-                if (vr.type == VIRTUAL_REG) {
 
-                    // make sure vr is in a phys reg
-                    // int pr = vr.id;
-                    pr = ensure(vr, name, num_physical_registers);
-                    replace_register(vr.id, pr, i);     // change register id
-                }
-
-                if (dist(vr, current, list) == INFINITY) {          // if no future use
-                    name[pr] = -1;                                  // then free pr
-                }
-            }
-            free(read_regs);
-
-            // for each written vr in i:
-            Operand vr = ILOCInsn_get_write_register(i);
-            int pr = -1;
+    // each instruction i in program:
+    FOR_EACH(ILOCInsn*, i, list) {
+        // for each read vr in i:
+        ILOCInsn* read_regs = ILOCInsn_get_read_registers(i);
+        for (int op = 0; op < 3; op++) {
+            Operand vr = read_regs->op[op];
+            int pr = INVALID;
             if (vr.type == VIRTUAL_REG) {
-
-                // make sure phys reg is available
-                // int pr = vr.id;
-                pr = allocate(vr, name, num_physical_registers);
+                // make sure vr is in a phys reg
+                pr = ensure(vr, num_physical_registers);
                 replace_register(vr.id, pr, i);     // change register id
             }
 
-            current++;
+            if (dist(vr, current, list) == INFINITY) {          // if no future use
+                name[pr] = INVALID;                                  // then free pr
+            }
         }
+
+        free(read_regs);
+
+        // for each written vr in i:
+        Operand vr = ILOCInsn_get_write_register(i);
+        int pr = -1;
+        if (vr.type == VIRTUAL_REG) {
+            // make sure phys reg is available
+            pr = allocate(vr, num_physical_registers);
+            replace_register(vr.id, pr, i);     // change register id
+        }
+
+        current++;
     }
 }

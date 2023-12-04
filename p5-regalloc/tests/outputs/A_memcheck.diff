@@ -1,4 +1,4 @@
---- outputs/A_memcheck.txt	2023-12-03 16:14:21.429035577 -0500
+--- outputs/A_memcheck.txt	2023-12-04 15:43:19.060087035 -0500
 +++ expected/A_memcheck.txt	2023-11-27 12:54:12.000000000 -0500
 @@ -9,4 +9,85 @@
    i2i BP => SP
