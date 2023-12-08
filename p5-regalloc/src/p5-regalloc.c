@@ -1,6 +1,9 @@
 /**
  * @file p5-regalloc.c
  * @brief Compiler phase 5: register allocation
+ * 
+ * Group members: David Nguyen, Chris Simmons.
+ * We did not use any AI-assist tools while creating this solution.
  */
 #include "p5-regalloc.h"
 
