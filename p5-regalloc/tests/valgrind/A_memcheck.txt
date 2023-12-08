@@ -1,8 +1,8 @@
-==4137317== Memcheck, a memory error detector
-==4137317== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==4137317== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==4137317== Command: ../decaf inputs/sanity.decaf
-==4137317== 
+==287956== Memcheck, a memory error detector
+==287956== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==287956== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==287956== Command: ../decaf inputs/sanity.decaf
+==287956== 
 main:
   push BP
   i2i SP => BP
@@ -14,13 +14,94 @@ l0:
   i2i BP => SP
   pop BP
   return
+
+==========================
+sp=65536 bp=-9999999 ret=-9999999
+registers: 
+stack:
+other memory:
+==========================
+
+Executing: push BP
+
+==========================
+sp=65528 bp=-9999999 ret=-9999999
+registers: 
+stack:  65528: -9999999
+other memory:
+==========================
+
+Executing: i2i SP => BP
+
+==========================
+sp=65528 bp=65528 ret=-9999999
+registers: 
+stack:  65528: -9999999
+other memory:
+==========================
+
+Executing: addI SP, 0 => SP
+
+==========================
+sp=65528 bp=65528 ret=-9999999
+registers: 
+stack:  65528: -9999999
+other memory:
+==========================
+
+Executing: loadI 4 => R0
+
+==========================
+sp=65528 bp=65528 ret=-9999999
+registers:  R0=4
+stack:  65528: -9999999
+other memory:
+==========================
+
+Executing: i2i R0 => RET
+
+==========================
+sp=65528 bp=65528 ret=4
+registers:  R0=4
+stack:  65528: -9999999
+other memory:
+==========================
+
+Executing: jump l0
+
+==========================
+sp=65528 bp=65528 ret=4
+registers:  R0=4
+stack:  65528: -9999999
+other memory:
+==========================
+
+Executing: i2i BP => SP
+
+==========================
+sp=65528 bp=65528 ret=4
+registers:  R0=4
+stack:  65528: -9999999
+other memory:
+==========================
+
+Executing: pop BP
+
+==========================
+sp=65536 bp=-9999999 ret=4
+registers:  R0=4
+stack:
+other memory:  65528: -9999999
+==========================
+
+Executing: return
 RETURN VALUE = 4
-==4137317== 
-==4137317== HEAP SUMMARY:
-==4137317==     in use at exit: 0 bytes in 0 blocks
-==4137317==   total heap usage: 1,910 allocs, 1,910 frees, 574,236 bytes allocated
-==4137317== 
-==4137317== All heap blocks were freed -- no leaks are possible
-==4137317== 
-==4137317== For lists of detected and suppressed errors, rerun with: -s
-==4137317== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==287956== 
+==287956== HEAP SUMMARY:
+==287956==     in use at exit: 0 bytes in 0 blocks
+==287956==   total heap usage: 1,910 allocs, 1,910 frees, 574,236 bytes allocated
+==287956== 
+==287956== All heap blocks were freed -- no leaks are possible
+==287956== 
+==287956== For lists of detected and suppressed errors, rerun with: -s
+==287956== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
