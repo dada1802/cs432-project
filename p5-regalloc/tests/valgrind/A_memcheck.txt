@@ -1,8 +1,8 @@
-==1191193== Memcheck, a memory error detector
-==1191193== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==1191193== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==1191193== Command: ../decaf inputs/sanity.decaf
-==1191193== 
+==4137317== Memcheck, a memory error detector
+==4137317== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==4137317== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==4137317== Command: ../decaf inputs/sanity.decaf
+==4137317== 
 main:
   push BP
   i2i SP => BP
@@ -15,12 +15,12 @@ l0:
   pop BP
   return
 RETURN VALUE = 4
-==1191193== 
-==1191193== HEAP SUMMARY:
-==1191193==     in use at exit: 0 bytes in 0 blocks
-==1191193==   total heap usage: 2,093 allocs, 2,093 frees, 768,948 bytes allocated
-==1191193== 
-==1191193== All heap blocks were freed -- no leaks are possible
-==1191193== 
-==1191193== For lists of detected and suppressed errors, rerun with: -s
-==1191193== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==4137317== 
+==4137317== HEAP SUMMARY:
+==4137317==     in use at exit: 0 bytes in 0 blocks
+==4137317==   total heap usage: 1,910 allocs, 1,910 frees, 574,236 bytes allocated
+==4137317== 
+==4137317== All heap blocks were freed -- no leaks are possible
+==4137317== 
+==4137317== For lists of detected and suppressed errors, rerun with: -s
+==4137317== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
